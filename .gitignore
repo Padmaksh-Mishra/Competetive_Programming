@@ -1,5 +1,3 @@
 
 *.exe
-.idea/
-out/
-*.iml
+JAVA_USED/
