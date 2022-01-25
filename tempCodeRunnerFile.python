@@ -1,5 +1,0 @@
-#Write a python program to check whether given no. is prime or not.
-#(By using for ........loop )
-N = int(input("inter any number = "))
-d=0
-for i in range (1, N+1) :
