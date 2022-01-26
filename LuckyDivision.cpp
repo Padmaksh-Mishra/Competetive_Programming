@@ -6,40 +6,56 @@
 
 using namespace std;
 
+vector<ll> V;
+void addingNos()
+{
+    //cout << "Adding nos..." << endl;
+    
+    for (int i = 1; i <= 1000; i++)
+    
+    {
+        bool added = true;
+        int temp = i;
+        while (temp > 0)
+        {
+            if ((temp % 10 != 4) && (temp % 10 != 7))
+            {
+                //cout << temp << " ";
+                added = false;
+                break;
+            }
+            //cout << endl;
+            temp = temp / 10;
+        }
+        //cout << added << endl;
+        if (added)
+        {
+            V.push_back(i);
+            //cout << i << endl;
+        }
+    }
+}
+
 int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-
-    string n;
-    cin >> n;
+    addingNos();
+    int n;
     bool flag = false;
-    stringstream temp(n);
-    int s = 0;
-    temp >> s;
-    if ((s % 4 == 0) || (s % 7 == 0))
-    {
-        flag = true;
-    }else{
-        flag = true;
-    for (auto val : n)
-    {
-        
-        if ((val != '4') && (val != '7'))
-        {
-            //cout << "ANA PADA";
-            flag = false;
+    cin >> n;
+    for(auto val : V){
+        if(n%val == 0){
+            flag = true;
         }
     }
-    }
-    if (flag)
-    {
+    if(flag){
         cout << "YES";
     }
-    else
-    {
+    else {
         cout << "NO";
     }
+    
     return 0;
 }
