@@ -1,3 +1,5 @@
-
+# GIT-IGNORE
 *.exe
 JAVA_USED/
+tempCodeRunnerFile.*
+Test.*
