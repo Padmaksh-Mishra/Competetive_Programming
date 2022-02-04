@@ -15,24 +15,23 @@ int main()
     cin >> TC;
     while (TC--)
     {
-        ll Hp, Dp, Hm, Dm, k, w, a;
+        long long Hp, Dp, Hm, Dm, k, w, a;
         cin >> Hp >> Dp >> Hm >> Dm;
         cin >> k >> w >> a;
         bool won = false;
-        double term_1, term_2;
         for (int i = 0; i < k + 1; i++)
         {
-            term_1 = (((double)Hp + (k - i) * a) / Dm);
-            term_2 = ((double)Hm / (Dp + (i * w)));
+            Hp = ((Hp + ((k - i) * a)));
+            Dp =(Dp + (i * w));
             // cout << term_1 << " " << term_2 << endl;
-            if (term_1 - term_2 + 1 > 0)
+            ll attacks = Hp % Dm == 0 ? (Hp/Dm) : (Hp/Dm)+1 ;
+            if ((attacks)*Dp >= Hm)
             {
                 won = true;
                 break;
             }
         }
-        // term_1 = (5/3);
-        // cout << term_1 << endl;
+        
         if (won)
         {
             cout << "YES" << endl;
