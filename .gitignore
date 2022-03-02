@@ -1,4 +1,10 @@
-# GIT-IGNORE
+# LINUX-SPECIAL
+
+*
+!*.*
+
+# Windows-Special
+
 *.exe
 JAVA_USED/
 tempCodeRunnerFile.*
