@@ -8,14 +8,15 @@ using namespace std;
 
 
 int main() {
+    
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-
     cout.tie(NULL);
 
     int TT;
     cin >> TT; 
     while(TT--){
+        
         ll n,count = 0;
         cin >> n;
         while(n){

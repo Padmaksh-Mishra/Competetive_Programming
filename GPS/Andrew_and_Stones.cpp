@@ -5,7 +5,7 @@
 using namespace std;
 typedef long long ll;
 
-__int32 main()         // Dekne me mast lagta hai
+int main()         // Dekne me mast lagta hai
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
