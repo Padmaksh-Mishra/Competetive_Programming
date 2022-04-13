@@ -8,11 +8,13 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 void solve(){
-    int n,k; cin >> n >> k;
-    int factor = (n%k) ? (n/k)+1 : (n/k);
-    k = k*factor;
-    int ans = (k%n) ? (k/n) + 1: (k/n);
-    cout << ans << endl;
+    int b[7];
+    for(int i = 0; i < 7;i++) cin >> b[i];
+    int a1 = b[0];
+    int a2 = b[1];
+    int allSum = b[6];
+    int a3 = allSum - a1 - a2;
+    cout << a1 << " " << a2 << " " << a3 << endl;
 }
 
 int main(){

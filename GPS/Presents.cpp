@@ -10,21 +10,13 @@ using namespace std;
 
 void solve(){
     int n; cin >> n;
-    int min = 101,mini;
-    int arr[n];
+    int hash[n];
     for(int i = 0; i < n; i++){
-        cin >> arr[i];
-        if(min >= arr[i]) {
-            mini = i;
-            min = arr[i];
-        }
-        //deb(mini);
+        int tmp; cin >> tmp;
+        hash[tmp - 1] = i;
     }
-    int maxi = max_element(arr,arr+n) - arr;
-    // deb(maxi);
-    // deb(mini);
-    if(mini>maxi) cout << (n-1-mini) + maxi << endl;
-    else cout << (n-1-mini) + maxi - 1 << endl;
+    for(int i = 0; i < n; i++) cout << hash[i] + 1 << " ";
+    cout << endl;
 }
 
 int main(){

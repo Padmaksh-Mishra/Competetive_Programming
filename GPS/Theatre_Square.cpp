@@ -1,18 +1,18 @@
-//Coding_Duck PM
+//Coding_Duck <-> PM <-> REDACTED
 
 # include <bits/stdc++.h>
 # define ll long long
 # define endl '\n'
+# define deb(x) cout << #x << " = " << x << endl
 
 const ll MOD = 1e9 +7;
 using namespace std;
 
 void solve(){
-    int n,k; cin >> n >> k;
-    int factor = (n%k) ? (n/k)+1 : (n/k);
-    k = k*factor;
-    int ans = (k%n) ? (k/n) + 1: (k/n);
-    cout << ans << endl;
+    int n,m,k; cin >> n >> m >> k;
+    int t1 = (n%k) ? (n/k)+1 : (n/k);
+    int t2 = (m%k) ? (m/k)+1 : (m/k);
+    cout << t1+t2 << endl;
 }
 
 int main(){
@@ -20,8 +20,8 @@ int main(){
     cin.tie(NULL);
     cout.tie(NULL);
 
-    int TC;
-    cin >> TC;
+    int TC = 1;
+    //cin >> TC;
     while(TC--){
         solve();
     }

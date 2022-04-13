@@ -8,11 +8,18 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 void solve(){
-    int n,k; cin >> n >> k;
-    int factor = (n%k) ? (n/k)+1 : (n/k);
-    k = k*factor;
-    int ans = (k%n) ? (k/n) + 1: (k/n);
-    cout << ans << endl;
+    int n; cin >> n;
+    int X[n];
+    for (int i = 0; i < n; i++) cin >> X[i];
+    int Y[n];
+    Y[0] = 0;
+    cout << 0 << " ";
+    for(int i = 1; i < n; i++){
+        Y[i] = ((X[i-1]^Y[i-1])&(~X[i]));   // K-map ka kaam dek BSDK padhi kabi bekar nahi jaati
+        cout << Y[i] << " ";
+    }
+    cout << endl;
+
 }
 
 int main(){

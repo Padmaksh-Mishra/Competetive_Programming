@@ -8,22 +8,18 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 void solve(){
-    int n,k; cin >> n >> k;
-    int factor = (n%k) ? (n/k)+1 : (n/k);
-    k = k*factor;
-    int ans = (k%n) ? (k/n) + 1: (k/n);
-    cout << ans << endl;
+    ll n,m; cin >> n >> m ;
+    ll r = n%m;
+    ll q = n/m;
+    ll kmin = (r*(q+1)*q/2) + ((m-r)*(q-1)*q/2);
+    ll kmax = (n-m+1)*(n-m)/2;
+    cout << kmin << " " << kmax << endl;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-
-    int TC;
-    cin >> TC;
-    while(TC--){
-        solve();
-    }
+        solve();    
     return 0;
 }

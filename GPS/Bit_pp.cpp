@@ -10,21 +10,14 @@ using namespace std;
 
 void solve(){
     int n; cin >> n;
-    int min = 101,mini;
-    int arr[n];
+    string tmp;
+    int x = 0;
     for(int i = 0; i < n; i++){
-        cin >> arr[i];
-        if(min >= arr[i]) {
-            mini = i;
-            min = arr[i];
-        }
-        //deb(mini);
+        cin >> tmp;
+        if(tmp[1] == '+') x++;
+        else x--;
     }
-    int maxi = max_element(arr,arr+n) - arr;
-    // deb(maxi);
-    // deb(mini);
-    if(mini>maxi) cout << (n-1-mini) + maxi << endl;
-    else cout << (n-1-mini) + maxi - 1 << endl;
+    cout << x << endl;
 }
 
 int main(){

@@ -8,22 +8,22 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 void solve(){
-    int n,k; cin >> n >> k;
-    int factor = (n%k) ? (n/k)+1 : (n/k);
-    k = k*factor;
-    int ans = (k%n) ? (k/n) + 1: (k/n);
-    cout << ans << endl;
+    int n,m; cin >> n >> m ;
+    int task[m];
+    ll time = 0;
+    int presentHouse = 1;
+    for(int i=0;i<m;i++){
+        cin >> task[i];
+        time = time + (n+task[i] - presentHouse)%n;
+        presentHouse = task[i]; 
+    }
+    cout << time << endl;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-
-    int TC;
-    cin >> TC;
-    while(TC--){
         solve();
-    }
     return 0;
 }

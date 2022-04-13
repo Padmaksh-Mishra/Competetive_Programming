@@ -8,11 +8,12 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 void solve(){
-    int n,k; cin >> n >> k;
-    int factor = (n%k) ? (n/k)+1 : (n/k);
-    k = k*factor;
-    int ans = (k%n) ? (k/n) + 1: (k/n);
-    cout << ans << endl;
+    ll x,y,z; cin >> x >> y >> z ;
+    //cout << x%z << " " << y%z << endl;
+    ll debt = min(z-(x%z),z-(y%z));
+    if(debt==z) debt = 0;
+    if((x%z) + (y%z) < z) debt = 0;
+    cout << (x+y)/z << " " << debt << endl;
 }
 
 int main(){
@@ -20,10 +21,8 @@ int main(){
     cin.tie(NULL);
     cout.tie(NULL);
 
-    int TC;
-    cin >> TC;
-    while(TC--){
+
         solve();
-    }
+    
     return 0;
 }

@@ -8,22 +8,23 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 void solve(){
-    int n,k; cin >> n >> k;
-    int factor = (n%k) ? (n/k)+1 : (n/k);
-    k = k*factor;
-    int ans = (k%n) ? (k/n) + 1: (k/n);
-    cout << ans << endl;
+    int n; cin >> n;
+    int probs = 0;
+    for(int i = 0; i < n; i++){
+        int ones = 0;
+        for(int h = 0; h <3;h++){
+            int tmp;cin >> tmp;
+            if(tmp) ones++;
+        }
+        if(ones>1) probs++;
+    }
+    cout << probs << endl;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-
-    int TC;
-    cin >> TC;
-    while(TC--){
         solve();
-    }
     return 0;
 }

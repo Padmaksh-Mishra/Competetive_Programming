@@ -3,16 +3,17 @@
 # include <bits/stdc++.h>
 # define ll long long
 # define endl '\n'
+# define deb(x) cout << #x << " = " << x << endl
 
 const ll MOD = 1e9 +7;
 using namespace std;
 
 void solve(){
-    int n,k; cin >> n >> k;
-    int factor = (n%k) ? (n/k)+1 : (n/k);
-    k = k*factor;
-    int ans = (k%n) ? (k/n) + 1: (k/n);
-    cout << ans << endl;
+    int a,b; cin >> a >> b;
+    if(a == 0) cout << 1 << endl;
+    else {
+        cout << a+(b<<1)+1 << endl;
+    }
 }
 
 int main(){
@@ -20,7 +21,7 @@ int main(){
     cin.tie(NULL);
     cout.tie(NULL);
 
-    int TC;
+    int TC = 1;
     cin >> TC;
     while(TC--){
         solve();

@@ -1,26 +1,23 @@
-//Coding_Duck PM
+//Coding_Duck <-> PM <-> REDACTED
 
 # include <bits/stdc++.h>
 # define ll long long
 # define endl '\n'
+# define deb(x) cout << #x << " = " << x << endl
 
 const ll MOD = 1e9 +7;
 using namespace std;
 
 void solve(){
-    int n,k; cin >> n >> k;
-    int factor = (n%k) ? (n/k)+1 : (n/k);
-    k = k*factor;
-    int ans = (k%n) ? (k/n) + 1: (k/n);
-    cout << ans << endl;
+    
 }
 
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    cout.tie(NULL);
+    cout.tie(NULL); // useless since cout is not tied to anything
 
-    int TC;
+    int TC = 1;
     cin >> TC;
     while(TC--){
         solve();

@@ -1,11 +1,13 @@
-# LINUX-SPECIAL
+# Ignore all
+*
 
+# Unignore all with extensions
+!*.*
 
+# Unignore all dirs
+!*/
 
-# Windows-Special
+# Ignore vscode directory
+/.vscode
 
-*.exe
-JAVA_USED/
 tempCodeRunnerFile.*
-Test.*
-*.json

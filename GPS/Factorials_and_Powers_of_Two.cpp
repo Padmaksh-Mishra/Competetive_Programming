@@ -21,6 +21,7 @@ int setBits(ll n){
         if(n&1) count ++;
         n >>= 1;
     }
+    return count;
 }
 int main(){
     ios_base::sync_with_stdio(false);
@@ -32,10 +33,24 @@ int main(){
     fact();
     while(TC--){
         ll n; cin >> n;
+        set<ll> s;
+        int *closestfact = (lower_bound(factorial,factorial+15,n)-1);
         if(setBits(n)==1) cout << 1 << endl;
+        else if(*(closestfact+1)==n) cout << 1 << endl;
         else {
-            n = n - *((lower_bound(factorial,factorial+15,n)-1));
-            
+            int mini = 1;
+            int facts = 0;
+            cout << *factorial << endl;
+            setBits(n);
+            for(auto it = closestfact;it!=factorial+1;it--){
+                ll k = *(it);
+                n = n - k;
+                //facts++;
+                setBits(n);
+                //mini = min(mini,extras);
+                //cout << extras << endl;
+            }
+            cout << mini << endl;
         }
 
     }
