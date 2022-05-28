@@ -1,27 +1,31 @@
-//Coding_Duck PM
-
 # include <bits/stdc++.h>
-# define ll long long
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
-
-const ll MOD = 1e9 +7;
 using namespace std;
+typedef long long ll;
+string n;
 
 void solve(){
-    int n; cin >> n;
-    deb(n);
+	cin >> n;
+	int bigevn = -1;
+	for(int i = 0;i<n.length();i++){
+		int tmp = n[i] - 48;
+		if(tmp%2==0){
+			if(bigevn==-1) bigevn = i;
+			if(n[bigevn]<n[n.length()-1]) continue;
+			bigevn = i;
+		}
+	}
+	if(bigevn==-1){
+		cout << bigevn << endl;
+	}else{
+		swap(n[bigevn],n[n.length()-1]);
+		cout << n << endl;
+	}
+	
 }
 
 int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-
-    int TC = 1;
-    //cin >> TC;
-    while(TC--){
-        solve();
-    }
-    return 0;
+	solve();
+	return 0;
 }
