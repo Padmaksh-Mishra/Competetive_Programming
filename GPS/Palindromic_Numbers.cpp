@@ -8,31 +8,33 @@
 const ll MOD = 1e9 +7;
 using namespace std;
 
-int bexpo(int n,int p);
-
-int C[100000];
+vector<ll> palindromes;
+int isPalindrome(int n)
+{
+    // Find reverse of n
+    int rev = 0;
+    for (int i = n; i > 0; i /= 10)
+        rev = rev*10 + i%10;
+ 
+    // If n and rev are same, then n is palindrome
+    return (n==rev);
+}
+ll bexpo(ll n,ll p);
 
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
-	}
-	else cout << "NO" << endl;
+	ll dgt; cin >> dgt;
+	ll n; cin >> n;
+	ll tmp = bexpo(10,dgt-1);
+	deb(tmp);
+	deb(n);
+	ll msb = n/tmp;
+	msb+=2;
+	if(msb>9) msb=9;
+	deb(msb);
+	ll no = 0;
+	for(int i=0;i<dgt;i++) no += (no*10) + msb;
+	deb(no);
+	cout << no-n << endl;
 }
 
 int main(){
@@ -50,8 +52,8 @@ int main(){
 
 
 //Binary Exponention Iterative
-int bexpo(int n,int p){ 
-    int ans = 1,tmp = n;
+ll bexpo(ll n,ll p){ 
+    ll ans = 1,tmp = n;
     while(p>0){
         if(p&1) ans = (ans * 1LL * tmp)%MOD;
         tmp = (tmp * 1LL * tmp)%MOD;

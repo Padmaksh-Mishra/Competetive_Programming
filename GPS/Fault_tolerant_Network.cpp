@@ -1,30 +1,53 @@
-//Coding_Duck PM
+//Coding_Duck <-> PM <-> REDACTED
 
 # include <bits/stdc++.h>
 # define ll long long
 # define endl '\n'
+# define deb(x) cout << #x << " = " << x << endl
 
 const ll MOD = 1e9 +7;
 using namespace std;
 
-int32_t main(){
+int bexpo(int n,int p);
+
+int rowA[200000],rowB[200000];
+void solve(){
+	int n; cin >> n;
+	for(int i = 0;i<n;i++) cin >> rowA[i];
+	for(int i = 0;i<n;i++) cin >> rowB[i];
+	int A1 = rowA[0],B1 = rowB[0],An = rowA[n-1],Bn = rowB[n-1];
+	rowB[n]=rowA[n]=-MOD;
+	int cost1 = abs(A1-B1);
+	int cost2 = abs(An-Bn);
+	sort(rowA,rowA + n);sort(rowB,rowB+n);
+	int cost3 = min(abs(A1-*upper_bound(rowB,rowB+n,A1)),abs(A1-*(upper_bound(rowB,rowB+n,A1)-1)));
+	int cost4 = min(abs(B1-*upper_bound(rowA,rowA+n,B1)),abs(B1-*(upper_bound(rowA,rowA+n,B1)-1)));
+	int cost5 = min(abs(An-*upper_bound(rowB,rowB+n,An)),abs(An-*(upper_bound(rowB,rowB+n,An)-1)));
+	int cost6 = min(abs(Bn-*upper_bound(rowA,rowA+n,Bn)),abs(Bn-*(upper_bound(rowA,rowA+n,Bn)-1)));
+	cout << min(cost1,cost3+cost4) + min(cost2,cost5+cost6) << endl;
+}	
+
+int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    cout.tie(NULL);
+    cout.tie(NULL); // useless since cout is not tied to anything
 
-    int TC;
+    int TC = 1;
     cin >> TC;
     while(TC--){
-        int N; cin >> N;
-        int A[N],B[N];
-        for(int i=0 ; i<N ; i++) cin >> A[i];
-        for(int i=0 ; i<N ; i++) cin >> B[i];
-        //check straight cost 
-        ll costSt = abs(A[0] - B[0]) + abs(A[N-1] - B[N-1]);
-        //check cross cost
-        ll costX =(ll)abs(A[0]-B[1])+(ll)abs(A[1]-B[0])+(ll)abs(A[N-1]-B[N-2])+(ll)abs(A[N-2]-B[N-1]);
-        if(costX<0) cout << costSt << endl;
-        else cout << min(costX,costSt) << endl;
+        solve();
     }
     return 0;
+}
+
+
+//Binary Exponention Iterative
+int bexpo(int n,int p){ 
+    int ans = 1,tmp = n;
+    while(p>0){
+        if(p&1) ans = (ans * 1LL * tmp)%MOD;
+        tmp = (tmp * 1LL * tmp)%MOD;
+        p>>=1;
+    }
+    return ans;
 }

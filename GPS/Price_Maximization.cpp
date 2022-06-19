@@ -5,34 +5,43 @@
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 
-const ll MOD = 1e9 +7;
+const ll MOD = 1e8 +7;
 using namespace std;
 
 int bexpo(int n,int p);
 
-int C[100000];
-
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+	int n,k; cin >> n >> k;
+	vector<pair<int,ll>> a;
+	for(int i=0;i<n;++i){
+		int tmp; cin >> tmp;
+		a.push_back({(tmp%k),tmp});
 	}
-	else cout << "NO" << endl;
+	sort(a.begin(),a.end());
+	ll ans = 0;
+	int f = 0;
+	vector<pair<int,ll>> copy = a;
+	for(int i=0;i<n;i++){
+		//deb(a[i].first);
+		if(copy[i].first==0){
+			f++;
+			
+			// deb(copy[i].second);
+			ans += copy[i].second/k;
+			// deb(ans);
+			a.erase(a.begin());
+		} 
+	}
+	// deb(a.size());
+	// deb(n);
+	for(int i=0;i<(a.size()>>1);++i){
+		
+		//deb(a[i].second);		
+		ans += ((a[a.size()-i-1].second+a[i].second) / k); 
+		// deb(ans);
+	}
+	if(a.size()!=0) ans+=a[a.size()/2].second/k;
+	cout << ans << endl;   
 }
 
 int main(){

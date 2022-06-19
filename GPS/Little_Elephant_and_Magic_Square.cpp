@@ -10,29 +10,25 @@ using namespace std;
 
 int bexpo(int n,int p);
 
-int C[100000];
-
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
+	int E[3][3];
+	for(int i=0;i<3;++i){
+		for(int j=0;j<3;++j){
+			cin >> E[i][j];
 		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+	}   
+	int s1 = E[0][0] + E[0][1] + E[0][2];
+	int s2 = E[1][0] + E[1][1] + E[1][2]; 
+	int s3 = E[2][0] + E[2][1] + E[2][2];
+	int dif = min(abs(s1-s2),abs(s1-s3));
+	if(s1>s2&&s1>s3){
+		if(s2>s3){
+			int a = (E[2][0]+ E[1][1] + E[0][2]-2*dif)>>1;
+			cout << a+2 << " " << E[0][1] << " " << E[0][2] << endl;
+			cout << E[1][0] << " " << a+1 << " " << E[1][2] << endl;
+			cout << a+2 << " " << E[0][1] << " " << E[0][2] << endl;
+		}
 	}
-	else cout << "NO" << endl;
 }
 
 int main(){
@@ -41,7 +37,7 @@ int main(){
     cout.tie(NULL); // useless since cout is not tied to anything
 
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     while(TC--){
         solve();
     }

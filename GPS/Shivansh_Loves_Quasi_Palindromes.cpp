@@ -10,29 +10,39 @@ using namespace std;
 
 int bexpo(int n,int p);
 
-int C[100000];
-
+string isPalindrome(string S)
+{
+    // Stores the reverse of the
+    // string S
+    string P = S;
+ 
+    // Reverse the string P
+    reverse(P.begin(), P.end());
+ 
+    // If S is equal to P
+    if (S == P) {
+        // Return "Yes"
+        return "YES";
+    }
+    // Otherwise
+    else {
+        // return "No"
+        return "NO";
+    }
+}
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
+	string s; cin >>s;
+	int j=s.length()-1;
+	for(int i=0;i<s.length();i++){
+		if(s[j-i]!='0'){
+			j=j-i;
+			break;
 		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
 	}
-	else cout << "NO" << endl;
+	//deb(j);
+	string ns=s.substr(0,j+1);
+	//deb(ns);
+	cout << isPalindrome(ns);
 }
 
 int main(){
@@ -41,7 +51,7 @@ int main(){
     cout.tie(NULL); // useless since cout is not tied to anything
 
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     while(TC--){
         solve();
     }

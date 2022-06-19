@@ -9,30 +9,45 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 int bexpo(int n,int p);
-
-int C[100000];
-
+ll ary[200001];
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+	ll n; cin >> n;
+	ll Y;cin>>Y;
+	ll cats = 0,sum=0;
+	ll mini = 1e9;
+	for(int i=0;i<n;++i){
+		cin >> ary[i];
+		sum+=ary[i];
+		mini=min(mini,ary[i]);
 	}
-	else cout << "NO" << endl;
+	//deb(sum);
+	cats += (Y/sum)*n;
+	Y%=sum;
+
+	 while(Y>=mini)
+ 	{
+	     ll cnt = 0,sum1 = 0 ;
+	     ll p = Y;
+	     for(int i = 0 ; i< n ; i++ )
+	     {
+	         if(p-ary[i]>=0)
+	         {
+	             cnt++;
+	             sum1 = sum1+ary[i];
+	             p = p -ary[i];
+	             
+	         }
+	     }
+	     if(sum1==0){
+	         cout<<cats;
+	         
+	     }
+	     cats = cats + cnt* (Y/sum1);
+	     Y = Y%sum1;
+ 
+ 	}
+
+	cout << cats;
 }
 
 int main(){
@@ -41,7 +56,7 @@ int main(){
     cout.tie(NULL); // useless since cout is not tied to anything
 
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     while(TC--){
         solve();
     }

@@ -6,32 +6,24 @@
 # define deb(x) cout << #x << " = " << x << endl
 
 const ll MOD = 1e9 +7;
+const int N = 1e5;
 using namespace std;
 
 int bexpo(int n,int p);
+int visited[N];
+int portal[N];
+void dfs(int vertex){
 
-int C[100000];
+	if(visited[vertex]) return;
+	visited[vertex] = 1;
 
+	dfs(vertex+portal[vertex]);
+}
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
-	}
+	int n,t; cin >> n >> t;
+	for(int i=1;i<n+1;++i) cin >> portal[i];
+	dfs(1);
+	if(visited[t]) cout << "YES" << endl;
 	else cout << "NO" << endl;
 }
 
@@ -41,7 +33,7 @@ int main(){
     cout.tie(NULL); // useless since cout is not tied to anything
 
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     while(TC--){
         solve();
     }

@@ -6,33 +6,32 @@
 # define deb(x) cout << #x << " = " << x << endl
 
 const ll MOD = 1e9 +7;
+const int size = 2*1e5;
 using namespace std;
 
 int bexpo(int n,int p);
 
-int C[100000];
-
+int a[size],b[size];
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+	int n;cin >> n;
+	for(int i = 0;i<n;i++) cin >> a[i];
+	for(int i = 0;i<n;i++) cin >> b[i];
+	unordered_set<int> A,B;
+	for(int i = n-1;i>-1;i--) {
+		A.insert(a[i]);
+		B.insert(b[i]);
 	}
-	else cout << "NO" << endl;
+	bool possible = true;
+	auto itb = B.begin();
+	for(auto ita = A.begin();ita!=A.end();ita++){
+		if(*ita!=*itb) {
+			possible = false;
+			break;
+		}
+		itb++;
+	}
+	if(possible) cout << "YES" << endl;
+	else cout << "NO" << endl;    
 }
 
 int main(){

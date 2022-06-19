@@ -10,29 +10,43 @@ using namespace std;
 
 int bexpo(int n,int p);
 
-int C[100000];
-
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
+	int n,k; cin >> n >> k;
+	string s; cin >> s;
+	vector<int> z,o;
+
+	for(int i=0;i<s.length();i++){
+		if(s[i]=='0') {
+			z.push_back(i);
 		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+		else{
+			o.push_back(i);
+		}
+	}    
+	if((k!=0)&&(z.size()>0)&&(o.size()>0)){
+		if(z[z.size()-1]==n-1){
+			//deb(z[z.size()-1]);
+			if(z[z.size()-1] - o[o.size()-1]<=k){
+				k-= z[z.size()-1] - o[o.size()-1];
+				swap(s[z[z.size()-1]],s[o[o.size()-1]]);
+			}
+		}
+
+		if(z[0]==0){
+			if((o[0]-z[0] <=k)&&(o[0]!=n-1)){  
+				k-= o[0]-z[0];
+				swap(s[z[0]],s[o[0]]);
+			}
+		}
 	}
-	else cout << "NO" << endl;
+
+	//deb(s);
+	ll sum=0;
+
+	for(int i=0;i<s.length()-1;i++){
+		sum += (10*(s[i]-'0')) + (s[i+1]-'0');
+	}
+	cout << sum << endl;
 }
 
 int main(){

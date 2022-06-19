@@ -10,29 +10,34 @@ using namespace std;
 
 int bexpo(int n,int p);
 
-int C[100000];
-
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+	int n,m; cin >> n >> m;
+	set<string> tom,dum;
+	set<string> pot;
+	for(int i=0;i<n;i++){
+		string t; cin >> t;
+		tom.insert(t);
+		dum.insert(t);
 	}
-	else cout << "NO" << endl;
+	int sameword = 0;
+	for(int i=0;i<m;i++){
+		string t;cin>>t;
+		pot.insert(t);
+	}
+
+	for(auto val:pot){
+		if(tom.find(val)!=tom.end()) sameword++;
+	}
+	if(sameword&1) {
+		sameword>>=1;
+		if(tom.size()-sameword <=pot.size()-sameword-1) cout << "NO";
+		else cout << "YES";
+	}else{
+		sameword>>=1;
+		if(tom.size()-sameword <=pot.size()-sameword) cout << "NO";
+		else cout << "YES";
+	}
+	    
 }
 
 int main(){
@@ -41,7 +46,7 @@ int main(){
     cout.tie(NULL); // useless since cout is not tied to anything
 
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     while(TC--){
         solve();
     }

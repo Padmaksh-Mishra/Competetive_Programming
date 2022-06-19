@@ -7,32 +7,26 @@
 
 const ll MOD = 1e9 +7;
 using namespace std;
-
+const ll siz = 2*1e5;
+ll sums[siz];
 int bexpo(int n,int p);
 
-int C[100000];
-
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
-	}
-	else cout << "NO" << endl;
+	int n; cin >> n; 
+	int x; cin >> x;
+	cin >> sums[0];
+	for(int i = 1;i<n;i++){
+        int tmp; cin >> tmp;
+        sums[i] = sums[i-1] + tmp;
+    }
+    ll pkt = 0;
+    sort(sums,sums + n);
+    pkt = upper_bound(sums,sums+n,x) - 1 - sums;
+    for(int d = 1 ;x>0;d++){
+        x-=pkt;
+        pkt+= upper_bound(sums,sums+n,x) - 1 - sums;
+    }   
+    cout << pkt << endl;
 }
 
 int main(){

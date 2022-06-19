@@ -9,30 +9,16 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 int bexpo(int n,int p);
-
-int C[100000];
-
+int ary[100000];
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+	int n; cin>> n;
+	ll odd=0,evn=0;
+	for(int i=0;i<n;i++){
+		cin >> ary[i];
+		if(ary[i]&1) odd++;
+		else evn++;
 	}
-	else cout << "NO" << endl;
+	cout << min(odd,evn) << endl;
 }
 
 int main(){

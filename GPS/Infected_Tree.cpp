@@ -6,33 +6,45 @@
 # define deb(x) cout << #x << " = " << x << endl
 
 const ll MOD = 1e9 +7;
+const int N = 1e5;
 using namespace std;
 
 int bexpo(int n,int p);
 
-int C[100000];
 
-void solve(){
+int depth[3*N];
+void treeDFS (int vertex,int parent,vector<int> graph[]){
 	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+	deb(vertex);
+	for(auto child : graph[vertex]){
+		if(child==parent) continue;
+		depth[child] = depth[vertex]+1;
+		treeDFS(child,vertex,graph);
+		
 	}
-	else cout << "NO" << endl;
+	
+}
+void solve(){
+
+	int v,e; cin >> v; e = v-1;
+	vector<int> graph[v+1];
+	for(int i=0;i<e;++i){
+		int a,b; cin >> a >> b;
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+	}
+	//deb(graph[1].size());
+	treeDFS(1,0,graph);
+    if(graph[1].size()==1) {
+    	cout << v-2 << endl;
+    	return ;
+    }
+    int ans = 0;
+    for(int i=1;i<v+1;i++){
+    	if(depth[v]>2) ans++;
+    	deb(depth[i]);
+    }
+    cout << ans << endl;
 }
 
 int main(){

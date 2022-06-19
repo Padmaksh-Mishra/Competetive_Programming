@@ -6,33 +6,19 @@
 # define deb(x) cout << #x << " = " << x << endl
 
 const ll MOD = 1e9 +7;
+const int size = 4*1e5;
 using namespace std;
 
 int bexpo(int n,int p);
-
-int C[100000];
-
+int e[size];
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
-	}
-	else cout << "NO" << endl;
+	int n,x; cin >> n >> x;
+	for(int i = 0;i<x;i++) e[i] = i+1;
+	for(int i = 0;i<n;i++) cin >> e[i+x];
+	sort(e,e+n+x);
+	ll ans = 0;
+	for(int i = 1;i<n+x;i++) deb(e[i]),ans = ans + abs(e[i]-e[i-1]);
+	cout << ans << endl;
 }
 
 int main(){

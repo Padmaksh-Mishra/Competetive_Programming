@@ -5,34 +5,26 @@
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 
-const ll MOD = 1e9 +7;
+const ll MOD = 1e16 +7;
 using namespace std;
 
 int bexpo(int n,int p);
-
-int C[100000];
-
+ll op[200001];
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+	int n,k; cin >> n >> k;
+	string s; cin >> s;
+	ll ops = 0,mops=MOD;
+	for(int i=0;i<k;i++){
+		if(s[i]=='W') ops++;
 	}
-	else cout << "NO" << endl;
+	mops=min(mops,ops);
+	for(int i = k;i<n;i++){
+		if(s[i-k]==s[i]) continue;
+		else if (s[i]=='W') ops++;
+		else ops--;
+		mops = min(ops,mops);
+	}   
+	cout << mops << endl; 
 }
 
 int main(){

@@ -10,29 +10,36 @@ using namespace std;
 
 int bexpo(int n,int p);
 
-int C[100000];
+ll a[100001];
 
 void solve(){
+	int n,x; cin >> n >> x;
 	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
+	for(int i=0;i<n;++i){
+		cin >> a[i];
+	}	    
+	ll sum=0;
+	for(int i=0;i<n;i++){
+		if(a[i]%x){
+			cout << sum*2 << endl;
+			return;
 		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+		else {
+			sum+=a[i];
+			a[i] = a[i]/x;
+		}
 	}
-	else cout << "NO" << endl;
+	for(int i=0;;i=(i+1)%n){
+		if(a[i]%x){
+			cout << sum*2 << endl;
+			return;
+		}
+		else {
+			sum+=(a[i]);
+			a[i] = a[i]/x;
+		}	
+	}
+	cout << sum*2 << endl;
 }
 
 int main(){

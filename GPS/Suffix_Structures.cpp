@@ -9,30 +9,35 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 int bexpo(int n,int p);
-
-int C[100000];
-
+int hashi[26];
 void solve(){
+	string s; cin >> s;
+	string w; cin >> w;
+	int lenth=s.length();
+	int x = w.length();
 	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+	for(int i=0;i<lenth;i++){
+		hashi[s[i]-'a']++;
 	}
-	else cout << "NO" << endl;
+	for(int i=0;i<x;i++){
+		hashi[w[i]-'a']--;
+		if(hashi[w[i]-'a']<0) {
+			cout << "need tree";
+			return;
+		}
+	}
+	bool sau = false;
+	for(int i=0,j=0; i<lenth; ++i){
+        if(j<x && s[i]==w[j]) ++j;
+        if(j==x) sau = true;
+    }
+	if(lenth==x) cout << "array";
+	else if(sau){
+		cout << "automaton";
+		return;
+	}else{
+		cout << "both";
+	}
 }
 
 int main(){
@@ -41,7 +46,7 @@ int main(){
     cout.tie(NULL); // useless since cout is not tied to anything
 
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     while(TC--){
         solve();
     }

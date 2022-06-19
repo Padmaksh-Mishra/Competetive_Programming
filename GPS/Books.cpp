@@ -10,29 +10,32 @@ using namespace std;
 
 int bexpo(int n,int p);
 
-int C[100000];
+int times[10000],ips[100000];
 
 void solve(){
-	
-	int n; cin >> n;
-	for (int i=0;i<n;i++) cin >> C[i];
-	if((n==1)&&(C[0]==1)) cout << "YES" << endl;
-	else if(n>1){
-		bool win = true;
-		int no1=0;
-		for(int i = 0;i<n-1;i++){
-			if(C[i] == 1) no1++;
-			if(C[i+1]-C[i]>1) {
-				win = false;
-				break;
-			}	
-		}
-		if(C[n-1]==1) no1++;
-		if(no1!=1) win = false;
-		if(win) cout << "YES" << endl;
-		else cout << "NO" << endl;
+	int n,t; cin >> n >> t;
+	int books = n;
+	ll sum = 0;
+	for(int i=0;i<n;i++) {
+		cin >> ips[i];
+		sum+=ips[i];
 	}
-	else cout << "NO" << endl;
+	int start = 0,end = n-1;
+	while(sum>=t){
+		// deb(sum);
+		// deb(ips[start]);
+		// deb(ips[end]);
+		if(ips[start]>ips[end]){
+			sum-=ips[start];
+			start++;
+			books--;
+		}else{
+			sum-=ips[end];
+			books--;
+			end--;
+		}
+	}
+	cout << books << endl;
 }
 
 int main(){
@@ -41,7 +44,7 @@ int main(){
     cout.tie(NULL); // useless since cout is not tied to anything
 
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     while(TC--){
         solve();
     }
