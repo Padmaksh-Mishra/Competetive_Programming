@@ -11,10 +11,10 @@ using namespace std;
 int bexpo(int n,int p);
 
 void solve(){
-	int n,m; cin >> n >> m;
-	int ans1 = m*(m+1)/2;
+	ll n,m; cin >> n >> m;
+	ll ans1 = m*(m+1)/2;
 	ans1 += n+(n*(n+1)/2)*m;
-	cout << ans1 << endl;    
+	cout << ans1-n-m << endl;    
 }
 
 int main(){
@@ -41,3 +41,4 @@ int bexpo(int n,int p){
     }
     return ans;
 }
+
