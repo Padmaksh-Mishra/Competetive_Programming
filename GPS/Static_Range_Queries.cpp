@@ -9,27 +9,26 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 int bexpo(int n,int p);
-
+vector<int> arr(1e9);
+vector<ll> hsh(1e9 + 1);
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
-		}
+	int n,q; cin >> n >> q;
+	int l,r,v;
+	while(n--){
+		cin >> l >> r >> v;
+		arr[l]+=v;
+		arr[r]-=v;
 	}
-	cout << ans << endl;
+	hsh[0] = 0;
+	ll sum = arr[0] = hsh[1];
+	for(int i=1;i<1e9;++i){
+		sum+=arr[i];
+		hsh[i+1] = hsh[i] + sum;
+	}	
+	while(q--){
+		cin >> l >> r;
+		cout << hsh[r-1] - hsh[l-1] << endl;
+	}
 }
 
 int main(){

@@ -22,29 +22,28 @@ void setIO(string name = "sublime");
 
 
 void solve(){
-	int n,x; cin >> n >> x;
-	vector<ll> prices(n);
-	for(int i=0;i<n;++i) cin >> prices[i];
-	sort(prices.begin(), prices.end());
-	vector<ll> pa(n);
-	pa[0] = prices[0];
-	for(int i = 1;i<n;++i) pa[i] = prices[i] + pa[i-1];
-	ll ans = 0;
-	ll day = 0;
-	int j = n-1;
-	//int k = 4;
-	while(true){
-		ll cost = pa[j] + ((j+1)*day);
-		while(j>=0&&cost>x) {
-			j--;
-			cost = pa[j] + ((j+1)*day);
+	int n; cin >> n;
+	vi v(n);
+	bool sor=true,revsor=true;
+	int imax,val = -1;
+	// set<int> s;
+	for(int i=0;i<n;++i){
+		cin >> v[i];
+		if(v[i]>val){
+			val = v[i];
+			imax = i;
+			// deb(imax);
 		}
-		day++;
-		ans+=j+1;
-		// deb(j); deb(cost); deb(day);
-		if(pa[0]+day>x) break;
 	}
-	cout << ans << endl;	
+
+	for(int i=0;i<imax-1;++i){
+		if(v[i]>v[i+1]) sor = false;
+	}
+	for(int i=imax;i<n-1;++i){
+		if(v[i]<v[i+1]) revsor = false;
+	}
+	if(sor&&revsor) YES;
+	else NO;
 }
 
 int main(){

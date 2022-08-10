@@ -1,40 +1,63 @@
 //Coding_Duck <-> PM <-> REDACTED <-> Blood_Reaper
 
 # include <bits/stdc++.h>
+
+// defining takes you nowhere---->
 # define ll long long
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
+# define pb push_back
+# define f first
+# define s second
+# define loop(x, n) for(int x = 0; x < n; ++ x)
+// it just looks cool---->
 
 const ll MOD = 1e9 +7;
 using namespace std;
 
+vector<pair<int,int>> space;
+
 int bexpo(int n,int p);
 
+int binsch(int start,int finsh,int val){
+	int mid;
+	while(finsh-start>1){
+		mid = (start+finsh)/2;
+		if(space[mid].f< val){
+			start = mid+1;
+		}else finsh = mid;
+	}
+	if(space[start].f == val) return start;
+	else if(space[finsh].f == val) return finsh;
+	else return -1;
+}
+
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
+	int n,x; cin >> n >> x;
+	
+	loop(i,n){
+		int tmp; cin >> tmp;
+		space.pb({tmp,i});
 	}	
 
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
+	sort(space.begin(), space.end());
+
+	loop(i,n-1){
+		int ans = space[i].f;
+		int final = binsch(i+1,n,x-ans);
+		if(final!=-1&&final<n) {
+			cout << space[i].s + 1 << " " << space[final].s + 1 << endl;
+			return;
 		}
 	}
-	cout << ans << endl;
+	cout << "IMPOSSIBLE" << endl;
+	return;
 }
 
 int main(){
 
 //for I/O----------------------------------
+
 
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);

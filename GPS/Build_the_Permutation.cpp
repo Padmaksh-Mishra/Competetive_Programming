@@ -11,25 +11,36 @@ using namespace std;
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
-		}
+	int n,a,b; cin >> n >> a >> b;
+	if(abs(a-b)>1){
+		cout << -1 << endl;
+		return;
 	}
-	cout << ans << endl;
+	if(a+b>n-2){
+		cout << -1 << endl;
+		return;
+	}
+	int c = min(a,b);
+	vector<int> ans;
+	ans.push_back(1);
+	for(int i=1;i<=c;++i){
+		ans.push_back(2*i+1);
+		ans.push_back(2*i);
+	}
+	for(int i=2*c+2;i<=n;++i) ans.push_back(i);
+
+	if(b>a){
+		cout << ans[n-1] << " ";
+		for(int i = 0;i<n-1;++i) cout << ans[i] << " ";
+	}
+	else if(a>b){
+		swap(ans[n-2],ans[n-1]);
+		for(int i = 0;i<n;++i) cout << ans[i] << " ";	
+	}else{
+		for(int i = 0;i<n;++i) cout << ans[i] << " ";
+	}
+	cout << endl;
+		
 }
 
 int main(){
@@ -47,7 +58,7 @@ int main(){
 //I/O end ---------------------------------
 
     int TC = 1;
-    //cin >> TC;
+    cin >> TC;
     while(TC--){
         solve();
     }

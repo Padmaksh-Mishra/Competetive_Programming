@@ -5,31 +5,26 @@
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 
-const ll MOD = 1e9 +7;
+const ll MOD = 24*60;
 using namespace std;
 
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
+	int n,h,m; cin >> n >> h >> m;
+	int slep = (h*60)+m;
+	set<int> alm;
+	while(n--){
+		int a,b; cin >> a >> b;
+		int am = (a*60)+b;
+		alm.insert(am);
 	}	
+	int ans;
+	if(alm.lower_bound(slep)==alm.end()){
+		ans = ((*alm.begin())-slep+MOD)%MOD;
+	}else ans = ((*alm.lower_bound(slep)) - slep+MOD)%MOD;
 
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
-		}
-	}
-	cout << ans << endl;
+	cout << ans/60 << " " << ans%60 << endl;
 }
 
 int main(){
@@ -47,7 +42,7 @@ int main(){
 //I/O end ---------------------------------
 
     int TC = 1;
-    //cin >> TC;
+    cin >> TC;
     while(TC--){
         solve();
     }

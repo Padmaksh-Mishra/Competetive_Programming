@@ -18,33 +18,35 @@
 using namespace std;
 const ll MOD = 1e9 +7;
 void setIO(string name = "sublime");
+vi balance(4001);
+vi graph[4001];
+string s;
+void dfs(int vertex,int parent=0){
 
+	if(s[vertex-1]=='W') balance[vertex]=1;
+	else balance[vertex]=-1;
+	for(auto child : graph[vertex]){
 
+		if(child==parent) continue;
+		dfs(child,vertex);
+		balance[vertex]+=balance[child];
+	}
+}
 
 void solve(){
-	int n,x; cin >> n >> x;
-	vector<ll> prices(n);
-	for(int i=0;i<n;++i) cin >> prices[i];
-	sort(prices.begin(), prices.end());
-	vector<ll> pa(n);
-	pa[0] = prices[0];
-	for(int i = 1;i<n;++i) pa[i] = prices[i] + pa[i-1];
-	ll ans = 0;
-	ll day = 0;
-	int j = n-1;
-	//int k = 4;
-	while(true){
-		ll cost = pa[j] + ((j+1)*day);
-		while(j>=0&&cost>x) {
-			j--;
-			cost = pa[j] + ((j+1)*day);
-		}
-		day++;
-		ans+=j+1;
-		// deb(j); deb(cost); deb(day);
-		if(pa[0]+day>x) break;
+	int n; cin >> n;
+	cin >> s;
+	for(int i=2;i<=n;++i){
+		int parent; cin >> parent;
+        graph[parent].pb(i);
+        // graph[i].pb(parent);
 	}
-	cout << ans << endl;	
+	dfs(1);
+	int ans = 0;
+	for(int i=1;i<=n;++i){
+		if(balance[i]==0) ans++;
+	}
+	cout << ans << endl;
 }
 
 int main(){

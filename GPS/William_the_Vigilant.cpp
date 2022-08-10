@@ -11,25 +11,25 @@ using namespace std;
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
-		}
+	int n,q; cin >> n >> q;
+	string s; cin >> s;
+	vector<int> v;
+	for(int i=0;i<n-2;++i){
+		if(s.substr(i,3)=="abc") v.push_back(i);
 	}
-	cout << ans << endl;
+	int ans = v.size();	
+	while(q--){
+		int pos; cin >> pos; pos--;
+		char put; cin >> put;
+		if(s.substr(pos,3) == "abc") ans--;
+		if(pos>=1&&s[pos-1]=='a'&&s[pos]=='b'&&s[pos+1]=='c') ans--;
+		if(pos>=2&&s[pos-2]=='a'&&s[pos-1]=='b'&&s[pos]=='c') ans--;
+		s[pos] = put;
+		if(s.substr(pos,3) == "abc") ans++;
+		if(pos>=1&&s[pos-1]=='a'&&s[pos]=='b'&&s[pos+1]=='c') ans++;
+		if(pos>=2&&s[pos-2]=='a'&&s[pos-1]=='b'&&s[pos]=='c') ans++;
+		cout << ans << endl;
+	}
 }
 
 int main(){

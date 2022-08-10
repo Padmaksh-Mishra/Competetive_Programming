@@ -11,25 +11,35 @@ using namespace std;
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
-		}
+	int a,b; cin >> a >> b;
+	string s; cin >> s;
+	int j = 0;
+	int i = 0;
+	int l = s.length();
+	vector<int>	v(l,0);
+	v[j]++;
+	while(s[i]=='0') i++;
+	i++;
+	if(i==l+1){
+		cout << 0 << endl;
+		return;
 	}
-	cout << ans << endl;
+	for(;i<l;++i){
+		if(s[i-1]!=s[i]) j++;
+		v[j]++;
+	}
+	ll cost = a;
+	// deb(j);
+	// for(auto val:v){
+	// 	val*=b;
+	// }
+	// cout << endl;
+	for(int k=1;k<j;k+=2){
+		if(v[k]*b*1LL<=a){
+			cost+=v[k]*1LL*b;
+		}else cost+=a;
+	}
+	cout << cost << endl;
 }
 
 int main(){
@@ -47,7 +57,7 @@ int main(){
 //I/O end ---------------------------------
 
     int TC = 1;
-    //cin >> TC;
+    cin >> TC;
     while(TC--){
         solve();
     }

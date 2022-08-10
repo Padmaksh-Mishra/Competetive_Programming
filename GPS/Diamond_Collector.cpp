@@ -11,24 +11,22 @@ using namespace std;
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
+	int n,k; cin >> n >> k;
+	vector<int> diamonds(n+1,0);
+	for(int i=1;i<n+1;++i) cin >> diamonds[i];
+	sort(diamonds.begin(), diamonds.end());
+	for(int i=1;i<n+1;++i) cout << diamonds[i] << " ";
+	cout << endl;
+	int j = 2;
 	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
+	for(int i=1;i<n;++i){
+		if(i==j) j++;
+		while(diamonds[j]-diamonds[i]<=k&&j<=n){
+			deb(i);deb(j);
+			ans++;
 			j++;
-			sum = sums[j] - sums[i];
 		}
-	}
+	}	
 	cout << ans << endl;
 }
 

@@ -10,26 +10,24 @@ using namespace std;
 
 int bexpo(int n,int p);
 
+map<char,pair<int,int>> sem;
+int top;
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
+	string s; cin >> s;
+	for(int i=1;i<=52;++i){
+		if(sem[s[i-1]].first == 0) sem[s[i-1]].first = i;
+		else if(sem[s[i-1]].second == 0) sem[s[i-1]].second = i;
+	}
 
-	int i=0;
-	int j=0;
 	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
+	for(auto &val : sem){
+		deb(val.first);
+		cout << val.second.first << " " << val.second.second << endl;
+		for(auto &tmp : sem){
+			if(val.second.first<tmp.second.first&&val.second.second>tmp.second.second) ans++;
 		}
 	}
-	cout << ans << endl;
+	cout << (ans>>1) << endl;
 }
 
 int main(){

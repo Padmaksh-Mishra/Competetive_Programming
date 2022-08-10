@@ -4,32 +4,39 @@
 # define ll long long
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
-
+# define f first
+# define s second
 const ll MOD = 1e9 +7;
 using namespace std;
 
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
+	int n,x; cin >> n >> x;
+	vector<pair<int,int>> v;
+	for(int i=0;i<n;++i){
+		int tmp; cin >> tmp;
+		v.push_back({tmp,i});
 	}	
+	sort(v.begin(), v.end());
 
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
+	for(int i=0;i<n;++i){
+		int tgt = x - v[i].f;
+		int k = n-1;
+		for(int j=i+1;j<k;++j){
+			int sum = v[j].f + v[k].f;
+			while(sum>=tgt&&k>j){
+				if(sum==tgt){
+					cout << v[i].s+1 << " " << v[j].s+1 << " " << v[k].s+1 << endl;
+					return;
+				}
+				k--;
+				sum = v[j].f + v[k].f;
+			}
 		}
 	}
-	cout << ans << endl;
+	cout << "IMPOSSIBLE" << endl;
+	return;
 }
 
 int main(){

@@ -1,4 +1,4 @@
-//Coding_Duck <-> PM <-> REDACTED
+//Coding_Duck <-> PM <-> REDACTED <-> Blood_Reaper
 
 # include <bits/stdc++.h>
 # define ll long long
@@ -8,39 +8,67 @@
 const ll MOD = 1e9 +7;
 using namespace std;
 
-vector<ll> palindromes;
-int isPalindrome(int n)
-{
-    // Find reverse of n
-    int rev = 0;
-    for (int i = n; i > 0; i /= 10)
-        rev = rev*10 + i%10;
- 
-    // If n and rev are same, then n is palindrome
-    return (n==rev);
-}
-ll bexpo(ll n,ll p);
+int bexpo(int n,int p);
 
 void solve(){
-	ll dgt; cin >> dgt;
-	ll n; cin >> n;
-	ll tmp = bexpo(10,dgt-1);
-	deb(tmp);
-	deb(n);
-	ll msb = n/tmp;
-	msb+=2;
-	if(msb>9) msb=9;
-	deb(msb);
-	ll no = 0;
-	for(int i=0;i<dgt;i++) no += (no*10) + msb;
-	deb(no);
-	cout << no-n << endl;
+	// int n; cin >> n;
+	// int base; cin >> base;
+
+	// int op1 = 0,op2;
+	// op2 = bexpo(10,n)-1;
+	// do{
+	// 	op1 = op1*10 + 1;
+	// }while(op1<op2+1);
+	// // deb(op1);
+	// // deb(op2);	
+	// op1 -= base;
+	// op2 -= base;
+	// if(op1>bexpo(10,n)-1) cout << op2;
+	// else cout << op1;
+	// cout << endl;
+
+	int n; cin >> n;
+	string base,op1 = "1",op2;
+	cin >> base;
+	for(int i=0;i<n;++i){
+		op1+="1";
+		op2+="9";
+	}
+	int carry = 0;
+	string ans1,ans2;
+	reverse(base.begin(), base.end());
+	for(int i=0;i<n;++i){
+		ans2 += (op2[i]-base[i])+'0';
+		int tmp = (op1[i]-base[i]-carry);
+		carry = 0;
+		if(tmp<0){
+			carry = 1;
+			tmp +=10;
+		}
+		ans1 += tmp + '0';
+	}
+	ans1 += op1[n] - carry;
+	reverse(ans1.begin(), ans1.end());
+	reverse(ans2.begin(), ans2.end());
+	ans1.erase(0, min(ans1.find_first_not_of('0'), ans1.size()-1));
+	ans2.erase(0, min(ans2.find_first_not_of('0'), ans2.size()-1));
+
+	cout << (ans1.size()==n ? ans1 : ans2) << endl;
 }
 
 int main(){
+
+//for I/O----------------------------------
+
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    cout.tie(NULL); // useless since cout is not tied to anything
+
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin); 
+    freopen("output.txt", "w", stdout);
+#endif
+
+//I/O end ---------------------------------
 
     int TC = 1;
     cin >> TC;
@@ -52,8 +80,8 @@ int main(){
 
 
 //Binary Exponention Iterative
-ll bexpo(ll n,ll p){ 
-    ll ans = 1,tmp = n;
+int bexpo(int n,int p){ 
+    int ans = 1,tmp = n;
     while(p>0){
         if(p&1) ans = (ans * 1LL * tmp)%MOD;
         tmp = (tmp * 1LL * tmp)%MOD;

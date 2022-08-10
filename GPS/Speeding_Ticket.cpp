@@ -10,26 +10,31 @@ using namespace std;
 
 int bexpo(int n,int p);
 
+int valid[100];
+int bessi[100];
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
+	int N,M; cin >> N >> M;
 	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
+	for(int i=0;i<N;++i){
+		int a,b; cin >> a >> b;
+		for(int i=j;i<j+a;++i){
+			valid[i] = b;
 		}
+		j+=a;
 	}
-	cout << ans << endl;
+	j=0;
+	for(int i=0;i<M;++i){
+		int a,b; cin >> a >> b;
+		for(int i=j;i<j+a;++i){
+			bessi[i] = b;
+		}
+		j+=a;
+	}
+	int maxOverclock = 0;
+	for(int i=0;i<100;++i){
+		maxOverclock = max(maxOverclock,bessi[i]-valid[i]);
+	}
+	cout << maxOverclock << endl;
 }
 
 int main(){

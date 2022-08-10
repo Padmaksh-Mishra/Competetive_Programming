@@ -20,31 +20,35 @@ const ll MOD = 1e9 +7;
 void setIO(string name = "sublime");
 
 
-
 void solve(){
-	int n,x; cin >> n >> x;
-	vector<ll> prices(n);
-	for(int i=0;i<n;++i) cin >> prices[i];
-	sort(prices.begin(), prices.end());
-	vector<ll> pa(n);
-	pa[0] = prices[0];
-	for(int i = 1;i<n;++i) pa[i] = prices[i] + pa[i-1];
-	ll ans = 0;
-	ll day = 0;
-	int j = n-1;
-	//int k = 4;
-	while(true){
-		ll cost = pa[j] + ((j+1)*day);
-		while(j>=0&&cost>x) {
-			j--;
-			cost = pa[j] + ((j+1)*day);
-		}
-		day++;
-		ans+=j+1;
-		// deb(j); deb(cost); deb(day);
-		if(pa[0]+day>x) break;
+	int n,m;
+	vi hsh1(26,0);
+	vi hsh2(26,0);
+	string s; cin >> s;
+	// deb(s);
+	n = siz(s);
+	for(int i=0;i<n;++i){
+		// deb(hsh1[s[i]-'a']);
+		hsh1[s[i]-'a']++;
 	}
-	cout << ans << endl;	
+	string t; cin >> t;
+	m = siz(t);
+	int ans = 0;
+	for(int i=0;i<m;++i){
+		// deb(hsh1[t[i]-'a']);
+		if(hsh1[t[i]-'a']==0) {
+			cout << -1 << endl;
+			return;
+		}
+		hsh2[t[i]-'a']++;
+	}
+
+	for(int i=0;i<26;++i) {
+		ans+=min(hsh1[i],hsh2[i]);
+		// deb(hsh1[i]);
+		// deb(hsh2[i]);
+	}
+	cout << ans << endl;
 }
 
 int main(){
@@ -53,7 +57,7 @@ int main(){
 
     setIO();	//Google and other non judges
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     for(int i=0;i<TC;++i){
     	//cout << "Case #" << i+1 << ": ";
     	solve();

@@ -9,27 +9,22 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 int bexpo(int n,int p);
+map<int,int> m;
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
+	int Q; cin >> Q;
+	while(Q--){
+		int tmp; cin >> tmp;
+		if(tmp==0){
+			int k; cin >> k;
+			int val; cin >> val;
+			m[k] = val;
 		}
-	}
-	cout << ans << endl;
+		else{
+			int k; cin >> k;
+			cout << m[k] << endl;
+		}
+	}	
 }
 
 int main(){

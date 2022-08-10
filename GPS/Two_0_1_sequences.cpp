@@ -11,25 +11,20 @@ using namespace std;
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
-		}
+	int n,m; cin >> n >> m;
+	string sa,sb; cin >> sa >> sb;
+	bool von = true;
+	//cout << sa.substr(n-m+1,m-1) << " " << sb.substr(1,m-1) << endl;
+	if(sa.substr(n-m+1,m-1)!=sb.substr(1,m-1)) von = false;
+	bool o = false,z = false;
+	for(int i = 0;i<n-m+1;++i){
+		if(sa[i] == '1') o = true;
+		if(sa[i] == '0') z = true;
 	}
-	cout << ans << endl;
+	if(!o)if(sb[0]=='1') von = false;
+	if(!z)if(sb[0]=='0') von = false;
+	if(von) cout << "YES" << endl;
+	else cout << "NO" << endl;
 }
 
 int main(){
@@ -47,7 +42,7 @@ int main(){
 //I/O end ---------------------------------
 
     int TC = 1;
-    //cin >> TC;
+    cin >> TC;
     while(TC--){
         solve();
     }

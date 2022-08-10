@@ -10,26 +10,18 @@ using namespace std;
 
 int bexpo(int n,int p);
 
-void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
-		}
+typedef struct rect{
+	int a,b,c,d;
+	int area(){
+		return((c-a)*(d-b));
 	}
-	cout << ans << endl;
+}rect;
+void solve(){
+	rect R1,R2;
+	cin >> R1.a >> R1.b >> R1.c >> R1.d;
+	cin >> R2.a >> R2.b >> R2.c >> R2.d;
+	int areaSeen = R1.area()+R2.area() - (max(0,-max(R1.a,R2.a)+min(R1.c,R2.c))*(max(0,-max(R1.b,R2.b)+min(R1.d,R2.d))));   	
+	cout << areaSeen*areaSeen << endl;
 }
 
 int main(){

@@ -10,26 +10,35 @@ using namespace std;
 
 int bexpo(int n,int p);
 
-void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
+void dfs(vector<vector<int>> &graph,vector<int> &color,int parent){
+	if(color[parent]!=-1) return;
+	map<int,int> m;
+	for(auto child : graph[parent]){
+		m[color[child]]++;
+	}
+	for(int i=1;i<=4;++i){
+		if(m[i]==0){
+			color[parent] = i;
+			break;
 		}
 	}
-	cout << ans << endl;
+}
+void solve(){
+	int n,m; cin >> n >> m;
+	vector<vector<int>> graph(n+1);
+	vector<int> color(n+1,-1);
+	for(int i=0;i<m;i++){
+		int a,b; cin >> a >> b;
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+	}
+	for(int i=0;i<n;i++){
+		dfs(graph,color,i+1);
+	}
+	
+	for(int i=1;i<=n;++i) cout << color[i] << " ";
+	cout << endl;
+
 }
 
 int main(){

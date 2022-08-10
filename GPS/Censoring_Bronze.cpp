@@ -9,27 +9,36 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 int bexpo(int n,int p);
+char stk[2000006];
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
+	string a; cin >> a;
+	string test; cin >> test;
+	int n = test.size();
+	int top = n;
+	for(int i=0;i<a.size();++i){
+		stk[top] = a[i];
+		top++;
+		string tmp = "";
+		for(int i=n;i>0;--i){
+			tmp += stk[top-i];
+		}
+		if(tmp==test){
+			top = top - n;
 		}
 	}
-	cout << ans << endl;
+	for(int i=n;i<top;++i){
+		cout << stk[i];
+	}	
+	cout << endl;
+
+	string censored;
+	for(int i=0;i<a.size();++i){
+		censored+=a[i];
+		if((censored.size() > n) && (censored.substr(censored.size()-n)==test)) 
+			censored.resize(censored.size()-n);
+	}
+	cout << censored << endl;
 }
 
 int main(){
@@ -57,11 +66,11 @@ int main(){
 
 //Binary Exponention Iterative
 int bexpo(int n,int p){ 
-    int ans = 1,tmp = n;
+    int censored = 1,tmp = n;
     while(p>0){
-        if(p&1) ans = (ans * 1LL * tmp)%MOD;
+        if(p&1) censored = (censored * 1LL * tmp)%MOD;
         tmp = (tmp * 1LL * tmp)%MOD;
         p>>=1;
     }
-    return ans;
+    return censored;
 }

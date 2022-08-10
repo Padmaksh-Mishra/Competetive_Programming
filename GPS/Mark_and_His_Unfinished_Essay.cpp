@@ -1,6 +1,7 @@
 //Coding_Duck <-> PM <-> REDACTED <-> Blood_Reaper
 
 # include <bits/stdc++.h>
+# include <string.h>
 # define ll long long
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
@@ -11,25 +12,24 @@ using namespace std;
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
-		}
+	ll n,c,q; cin >> n >> c >> q;
+	string s; cin >> s;
+	ll lent[c+1];
+	lent[0] = n;
+	ll l[c+1],r[c+1];
+	for(int i=1;i<=c;++i){
+		cin >> l[i-1] >> r[i-1];
+		lent[i] = lent[i-1] + (r[i-1] - l[i-1] + 1);
 	}
-	cout << ans << endl;
+	while(q--){
+		ll k; cin >> k;
+		for(int i=c-1;i>=0;i--){
+			if(k>lent[i]){
+				k = l[i] + (k-lent[i]-1);
+			}
+		}
+		cout << s[k-1] << endl;
+	}
 }
 
 int main(){
@@ -47,7 +47,7 @@ int main(){
 //I/O end ---------------------------------
 
     int TC = 1;
-    //cin >> TC;
+    cin >> TC;
     while(TC--){
         solve();
     }

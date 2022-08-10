@@ -9,27 +9,27 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 int bexpo(int n,int p);
-
+ll sigma[27];
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
+	int n; cin >> n;
 
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
+	while(n--){
+		vector<int> alpha1(27,0),alpha2(27,0);
+		string tmp1,tmp2; cin >> tmp1 >> tmp2;
+		for(int i=0;i<tmp1.length();++i){
+			alpha1[tmp1[i]-'a'+1]++;
 		}
+		for(int i=0;i<tmp2.length();++i){
+
+			alpha2[tmp2[i]-'a'+1]++;
+		}
+		for(int i=1;i<27;++i){
+			sigma[i]+=max(alpha1[i],alpha2[i]);
+		}	
 	}
-	cout << ans << endl;
+	for(int i=1;i<27;++i){
+		cout << sigma[i] << endl;
+	}
 }
 
 int main(){

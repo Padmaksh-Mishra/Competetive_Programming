@@ -11,26 +11,32 @@ using namespace std;
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
+	int k,n; cin >> k >> n;  // n<20 | k <10
+	int ips[k][n+1];
+	
+	for(int i=0;i<k;++i){
+		for(int j=1;j<n+1;++j){
+			int tmp; cin >> tmp;
+			ips[i][tmp] = j;
 		}
+	}
+	map<pair<int,int>,int> m;
+
+	for(int i=1;i<n+1;++i){
+		for(int j=1;j<n+1;++j){
+			for(int l=0;l<k;++l){
+				if(ips[l][i] < ips[l][j]) m[{i,j}]++;
+			}
+		}
+	}
+	int ans = 0;
+	for(auto val : m){
+		if(val.second==k) ans++;
 	}
 	cout << ans << endl;
 }
+	
+
 
 int main(){
 

@@ -9,27 +9,23 @@ const ll MOD = 1e9 +7;
 using namespace std;
 
 int bexpo(int n,int p);
-
+int pebls[4];
+int guess[4];
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
+	int n; cin >> n;
+	for(int i=1;i<4;++i) pebls[i] = i;
+	for(int i=0;i<n;++i){
+		int a,b; cin >> a >> b;
+		swap(pebls[a],pebls[b]);
+		int g; cin >> g;
+		guess[pebls[g]]++;
 	}	
+	int maxi = max({guess[1],guess[2],guess[3]});	
+	// for(int i=1;i<4;++i){
+	// 	maxi = max(maxi,guess[i]);
+	// }
 
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
-		}
-	}
-	cout << ans << endl;
+	cout << maxi << endl;
 }
 
 int main(){

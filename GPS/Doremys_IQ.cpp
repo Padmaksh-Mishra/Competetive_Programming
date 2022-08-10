@@ -11,25 +11,39 @@ using namespace std;
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
-		}
+	int n,q; cin >> n >> q;
+	// deb(q);
+	vector<pair<int,int>> a(n);
+	int val[n];
+	for(int i=0;i<n;++i){
+		cin >> val[i];
+		a[i].second = i;
+		a[i].first = val[i];
 	}
-	cout << ans << endl;
+	sort(a.begin(), a.end());
+	vector<int> has(n,0);
+	for(int i =0;i<n;++i){
+		deb(a[i].first);
+		if(a[i].first<=q) has[a[i].second] = 1;
+		deb(a[i].second);
+		deb(has[i]);
+	}
+	for(int i=0;i<n;++i){
+		// deb(has[i]);
+		if(q<=0){
+			cout << 0;
+			continue;
+		}
+		if(has[i]==1){
+			if(val[i]>q){
+				q--;
+				cout << 1;
+			}else cout << 1;
+		}else  cout << 0;
+	}
+
+	cout << endl;
+
 }
 
 int main(){
@@ -47,7 +61,7 @@ int main(){
 //I/O end ---------------------------------
 
     int TC = 1;
-    //cin >> TC;
+    cin >> TC;
     while(TC--){
         solve();
     }

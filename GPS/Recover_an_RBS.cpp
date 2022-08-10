@@ -11,25 +11,41 @@ using namespace std;
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
-		}
+	string s; cin >> s;
+	int n; n = s.size();
+	//int bala[n];
+	int q = 0,bal=0;
+	// if(s[n-1]=='('){ //nvr exe
+	// 	cout << "NO" << endl;
+	// 	return;
+	// }
+	if(s[0]=='?') s[0] = '(';
+	s[n-1] = ')';
+	for(int i=0;i<n;++i){
+		if(s[i]=='(') bal++;
+		else if(s[i]==')') bal--;
+		else q++;
+		// // if(bal<0){
+		// // 	if(q>0){
+		// // 		q--;
+		// // 		bal++;
+		// // 	}
+		// 	// else{ //never exe
+		// 	// 	cout << "NO" << endl;
+		// 	// 	return;
+		// 	// }
+		// bala[i] = bal;
+		
 	}
-	cout << ans << endl;
+	// int icr = 0;
+	// for(int i=0;i<n;++i){
+	// 	if(s[i]=='?'){
+	// 		if(bala[i]+icr<=0) q--,icr++;
+	// 	}
+	// }
+	if(q-abs(bal)==0) cout << "YES" << endl;
+	else cout << "NO" << endl;
+
 }
 
 int main(){
@@ -47,7 +63,7 @@ int main(){
 //I/O end ---------------------------------
 
     int TC = 1;
-    //cin >> TC;
+    cin >> TC;
     while(TC--){
         solve();
     }

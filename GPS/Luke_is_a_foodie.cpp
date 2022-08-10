@@ -11,22 +11,30 @@ using namespace std;
 int bexpo(int n,int p);
 
 void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
+	int n,x; cin >> n >> x;
+	vector<int> v(n);
+	double sum = 0;
+	for(int i=0;i<n;++i){
+		cin >> v[i];
+		sum+=v[i];
+	}
 	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
+	int avg = round(sum/n);
+	deb(avg);
+	int tn;
+	if(v[0]<avg-x){
+		tn=v[0]+x;
+	}else if(v[0]>avg+x){
+		tn=v[0]+x;
+	}
+	for(int i=0;i<n;++i){
+		if((tn>v[i]+x)||(tn<v[i]-x)){
+			ans++;
+			if(v[i]<avg-x){
+				tn=v[i]+x;
+			}else if(v[i]>avg+x){
+				tn=v[i]+x;
+			}
 		}
 	}
 	cout << ans << endl;
@@ -47,7 +55,7 @@ int main(){
 //I/O end ---------------------------------
 
     int TC = 1;
-    //cin >> TC;
+    cin >> TC;
     while(TC--){
         solve();
     }

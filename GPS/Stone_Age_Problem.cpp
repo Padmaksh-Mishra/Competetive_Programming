@@ -22,29 +22,36 @@ void setIO(string name = "sublime");
 
 
 void solve(){
-	int n,x; cin >> n >> x;
-	vector<ll> prices(n);
-	for(int i=0;i<n;++i) cin >> prices[i];
-	sort(prices.begin(), prices.end());
-	vector<ll> pa(n);
-	pa[0] = prices[0];
-	for(int i = 1;i<n;++i) pa[i] = prices[i] + pa[i-1];
-	ll ans = 0;
-	ll day = 0;
-	int j = n-1;
-	//int k = 4;
-	while(true){
-		ll cost = pa[j] + ((j+1)*day);
-		while(j>=0&&cost>x) {
-			j--;
-			cost = pa[j] + ((j+1)*day);
+	int n,q; cin >> n >> q;
+	vll v(n);
+	ll sum = 0;
+	map<ll,ll> m;
+	for(int i=0;i<n;++i) cin >> v[i],sum+=v[i];
+	while(q--){
+		int t; cin >> t;
+		if(t==2){
+			m.clear();
+			ll x; cin >> x;
+			sum = n*x*1LL;
+			m[0] = x;
+		}else{
+        	ll i,x; cin >> i >> x;
+        	if(m[0]!=0){
+        		if(m[i]==0){
+        			sum+=(x-m[0]);
+        			m[i]=x;
+        		}else{
+        			sum+=(x-m[i]);
+        			m[i]=x;
+        		}
+        	}else{
+        		sum+=(x-v[i-1]);
+        		v[i-1] = x;
+        	}
 		}
-		day++;
-		ans+=j+1;
-		// deb(j); deb(cost); deb(day);
-		if(pa[0]+day>x) break;
+		cout << sum << endl;
 	}
-	cout << ans << endl;	
+
 }
 
 int main(){
@@ -53,11 +60,12 @@ int main(){
 
     setIO();	//Google and other non judges
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     for(int i=0;i<TC;++i){
     	//cout << "Case #" << i+1 << ": ";
     	solve();
     }
+    
     return 0;
 }
 

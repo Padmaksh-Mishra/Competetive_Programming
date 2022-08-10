@@ -19,32 +19,45 @@ using namespace std;
 const ll MOD = 1e9 +7;
 void setIO(string name = "sublime");
 
+vi tree[100001];
+vi visited(100001);
+vi cat(100001);
+ll cats,res,m;
+vll store(100001);
+void dfs(int node){	
+	cout << node << " " << store[node] << endl;
+	if(visited[node]||store[node]>m) return;
+	
+	visited[node]=1;
+
+	if(siz(tree[node])==1&&visited[tree[node][0]]) {
+		res++;
+		deb(node);
+	}
+	for(auto child : tree[node]){
+		if(cat[child]==0) cats = 0;
+		cats+=cat[child];
+		store[child] = max(cats,store[node]);
+		dfs(child);
+		cats-=cat[child];
+	}
+}
 
 
 void solve(){
-	int n,x; cin >> n >> x;
-	vector<ll> prices(n);
-	for(int i=0;i<n;++i) cin >> prices[i];
-	sort(prices.begin(), prices.end());
-	vector<ll> pa(n);
-	pa[0] = prices[0];
-	for(int i = 1;i<n;++i) pa[i] = prices[i] + pa[i-1];
-	ll ans = 0;
-	ll day = 0;
-	int j = n-1;
-	//int k = 4;
-	while(true){
-		ll cost = pa[j] + ((j+1)*day);
-		while(j>=0&&cost>x) {
-			j--;
-			cost = pa[j] + ((j+1)*day);
-		}
-		day++;
-		ans+=j+1;
-		// deb(j); deb(cost); deb(day);
-		if(pa[0]+day>x) break;
+	int n; cin >> n >> m;
+
+	for(int i=0;i<n;++i) cin >> cat[i];
+	for(int i=1;i<n;++i){
+		int a,b; cin >> a >> b;
+		a--;b--;
+		tree[a].pb(b);
+		tree[b].pb(a);
 	}
-	cout << ans << endl;	
+	cats+=cat[0];
+	store[0]+=cats;
+	dfs(0);
+	cout << res << endl;
 }
 
 int main(){
@@ -53,7 +66,7 @@ int main(){
 
     setIO();	//Google and other non judges
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     for(int i=0;i<TC;++i){
     	//cout << "Case #" << i+1 << ": ";
     	solve();

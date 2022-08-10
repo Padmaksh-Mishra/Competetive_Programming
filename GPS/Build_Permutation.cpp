@@ -19,32 +19,33 @@ using namespace std;
 const ll MOD = 1e9 +7;
 void setIO(string name = "sublime");
 
-
-
+set<int> s;
+string dp[100001];
+void karo(){
+	// dp[0] = "0";
+	// dp[1] = "10";
+	for(int i=0;i<317;++i){
+    	s.insert((i*i));
+    }
+    // for(int i=2;i<100001;++i){
+    // 	string tmp = "";
+    // 	auto it = s.lower_bound(i);
+    // 	int x = *(it);
+    // 	deb(x);
+    // 	for(int j=i;j!=(x/2);--j){
+    // 		tmp+=(j+'0');
+    // 	}
+    // 	dp[i] = dp[(x/2)-1] + tmp;
+    // }
+}
 void solve(){
-	int n,x; cin >> n >> x;
-	vector<ll> prices(n);
-	for(int i=0;i<n;++i) cin >> prices[i];
-	sort(prices.begin(), prices.end());
-	vector<ll> pa(n);
-	pa[0] = prices[0];
-	for(int i = 1;i<n;++i) pa[i] = prices[i] + pa[i-1];
-	ll ans = 0;
-	ll day = 0;
-	int j = n-1;
-	//int k = 4;
-	while(true){
-		ll cost = pa[j] + ((j+1)*day);
-		while(j>=0&&cost>x) {
-			j--;
-			cost = pa[j] + ((j+1)*day);
-		}
-		day++;
-		ans+=j+1;
-		// deb(j); deb(cost); deb(day);
-		if(pa[0]+day>x) break;
-	}
-	cout << ans << endl;	
+	int n; cin >> n;
+	auto it = lower_bound(n);
+	int x = *it;
+	list<int> l;
+	for(int i=(x-n-1);i>=0;--i) l.pb(i);
+	int si = siz(l);
+	for(int)
 }
 
 int main(){
@@ -54,6 +55,8 @@ int main(){
     setIO();	//Google and other non judges
     int TC = 1;
     cin >> TC;
+
+    karo();
     for(int i=0;i<TC;++i){
     	//cout << "Case #" << i+1 << ": ";
     	solve();

@@ -5,29 +5,35 @@
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 
-const ll MOD = 1e9 +7;
 using namespace std;
 
-int bexpo(int n,int p);
-
-void solve(){
-	int n,t; cin >> n >> t;
-	vector<ll> sums(n+2,0);
-	for(int i=1;i<=n;++i){
-		int tmp ; cin >> tmp;
-		sums[i] = sums[i-1] + tmp;
-	}	
-
-	int i=0;
-	int j=0;
-	int ans = 0;
-	for(i=0;i<n+1;++i){
-		ll sum = sums[j] - sums[i];
-		while(sum<=t&&j<=n){
-			ans = max(ans,j-i);
-			j++;
-			sum = sums[j] - sums[i];
+int n,m;
+char spot[100][101]; //100+1 for \0
+char plain[100][101];
+bool ok(int i){
+	for(int j=0;j<n;++j){
+		for(int k=0;k<n;++k){
+			if(spot[j][i]==plain[k][i]){
+				return false;
+			}
 		}
+	}
+	return true;
+}
+void solve(){
+	cin >> n >> m;
+	
+	for(int i=0;i<n;++i){
+		cin >> spot[i];
+	}
+	
+	for(int i=0;i<n;++i){
+		cin >> plain[i];
+	}
+
+	int ans = 0;
+	for(int i=0;i<m;++i){
+		if(ok(i)) ans++;
 	}
 	cout << ans << endl;
 }
@@ -52,16 +58,4 @@ int main(){
         solve();
     }
     return 0;
-}
-
-
-//Binary Exponention Iterative
-int bexpo(int n,int p){ 
-    int ans = 1,tmp = n;
-    while(p>0){
-        if(p&1) ans = (ans * 1LL * tmp)%MOD;
-        tmp = (tmp * 1LL * tmp)%MOD;
-        p>>=1;
-    }
-    return ans;
 }
