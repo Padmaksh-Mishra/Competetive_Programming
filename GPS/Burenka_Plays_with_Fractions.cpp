@@ -19,19 +19,14 @@
 using namespace std;
 const ll MOD = 1e9 +7;
 
+  
 void solve(){
-	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
-	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
-	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	ll a,b,c,d; cin >> a >> b >> c >> d;
+	ll x = lcm(a,d);
+	ll y = gcd(b,c);
+	ll ops = ((x*y)/(a*b)) + ((x*y)/(c*d))-2;
+	if(ops<0) ops=0;
+	cout << ops << endl;
 }
 
 int main(){

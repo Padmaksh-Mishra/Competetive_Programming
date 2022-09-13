@@ -20,18 +20,23 @@ using namespace std;
 const ll MOD = 1e9 +7;
 
 void solve(){
-	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
-	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
-	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	int n,q; cin >> n >> q;
+	vll ip(n),sum(n);
+	for(int i=0;i<n;++i) cin >> ip[i];
+	sort(all(ip),greater<int>());
+    sum[0] = ip[0];
+    //deb(sum[0]);
+    for(int i=1;i<n;++i){
+    	sum[i] = sum[i-1] + ip[i];
+    	//deb(sum[i]);
+    }
+    int x;
+    while(q--){
+    	cin >> x;
+    	int ans = lower_bound(all(sum),x)-sum.begin();
+    	if(ans==n) ans=-2; 
+    	cout << ans+1 << endl;
+    }
 }
 
 int main(){

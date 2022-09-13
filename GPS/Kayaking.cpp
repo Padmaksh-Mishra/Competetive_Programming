@@ -3,6 +3,7 @@
 # define SHREE cin.tie(NULL); 
 # define RAM cout.tie(NULL);
 # define ll long long
+# define int ll
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define pb push_back
@@ -17,30 +18,40 @@
 # define all(x) (x).begin(), (x).end()
 
 using namespace std;
+
 const ll MOD = 1e9 +7;
+const int N = 1e5 + 1;
+
+void setIO(string name = "sublime");
 
 void solve(){
 	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
-	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+	vi ips(2*n);
+	for(int i=0;i<2*n;++i){
+		cin >> ips[i];
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	sor(ips);
+	vi instability1,instability2;
+	for(int i=0;i<(2*n);i+=2){
+		instability.pb(ips[i+1]-ips[i]);
+	}
+	sor(instability);
+	int ans = 0;
+	for(int i=0;i<n-1;++i){
+		deb(instability[i]);
+		ans+=instability[i];
+	}
+	deb(instability[n-1]);
+	cout << ans << endl;
 }
 
-int main(){
+int32_t main(){
 
     JAI SHREE RAM
 
-
+    setIO();	//Does not work with Google 	
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     for(int i=0;i<TC;++i){
     	//cout << "Case #" << i+1 << ": ";
     	solve();
@@ -48,6 +59,14 @@ int main(){
     return 0;
 }
 
+void setIO(string name) {  
+#ifndef ONLINE_JUDGE
+	if((ll)name.size() > 0){
+		freopen((name+".in").c_str(), "r", stdin);
+		freopen((name+".out").c_str(), "w", stdout);
+	}
+#endif
+}
 
 //	########  ##     ## 
 //	##     ## ###   ### 

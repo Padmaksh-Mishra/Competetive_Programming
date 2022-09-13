@@ -3,6 +3,7 @@
 # define SHREE cin.tie(NULL); 
 # define RAM cout.tie(NULL);
 # define ll long long
+//# define int ll
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define pb push_back
@@ -18,29 +19,51 @@
 
 using namespace std;
 const ll MOD = 1e9 +7;
+const int N = 3001;
+vi graph[N];
+vi visited(N);
+vi closed(N);
+int vis;
+void setIO(string name = "sublime");
 
-void solve(){
-	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
-	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+void dfs(int v){
+	if(visited[v]||closed[v]) return;
+	visited[v] = 1;
+	vis++;
+	for(auto child : graph[v]){
+		dfs(child);
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+}
+void solve(){
+	int n,m; cin >> n >> m;
+	for(int i=0;i<m;++i){
+		int x,y; cin >> x >> y;
+		graph[x].pb(y);
+		graph[y].pb(x);
+	}
+	dfs(1);
+	if(vis!=n) NO;
+	else YES;
+	vi tbc(n);
+	for(int i=0;i<n;++i) cin >> tbc[i];
+	fill(visited.begin(), visited.end(),0);
+	for(int i=0;i<n;++i){
+		vis=0;
+		closed[tbc[i]]=1;
+		dfs(tbc[n-1]);
+		if(vis!=n-i-1) NO;
+		else YES;
+		fill(visited.begin(), visited.end(),0);
+	}
 }
 
 int main(){
 
     JAI SHREE RAM
 
-
+    setIO();	//Google and other non judges
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     for(int i=0;i<TC;++i){
     	//cout << "Case #" << i+1 << ": ";
     	solve();
@@ -48,7 +71,14 @@ int main(){
     return 0;
 }
 
-
+void setIO(string name) {  
+#ifndef ONLINE_JUDGE
+	if((ll)name.size() > 0){
+		freopen((name+".in").c_str(), "r", stdin);
+		freopen((name+".out").c_str(), "w", stdout);
+	}
+#endif
+}
 //	########  ##     ## 
 //	##     ## ###   ### 
 //	##     ## #### #### 

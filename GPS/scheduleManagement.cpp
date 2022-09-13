@@ -3,6 +3,7 @@
 # define SHREE cin.tie(NULL); 
 # define RAM cout.tie(NULL);
 # define ll long long
+# define int ll
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define pb push_back
@@ -18,23 +19,45 @@
 
 using namespace std;
 const ll MOD = 1e9 +7;
-
-void solve(){
-	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
-	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+vi hsh(200001);
+int n,m;
+bool isPossible(int t){
+	int tasks_done = 0;
+	for(int i=1;i<=n;++i){
+		tasks_done += min(t,hsh[i]) + (t-min(t,hsh[i]))/2;
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	if(tasks_done>=m) return true;
+	else return false;
+}
+void reset(){
+	for(int i=1;i<=n;++i) hsh[i]=0;
+}
+void solve(){
+	cin >> n >> m;
+	reset();
+	int tmp;
+	for(int i=0;i<m;++i){
+		cin >> tmp;
+		hsh[tmp]++;
+	}
+	int ans = MOD;
+	int end = (m<<1);
+	int begin = 1;
+	int mid;
+	while(end-begin > 1){
+		mid = ((begin+end)>>1);
+		//deb(mid);
+		if(isPossible(mid)){
+			end = mid;
+		}else begin = mid+1;
+	}
+	if(isPossible(begin)) ans = begin;
+	else if(isPossible(mid)) ans = mid;
+	else ans = end;
+	cout << ans << endl;
 }
 
-int main(){
+signed main(){
 
     JAI SHREE RAM
 

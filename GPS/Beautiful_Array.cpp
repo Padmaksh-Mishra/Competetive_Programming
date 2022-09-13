@@ -3,6 +3,7 @@
 # define SHREE cin.tie(NULL); 
 # define RAM cout.tie(NULL);
 # define ll long long
+//# define int ll
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define pb push_back
@@ -20,19 +21,30 @@ using namespace std;
 const ll MOD = 1e9 +7;
 
 void solve(){
-	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
-	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+	ll n,k,b,s; cin >> n >> k >> b >> s;
+    vll ans(n,0);
+
+    ll sm = k*b;
+    ans[0] = sm;
+	ll extras = s-(sm);
+	if(extras>0){
+		for(int i=1;i<n;++i){
+			ll tmp = min(k-1,extras);
+			ans[i]+=tmp;
+			sm+=tmp;
+			extras-=tmp;
+		}
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	if(extras>0||sm!=s){
+		cout << -1 << endl;
+		return;
+	}
+	for(auto val : ans){
+    	cout << val << " ";
+    }
+    cout << endl;
 }
+
 
 int main(){
 

@@ -21,17 +21,20 @@ const ll MOD = 1e9 +7;
 
 void solve(){
 	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
-	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+	int m; cin >> m;
+	map<int,int> mp;
+	vector<pair<int,int>> pr;
+	int a,b;
+	for(int i=0;i<m;++i){
+		cin >> a >> b;
+		pr.pb({b,a});
+		mp[a] = i+1;
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	sor(pr);
+	for(int i=0;i<n;++i){
+		cout << mp[pr[i].s] << " " << mp[pr[2*n-i-1].s] << endl;
+	}
+	cout << endl;
 }
 
 int main(){

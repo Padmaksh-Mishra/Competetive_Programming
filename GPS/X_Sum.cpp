@@ -21,17 +21,48 @@ const ll MOD = 1e9 +7;
 
 void solve(){
 	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
-	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+	int m; cin >> m;
+	vector<int> a[n];
+	for(int i = 0;i<n;++i){
+		for(int j=0;j<m;++j){
+			int tmp; cin >> tmp;
+			a[i].pb(tmp);
+			//deb(a[i][j]);
+		}
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	int ans = -1;
+	for(int r=0;r<n;++r){
+		for(int c=0;c<m;++c){
+			int tmp = 0;
+			int ct=c,rt=r;
+			while(ct>=0&&ct<m&&rt>=0&&rt<n){
+				tmp+=a[rt][ct];
+				rt++;
+				ct++;
+			}
+			ct=c,rt=r;
+			while(ct>=0&&ct<m&&rt>=0&&rt<n){
+				tmp+=a[rt][ct];
+				rt++;
+				ct--;
+			}
+			ct=c,rt=r;
+			while(ct>=0&&ct<m&&rt>=0&&rt<n){
+				tmp+=a[rt][ct];
+				rt--;
+				ct++;
+			}
+			ct=c,rt=r;
+			while(ct>=0&&ct<m&&rt>=0&&rt<n){
+				tmp+=a[rt][ct];
+				rt--;
+				ct--;
+			}
+			tmp-=(a[r][c]*3);
+			ans = max(ans,tmp);
+		}
+	}
+	cout << ans << endl;
 }
 
 int main(){

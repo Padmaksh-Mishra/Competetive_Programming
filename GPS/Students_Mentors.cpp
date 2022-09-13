@@ -3,6 +3,7 @@
 # define SHREE cin.tie(NULL); 
 # define RAM cout.tie(NULL);
 # define ll long long
+//# define int ll
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define pb push_back
@@ -21,17 +22,36 @@ const ll MOD = 1e9 +7;
 
 void solve(){
 	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
+	multiset<int> m;
+	vi ip(n);
+	vi so(n);
 	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+		cin >> ip[i];
+		//m.insert(ip[i]);
+		so[i]=ip[i];
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	sor(so);
+	map<int,int> mapp;
+	// for(auto it = m.begin();it!=m.end();++it){
+	// 	auto fi = m.upper_bound(((*it)*2));
+	// 	fi--;
+	// 	if(fi==it) fi--;
+	// 	auto tmp = m.begin();
+	// 	--tmp;
+	// 	if(fi!=tmp) mapp[(*it)]=(*fi);
+	// 	else mapp[(*it)] = -1;
+	// }
+	for(auto it = so.begin();it!=so.end();++it){
+		auto fi = upper_bound(all(so),(*it)*2);
+		fi--;
+		if(fi==it) fi--;
+		auto tmp = so.begin();
+		tmp--;
+		if(fi!=tmp) mapp[(*it)]=(*fi);
+		else mapp[(*it)] = -1;
+	}
+	for(auto val : ip) cout << mapp[val] << " ";
+	cout << endl;
 }
 
 int main(){
@@ -42,7 +62,7 @@ int main(){
     int TC = 1;
     cin >> TC;
     for(int i=0;i<TC;++i){
-    	//cout << "Case #" << i+1 << ": ";
+    	cout << "Case #" << i+1 << ": ";
     	solve();
     }
     return 0;

@@ -20,18 +20,25 @@ using namespace std;
 const ll MOD = 1e9 +7;
 
 void solve(){
-	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
-	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+	ll n,x; cin >> n >> x;
+
+	multiset<ll> s;
+	int tmp;
+	for(int i=0;i<n;++i) {
+		cin >> tmp;
+		s.insert(tmp);
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	int ops = 0;
+	for(auto it=s.begin();it!=s.end();++it){
+		ll val = (*it)*x*1LL;
+		//deb(val);
+		auto itr = s.find(val);
+		if(itr==s.end()){
+			ops++;
+		}else s.erase(itr);
+	}
+	cout << ops << endl;
+	
 }
 
 int main(){

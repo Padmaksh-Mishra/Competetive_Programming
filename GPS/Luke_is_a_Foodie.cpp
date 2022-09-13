@@ -20,18 +20,28 @@ using namespace std;
 const ll MOD = 1e9 +7;
 
 void solve(){
-	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
+	int n,x; cin >> n >> x;
+	vi u(n),d(n);
+	int tmp;
 	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+     	cin >> tmp;
+     	u[i] = x+tmp;
+     	d[i] = tmp-x;
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	int t = u[0];
+	int b = d[0];
+	int ans = 0;
+	for(int i=1;i<n;++i){
+		if(t>u[i]) t = u[i];
+		if(b<d[i]) b = d[i];
+		if(t<b){
+			ans++;
+			t = u[i];
+			b = d[i];
+		}
+	}
+	cout << ans << endl;
+	return;
 }
 
 int main(){
@@ -55,4 +65,4 @@ int main(){
 //	########  ## ### ## 
 //	##        ##     ## 
 //	##        ##     ## 
-//	##        ##     ## 
+//	##        ##     ## 														

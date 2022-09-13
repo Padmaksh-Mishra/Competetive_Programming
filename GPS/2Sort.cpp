@@ -20,18 +20,25 @@ using namespace std;
 const ll MOD = 1e9 +7;
 
 void solve(){
-	int n; cin >> n;
+	int n,k; cin >> n >> k;
 	vi v(n);
-	int mini = -1,minv = MOD;
 	for(int i=0;i<n;++i){
 		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	vi poss;
+	int tmp = 0;
+	for(int i=0;i<n-1;++i){
+		//deb(tmp);
+    	if(v[i]<(v[i+1]<<1)) tmp++;
+    	else poss.pb(tmp),tmp=0; 
+	}
+	poss.pb(tmp);
+	int ans = 0;
+	for(auto val : poss){
+		//deb(val);
+		ans += max(val+1-k,0);
+	}
+	cout << ans << endl;
 }
 
 int main(){

@@ -18,20 +18,38 @@
 
 using namespace std;
 const ll MOD = 1e9 +7;
+const ll INF = 1e18 + 9;
 
 void solve(){
 	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
-	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+	vll v(n);
+	for(int i=0;i<n;++i) cin >> v[i];
+    ll ans = INF;
+	if(n&1){
+		ans=0;
+    	for(int i=1;i<n;i+=2){
+    		ans += max<ll>(max<ll>(v[i+1],v[i-1])+1-v[i],0);
+    	}
+	}else{
+		int tmp=0;
+		vll o,t;
+		ll sum = 0;
+		for(int i=2;i<n;i+=2){
+    		sum+=(max<ll>(max<ll>(v[i+1],v[i-1])+1-v[i],0));
+    		o.pb(sum);
+    	}
+    	sum = 0;
+    	for(int i=1;i<n-1;i+=2){
+    		sum+=(max<ll>(max<ll>(v[i+1],v[i-1])+1-v[i],0));
+    		t.pb(sum);
+    	}
+    	int s = siz(o);
+    	for(int i=0;i<siz(o);++i){
+    		ans=min(t[i]+o[s-1]-o[i],ans);
+    	}
+    	ans = min(ans,o[s-1]);
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	cout << ans << endl;
 }
 
 int main(){

@@ -3,13 +3,14 @@
 # define SHREE cin.tie(NULL); 
 # define RAM cout.tie(NULL);
 # define ll long long
+//# define int ll
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define pb push_back
 # define f first
 # define s second
-# define NO cout << "NO" << endl
-# define YES cout << "YES" << endl
+# define NO cout << "No" << endl
+# define YES cout << "Yes" << endl
 # define sor(x) sort(begin(x), end(x))
 # define siz(x) (ll)(x).size()
 # define vi vector<int>
@@ -20,18 +21,24 @@ using namespace std;
 const ll MOD = 1e9 +7;
 
 void solve(){
-	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
-	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+	int n,m,t; cin >> n >> m >> t;
+	vi A(n);
+	for(int i=1;i<n;++i) cin >> A[i];
+	vi B(n,0);
+	for(int i=0;i<m;++i){
+		int tmp,tm; cin >> tmp >> tm;
+		B[tmp]=tm;
+	}	
+	t+=B[1];
+	for(int i = 1;i<n;++i){
+		if(t<=A[i]){
+			NO;
+			return;
+		}
+		t-=A[i];
+		t+=B[i+1];
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	YES;
 }
 
 int main(){
@@ -40,7 +47,7 @@ int main(){
 
 
     int TC = 1;
-    cin >> TC;
+    //cin >> TC;
     for(int i=0;i<TC;++i){
     	//cout << "Case #" << i+1 << ": ";
     	solve();

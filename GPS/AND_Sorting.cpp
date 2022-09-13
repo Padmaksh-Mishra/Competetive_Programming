@@ -21,17 +21,13 @@ const ll MOD = 1e9 +7;
 
 void solve(){
 	int n; cin >> n;
-	vi v(n);
-	int mini = -1,minv = MOD;
+	int tmp;
+	int ans = (1LL<<32)-1;
 	for(int i=0;i<n;++i){
-		cin >> v[i];
-		if(v[i]<minv) minv=v[i],mini = i;
+		cin >> tmp;
+		if(tmp!=i) ans&=tmp;
 	}
-	if(n&1) cout << "Mike" << endl;
-	else{
-		if(mini&1) cout << "Mike" << endl;
-		else cout << "Joe" << endl;
- 	}
+	cout  << ans << endl;
 }
 
 int main(){
