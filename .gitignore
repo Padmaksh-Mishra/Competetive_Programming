@@ -9,7 +9,7 @@
 
 # Ignore vscode directory
 /.vscode
-
+/AutomateOlympicCoding
 tempCodeRunnerFile.*
 
 /Sublime
