@@ -1,100 +1,72 @@
 # include <bits/stdc++.h>
-# define JAI ios_base::sync_with_stdio(false); 
-# define SHREE cin.tie(NULL); 
-# define RAM cout.tie(NULL);
-# define ll long long
-//# define int ll
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
+# define ll long long
 # define pb push_back
 # define f first
 # define s second
-# define NO cout << "NO" << endl
-# define YES cout << "YES" << endl
-# define sor(x) sort(begin(x), end(x))
-# define siz(x) (ll)(x).size()
-# define vi vector<int>
+# define siz(x) (int)(x).size()
 # define vll vector<ll>
 # define all(x) (x).begin(), (x).end()
 
 using namespace std;
+
 const ll MOD = 1e9 +7;
+const int N = 1e5 + 1;
 
-void solve(){
-	int n,q; cin >> n >> q;
-	int m = -1,mv=-1;
-	map<int,int> indx;
-	deque<int> ips;
-	for(int i=0;i<n;++i){
-		int tmp; cin >> tmp;
-		indx[i]=tmp;
-		ips.pb(tmp);
-    	if(mv<tmp) mv=tmp,m = i;
-	}
-    // deb(m);
-	//simulation of fights till superman comes
-	map<int,vi> sf;
-	for(int i=0;i<=m;++i){
-   		int a=ips[0],b=ips[1];
-   		ips.pop_front();
-   		ips.pop_front();
-   		// deb(ips[0]);
-   		if(a>b){
-   			ips.push_front(a);
-   			sf[a].pb(i);
-   			ips.pb(b);
-   		}else {
-   			ips.push_front(b);
-   			sf[b].pb(i);
-   			ips.pb(a);
-   		}
-	}
-	map<int,int> upindx;
-	for(int i=0;i<n;++i) upindx[ips[i]] = i;
-	for(int i=0;i<n;++i) cout << ips[i] << " ";
-	cout << endl;
-
-	//queries
-
-	while(q--){
-		int ans=0;
-		int i,k; cin >> i >> k;
-		i--;
-		if(k<=m){
-			ans+=(upper_bound(all(sf[indx[i]]),k)-sf[indx[i]].begin()-1);
-		}else{
-			ans+=(upper_bound(all(sf[indx[i]]),m)-sf[indx[i]].begin()-1);
-			k-=m;
-			if(i==0) ans+=k;
-			else{
-				ans+=(k/(n-1));
-				int tmp = (k%(n-1))-1;
-				if(tmp<=upindx[indx[i]]) ans++;
-			}
-		}
-		cout << ans << endl;
-	}
+void setIO(string name) {  
+#ifndef ONLINE_JUDGE
+    if((int)name.size() > 0){
+        freopen((name+".in").c_str(), "r", stdin);
+        freopen((name+".out").c_str(), "w", stdout);
+    }
+#endif
 }
 
+void solve();
+
 int main(){
-
-    JAI SHREE RAM
-
-
-    int TC = 1;
+	ios_base::sync_with_stdio(false); 
+	cin.tie(NULL); 
+    setIO("sublime");    //Does not work with Google     
+    ll TC = 1;
     cin >> TC;
     for(int i=0;i<TC;++i){
-    	//cout << "Case #" << i+1 << ": ";
-    	solve();
+        //cout << "Case #" << i+1 << ": ";
+        solve();
     }
     return 0;
 }
 
+// Do something good 
 
-//	########  ##     ## 
-//	##     ## ###   ### 
-//	##     ## #### #### 
-//	########  ## ### ## 
-//	##        ##     ## 
-//	##        ##     ## 
-//	##        ##     ## 
+void solve(){
+	ll n,q; cin >> n >> q;
+	vll a(n+1);
+	ll mpi=0;
+	for(int i=0;i<n;++i){
+		cin >> a[i+1];
+		if(a[i+1]==n){
+			mpi = i+1;
+		}
+	}
+	map<ll,vll> players;
+	ll curmax = a[1];
+
+	for(int i=2;i<=mpi;++i){
+		if(a[i]>curmax){
+			curmax = a[i];
+		}
+		players[curmax].pb(i-1);
+	}    
+
+	while(q--){
+		ll pi,round; cin >> pi >> round;
+		if(pi==mpi){
+			cout << max(round - mpi + 2 - (mpi==1),0ll) << endl;
+		}else{
+			ll ans = (upper_bound(all(players[a[pi]]),round)-players[a[pi]].begin())-1;
+			cout << ans+1 << endl;
+		}
+	}
+}

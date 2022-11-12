@@ -1,0 +1,78 @@
+# include <bits/stdc++.h>
+# define endl '\n'
+# define deb(x) cout << #x << " = " << x << endl
+# define ll long long
+# define pb push_back
+# define f first
+# define s second
+# define siz(x) (int)(x).size()
+# define vll vector<ll>
+# define all(x) (x).begin(), (x).end()
+
+using namespace std;
+
+const ll MOD = 1e9 +7;
+const int N = 1e5 + 1;
+
+void setIO(string name) {  
+#ifndef ONLINE_JUDGE
+    if((int)name.size() > 0){
+        freopen((name+".in").c_str(), "r", stdin);
+        freopen((name+".out").c_str(), "w", stdout);
+    }
+#endif
+}
+
+void solve();
+
+int main(){
+	ios_base::sync_with_stdio(false); 
+	cin.tie(NULL); 
+	cout.tie(NULL);
+    setIO("sublime");    //Does not work with Google     
+    ll TC = 1;
+    //cin >> TC;
+    for(int i=0;i<TC;++i){
+        //cout << "Case #" << i+1 << ": ";
+        solve();
+    }
+    return 0;
+}
+
+// Do something good 
+
+void solve(){
+	ll n; cin >> n;
+	vll ips(n+1);
+	map<ll,ll> m;
+	for(int i=1;i<=n;++i){
+		cin >> ips[i];
+		m[ips[i]] = i;
+	}   
+	vector<pair<ll,ll>> ans;
+	for(ll i=1;i<=n;++i){
+		if(ips[i]==i) continue;
+		else{
+			ll j = m[i];
+			// deb(j);
+			if((i^j)&1){
+				m[ips[j-1]] = j;
+				m[ips[j]] = j-1;
+				swap(ips[j],ips[j-1]);
+				ans.pb(make_pair(j-1,j));
+				// cout << j << " " << j-1 << endl;
+				i--;
+			}else{
+				m[ips[i]] = j;
+				m[ips[j]] = i;
+				swap(ips[j],ips[i]);
+				ans.pb(make_pair(i,j));
+				// cout << i << " " << j << endl;;
+			}
+		}
+	}
+	cout << siz(ans) << endl;
+	for(auto val : ans){
+		cout << val.f << ' ' << val.s << endl;
+	} 
+}

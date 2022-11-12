@@ -1,76 +1,84 @@
-//Coding_Duck <-> PM <-> REDACTED <-> Blood_Reaper
-
 # include <bits/stdc++.h>
-# define ll long long
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
+# define ll long long
+# define pb push_back
+# define f first
+# define s second
+# define siz(x) (int)(x).size()
+# define vll vector<ll>
+# define all(x) (x).begin(), (x).end()
 
-const ll MOD = 1e9 +7;
 using namespace std;
 
-int bexpo(int n,int p);
+const ll MOD = 1e9 +7;
+const int N = 1e5 + 1;
 
-void dfs(vector<vector<int>> &graph,vector<int> &color,int parent){
-	if(color[parent]!=-1) return;
-	map<int,int> m;
-	for(auto child : graph[parent]){
-		m[color[child]]++;
-	}
-	for(int i=1;i<=4;++i){
-		if(m[i]==0){
-			color[parent] = i;
-			break;
-		}
-	}
+void setIO(string name) {  
+#ifndef ONLINE_JUDGE
+    if((int)name.size() > 0){
+        freopen((name+".in").c_str(), "r", stdin);
+        freopen((name+".out").c_str(), "w", stdout);
+    }
+#endif
 }
-void solve(){
-	int n,m; cin >> n >> m;
-	vector<vector<int>> graph(n+1);
-	vector<int> color(n+1,-1);
-	for(int i=0;i<m;i++){
-		int a,b; cin >> a >> b;
-		graph[a].push_back(b);
-		graph[b].push_back(a);
-	}
-	for(int i=0;i<n;i++){
-		dfs(graph,color,i+1);
-	}
-	
-	for(int i=1;i<=n;++i) cout << color[i] << " ";
-	cout << endl;
 
-}
+void solve();
 
 int main(){
-
-//for I/O----------------------------------
-
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin); 
-    freopen("output.txt", "w", stdout);
-#endif
-
-//I/O end ---------------------------------
-
-    int TC = 1;
+	ios_base::sync_with_stdio(false); 
+	cin.tie(NULL); 
+	cout.tie(NULL);
+    setIO("sublime");    //Does not work with Google     
+    ll TC = 1;
     //cin >> TC;
-    while(TC--){
+    for(int i=0;i<TC;++i){
+        //cout << "Case #" << i+1 << ": ";
         solve();
     }
     return 0;
 }
 
+// Do something good 
+vector<pair<int,bool>> graph[100001];
+vector<int> color(100001,-1);
+int connected_Components;
+vector<bool> visited(100001);
+bool bad;
+void dfs(int parent,int c=0){
+	if(bad) return;
+	if(visited[parent]) return;
+	else visited[parent] = true;
+	color[parent] = c;
+	for(auto child : graph[parent]){
+		if(color[child.f]==color[parent]&&child.s==1){
+			bad = true;
+			return;
+		}
+		if(child.s==1) dfs(child.f,!c);
+		else dfs(child.f,c);
+	}
+}
 
-//Binary Exponention Iterative
-int bexpo(int n,int p){ 
-    int ans = 1,tmp = n;
-    while(p>0){
-        if(p&1) ans = (ans * 1LL * tmp)%MOD;
-        tmp = (tmp * 1LL * tmp)%MOD;
-        p>>=1;
-    }
-    return ans;
+void solve(){
+	int n,m; cin >> n >> m;
+	while(m--){
+		char t; cin >> t;
+		int a,b; cin >> a >> b;
+		bool zo = (t=='S') ? 0:1;
+		graph[a].pb({b,zo});
+		graph[b].pb({a,zo});
+	} 
+	for(int i=1;i<=n;++i){
+		if(!visited[i]){
+			dfs(i);
+			connected_Components++;
+		}
+	}
+	if(bad) cout << 0 << endl;
+	else{
+		cout << 1;
+		for(int i=1;i<=connected_Components;++i) cout << 0;
+		cout << endl;
+	}
 }
