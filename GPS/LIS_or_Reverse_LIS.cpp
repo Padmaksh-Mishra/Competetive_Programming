@@ -1,51 +1,61 @@
-//Coding_Duck <-> PM <-> REDACTED
-
 # include <bits/stdc++.h>
-# define ll long long
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
+# define ll long long
+# define pb push_back
+# define f first
+# define s second
+# define siz(x) (int)(x).size()
+# define vll vector<ll>
+# define all(x) (x).begin(), (x).end()
 
-const ll MOD = 1e9 +7;
 using namespace std;
 
-int bexpo(int n,int p);
-int a[200001],na[200001];
-void solve(){
-	int n; cin >> n;
-	for(int i=0;i<n;i++) cin >> a[i];
-	sort(a,a+n);
-	int j=0;
-	bool odd=false;
-	for(int i=0;i<n;i++){
-		if(odd) na[i] = a[n-i-1];
-		else na[i] = a[i];
-		odd^=1;
-	}
-	
+const ll MOD = 1e9 +7;
+const int N = 1e5 + 1;
 
+void setIO(string name) {  
+#ifndef ONLINE_JUDGE
+    if((int)name.size() > 0){
+        freopen((name+".in").c_str(), "r", stdin);
+        freopen((name+".out").c_str(), "w", stdout);
+    }
+#endif
 }
 
-int main(){
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL); // useless since cout is not tied to anything
+void solve();
 
-    int TC = 1;
+int main(){
+	ios_base::sync_with_stdio(false); 
+	cin.tie(NULL); 
+	cout.tie(NULL);
+    setIO("sublime");    //Does not work with Google     
+    ll TC = 1;
     cin >> TC;
-    while(TC--){
+    for(int i=0;i<TC;++i){
+        //cout << "Case #" << i+1 << ": ";
         solve();
     }
     return 0;
 }
 
+// Do something good 
 
-//Binary Exponention Iterative
-int bexpo(int n,int p){ 
-    int ans = 1,tmp = n;
-    while(p>0){
-        if(p&1) ans = (ans * 1LL * tmp)%MOD;
-        tmp = (tmp * 1LL * tmp)%MOD;
-        p>>=1;
-    }
-    return ans;
+void solve(){
+	ll n; cin >> n;
+	map<ll,ll> m;
+	for(int i=0;i<n;++i){
+		ll tmp; cin >> tmp;
+		m[tmp]++;
+	}   
+	ll many = 0,single = 0; 
+	for(auto it = m.begin();it!=m.end();++it){
+		if(it->s==1){
+			single++;
+		}else if(it->s>=2){
+			many++;
+		}
+	}
+	ll ans = single/2 + many + single%2; 
+	cout << ans << endl;
 }

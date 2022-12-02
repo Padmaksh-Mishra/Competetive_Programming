@@ -43,23 +43,22 @@ int main(){
 
 void solve(){
 	ll n; cin >> n;
-	map<ll,ll> disp;
+	vll a(n+1),b(n+1),d(n+1),pos(n+1),vis(n+1,0);
+	for(int i=1;i<=n;++i) cin >> a[i],pos[a[i]] = i;
+	for(int i=1;i<=n;++i) cin >> b[i];    	
+	for(int i=1;i<=n;++i) cin >> d[i];
+	ll ans = 1;
 	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
+		if(!vis[i]){
+			ll x = i;
+			bool flag = 0;
+			while(!vis[x]){
+				vis[x] = 1;
+				flag|=(d[x]>0);
+				x = pos[b[x]];
+			}
+			if(!flag&&a[i]!=b[i]) ans = (ans*2)%MOD;
+		}
 	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
-	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
-	}
-	cout << endl;
+	cout << ans << endl;
 }

@@ -40,55 +40,42 @@ int main(){
 }
 
 // Do something good 
-
+bool ok(vector<char> &parent,char posPar,char child){
+	while(parent[posPar-'a']!='X'){
+		if(parent[posPar-'a'] == child){
+			return false;
+		}
+		posPar = parent[posPar-'a'];
+		// deb(posPar);
+	}
+	//deb(posPar);
+	return true;
+}
 void solve(){
 	ll n; cin >> n;
-	vector<char> abc(26);
-	vector<bool> visited(26,false);
-
+	string t; cin >> t;
+	vector<char> parent(27,'X');
+	set<char> s;
 	for(int i=0;i<26;++i){
-		abc[i] = 'a'+i;
-		//deb(abc[i]);
-	}    
-	string s; cin >> s;
-	deb(s);
-	string b = "";
-	map<char,char> m;
-	ll j=0;
-	for(auto val : abc){
-		// deb(val);
-		m[val] = '?';
+		s.insert('a'+i);
 	}
-	ll lent = 0;
-	for(int i=0;i<siz(s);++i){
-		//deb(m[s[i]]);
-		if(m[s[i]]!='?'){
-			b+=m[s[i]];
-		}else{
-			for(int j=0;j<26;++j){
-				//deb(m[abc[j]]);
-				if(visited[j]) continue;
-				if(abc[j]==s[i]) continue;
-				if(m[abc[j]]=='?'){
-					m[s[i]] = abc[j];
-					lent++;
-					b+=m[s[i]];
-					visited[j] = true;
-					break;
-				}
-				else if(m[abc[j]]!='?'){
-					if(lent==25){
-						m[s[i]] = abc[j];
-						lent++;
-						b+=m[s[i]];
-						visited[j] = true;
-						break;
-					}
-				}
+	for(int i=0;i<n;++i){
+		auto itr = s.begin();
+		if(parent[t[i]-'a']!='X') continue;
+		while(itr!=s.end()){
+			if((*itr)!=t[i]&&ok(parent,*itr,t[i])){
+				parent[t[i]-'a'] = *itr;
+				s.erase(itr);
+				break;
 			}
+			++itr;	
 		}
-		// deb(m[s[i]]);
-	}
-	cout << b << endl;
+		
+	} 
+	string ans = "";
+	for(int i=0;i<n;++i){
+		if(parent[t[i]-'a']=='X') parent[t[i]-'a'] = *s.begin();
+		ans+=parent[t[i]-'a'];
+	}   
+	cout << ans << endl;
 }
-

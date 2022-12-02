@@ -43,23 +43,28 @@ int main(){
 
 void solve(){
 	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
+	ll sum=0;
+	vll ips(n);
+	for(int i=0;i<n;++i) cin >> ips[i],sum+=ips[i];
+
+	multiset<ll> ms(all(ips));
+	multiset<ll> q = {sum};
+
+	while(q.size()){
+		ll val = *(--q.end());
+		q.erase(--q.end());
+
+		if(val<*(--ms.end())){	//sabse badi value required se choti ho gai to chod do
+			break;
+		}
+		if(ms.find(val)!=ms.end()){	
+			ms.erase(--ms.end());
+			continue;	
+		}
+
+		q.insert(ceil(val/2.0));
+		q.insert(floor(val/2.0));
 	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
-	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
-	}
-	cout << endl;
+	if(ms.size()) cout << "NO" << endl;
+	else cout << "YES" << endl;
 }

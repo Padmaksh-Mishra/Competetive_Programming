@@ -42,24 +42,31 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
+	int n,m; cin >> n >> m;
+	vector<pair<ll,ll>> v;
+	map<ll,ll> mpp;
+	//vll cori(m);
+	for(int i=0;i<m;++i){
+		ll a,b; cin >> a >> b;
+		v.pb(make_pair(b,a));
+		//cori[i] = a;
+		mpp[a] = i+1;
+	}    
+	//sort(all(cori));
+	// for(int i=0;i<m;++i){
+	// 	mpp[cori[i]] = i+1;
+	// }
+	sort(all(v));
+	vll cords(2*n);
+	ll ans = 0;
+	for(int i=0;i<2*n;++i){
+		cords[i] = v[i].s;
+		ans+=v[i].f;
 	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
+	sort(all(cords));
+	cout << ans << endl;
+	for(int i=0;i<n;++i){
+		cout << mpp[cords[i]] << " " << mpp[cords[2*n - i-1]] << endl;
 	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
-	}
-	cout << endl;
+	return;
 }

@@ -42,24 +42,42 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
+	ll n,tmp; cin >> n;
+	multiset<ll> a,b;
+	for(int i=0;i<n;++i){
+		cin >> tmp;
+		a.insert(tmp);
+	}    
+	for(int i=0;i<n;++i){
+		cin >> tmp;
+		if(a.find(tmp)!=a.end()){
+			a.erase(a.find(tmp));
+		}else{
+			b.insert(tmp);
+		}
 	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
+	vll hsh(10,0);
+	ll moves = 0;
+	for(auto it=a.begin();it!=a.end();++it){
+		ll var = *it;
+		if(var > 9){
+			moves++;
+			var = to_string(var).size();
+		}
+		hsh[var]++;
 	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
+	for(auto it=b.begin();it!=b.end();++it){
+		ll var = *it;
+		if(var > 9){
+			moves++;
+			var = to_string(var).size();
+		}
+		hsh[var]--;
 	}
-	cout << endl;
+
+	for(int i=2;i<=9;++i){
+		moves+=abs(hsh[i]);
+	}
+	
+	cout << moves << endl;
 }

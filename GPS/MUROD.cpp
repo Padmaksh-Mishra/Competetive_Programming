@@ -40,26 +40,26 @@ int main(){
 }
 
 // Do something good 
-
+bool cmp(pair<ll,ll> x,pair<ll,ll> y){
+	
+	return ((x.f*0.1/x.s)<(y.f*0.1/y.s));
+}
 void solve(){
 	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
+	vector<pair<ll,ll>> v;
+	vll arra(n),arrb(n);
+	for(int i=0;i<n;++i) cin >> arra[i];
+	for(int i=0;i<n;++i) cin >> arrb[i];
+	for(int i=0;i<n;++i){
+		ll a=arra[i],b=arrb[i];
+		v.emplace_back(make_pair(b,a));
+	}    
+	sort(all(v),cmp);
+	ll dist = 0;
+	ll beauty = 0;
+	for(auto val : v){
+		beauty += (dist*val.f);
+		dist+=val.s;
 	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
-	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
-	}
-	cout << endl;
+	cout << beauty << endl;
 }

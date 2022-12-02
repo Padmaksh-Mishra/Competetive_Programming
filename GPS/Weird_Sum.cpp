@@ -23,6 +23,10 @@ void setIO(string name) {
 #endif
 }
 
+struct cordvll{
+	vll x;
+	vll y;
+};
 void solve();
 
 int main(){
@@ -31,7 +35,7 @@ int main(){
 	cout.tie(NULL);
     setIO("sublime");    //Does not work with Google     
     ll TC = 1;
-    cin >> TC;
+    //cin >> TC;
     for(int i=0;i<TC;++i){
         //cout << "Case #" << i+1 << ": ";
         solve();
@@ -42,24 +46,25 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
-	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
-	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
-	}
-	cout << endl;
+	ll n,m; cin >> n >> m;
+	map<ll,cordvll> mp;
+	for(int i=0;i<n;++i){
+		for(int j=0;j<m;++j){
+			ll tmp; cin >> tmp;
+			mp[tmp].x.emplace_back(i);
+			mp[tmp].y.emplace_back(j);
+		}
+	}  
+	ll sum = 0;
+	for(auto color : mp){
+		ll x=0,y=0,k = siz(color.s.x);
+		sort(all(color.s.x));
+		sort(all(color.s.y));
+		for(int i=0;i<k;++i){
+			x+=(2*i - k + 1)*color.s.x[i];
+			y+=(2*i - k + 1)*color.s.y[i];
+		}
+		sum+=x+y;
+	}  
+	cout << sum << endl;
 }

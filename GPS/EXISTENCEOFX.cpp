@@ -42,24 +42,14 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
-	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
-	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
-	}
-	cout << endl;
+	ll a,b,c; cin >> a >> b >> c;
+	ll x = 0,k=0;
+	bitset<28> aset(a),bset(b),cset(c),xset(x);
+	for(int i=0;i<28;++i){
+		cout << aset[i] << " " << bset[i] << " " << cset[i] << endl;
+		if(aset[i]+bset[i]==cset[i]+k){
+			
+		}		
+	} 
+	cout << "YES" << endl;   
 }

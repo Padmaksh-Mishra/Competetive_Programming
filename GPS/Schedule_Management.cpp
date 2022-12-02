@@ -40,26 +40,36 @@ int main(){
 }
 
 // Do something good 
-
+vll hsh(200001);
+vll ips(200001);
+ll n,m;
+bool isPossible(ll t){
+	ll tasksDone = 0;
+	for(int i=1;i<=n;++i){
+		tasksDone += min(t,hsh[i]) + ((t-min(t,hsh[i]))>>1);
+	}
+	if(tasksDone>=m) return true;
+	else return false;
+}
 void solve(){
-	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
+	cin >> n >> m;
+	fill(all(hsh),0);
+	for(int i=0;i<m;++i){
 		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
+		hsh[tmp]++;
 	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
+	ll M = (m<<1);
+	ll m = 1;
+	ll mid = 0;
+	while(M-m>1){
+		mid = ((M+m)>>1);
+		if(isPossible(mid)){
+			M = mid;
+		}else{
+			m = mid+1;
+		}
 	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
-	}
-	cout << endl;
+	if(isPossible(m)) cout << m << endl;
+	else if(isPossible(mid)) cout << mid << endl;
+	else cout << M << endl;
 }

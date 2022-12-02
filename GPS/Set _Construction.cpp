@@ -40,26 +40,33 @@ int main(){
 }
 
 // Do something good 
-
+ll mtx[101][101];
+void reset(){
+	for(int i=1;i<=100;++i){
+		for(int j=1;j<=100;++j){
+			mtx[i][j] = 0;
+		}
+	}
+}
+vector<vll> ans(n+1);
 void solve(){
 	ll n; cin >> n;
-	map<ll,ll> disp;
 	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
-	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
-	}
+		for(int j=1;j<=n;++j){
+			cin >> mtx[i][j];
+			if(i==j){
+				mtx[i][j] = 1;
+			}
+			if(mtx[i][j]==1){
+				ans[j].emplace_back(i);
+			}
+		}
+	}   
 	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
+		cout << siz(ans[i]) << endl;
+		for(auto val : ans[i]){
+			cout << val << " ";
+		}
+		cout << endl;
 	}
-	cout << endl;
 }

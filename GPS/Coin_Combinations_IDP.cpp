@@ -31,7 +31,7 @@ int main(){
 	cout.tie(NULL);
     setIO("sublime");    //Does not work with Google     
     ll TC = 1;
-    cin >> TC;
+    //cin >> TC;
     for(int i=0;i<TC;++i){
         //cout << "Case #" << i+1 << ": ";
         solve();
@@ -40,26 +40,17 @@ int main(){
 }
 
 // Do something good 
-
 void solve(){
-	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
+	ll n,x; cin >> n >> x;
+	vll dp(x+1,0);
+	dp[0] = 0;
+	vll coins(n);
+	for(int i=0;i<n;++i) cin >> coins[i];
+	for(auto coin : coins){
+		for(int i=coin;i<x+1;i+=coin){
+			dp[i] = max(dp[i],dp[i-coin]+1);
+		}
 	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
-	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
-	}
-	cout << endl;
+	for(auto val : dp) cout << val << endl;
+	cout << dp[x] << endl;    
 }

@@ -42,24 +42,29 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
+	ll n,x; cin >> n >> x;
+	vll perm(n+1);
+	for(int i=0;i<n;++i){
+		perm[i+1] = i + 1;
+	}    
+	if(n%x){
+		cout << -1 << endl;
 	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
+	else{
+		perm[1] = x;
+		perm[x] = n;
+		perm[n] = 1;
+		for(int i=x+1;i<n;++i){
+			if(n%i==0&&perm[i]%x==0){
+				perm[x] = perm[i];
+				perm[i] = n;
+				x=i;
+				//break;
+			}
+		}
+		for(auto val : perm){
+			if(val) cout << val << " ";
+		}
+		cout << endl;
 	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
-	}
-	cout << endl;
 }

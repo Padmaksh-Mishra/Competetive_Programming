@@ -44,33 +44,24 @@ int main(){
 void solve(){
 	ll n; cin >> n;
 	vll ips(n);
-	for(int i=0;i<n;++i) cin >> ips[i];
-	//linear search on ans
-	sort(all(ips));
-
-    ll ans=0;
-    multiset<ll> ms;
-	for(ll k=n;k>=0;--k){
-		ll v=0,g=0;
-		for(int i=0;i<n;++i) cpy[i] = ips[i];
-		bool no = true;
-		for(ll i=1;i<=k;++i){
-			for(auto it = --cpy.end();it!=--cpy.begin();--it){
-				if(((*it)<=k-i+1)){
-					cout << k-i+1 << " " << *it << endl;
-					cpy.erase(it);
-					no = false;
-					if(siz(cpy)==0) no = true;
-					else (*cpy.begin())+=(k-i+1);
-					break;
-				}
+	for(int i=0;i<n;++i){
+		cin >> ips[i];
+	}    
+	for(int k=n;k>=0;--k){
+		multiset<ll> ms(all(ips));
+		for(int i = 1;i<=k;++i){
+			auto it = ms.upper_bound(k-i+1);
+			if(it==ms.begin()) break;
+			else ms.erase(--it);
+			if(ms.size()>0){
+				ll x = *ms.begin();
+				ms.erase(ms.begin());
+				ms.insert(x+k-i+1);	
 			}
-			if(no) break;
-		}
-		if(!no){
-			ans = k;
-			break;
+		} 
+		if(siz(ms)+k==n){
+			cout << k << endl;
+			return;
 		}
 	}
-	cout << ans << endl;    
 }

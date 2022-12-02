@@ -43,23 +43,17 @@ int main(){
 
 void solve(){
 	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
+	vll tmp(n);
+	ll val1=0,val2 = 0;
+	for(int i=0;i<n;++i){
+		cin >> tmp[i];
 	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
+	sort(all(tmp));
+	for(int i=0;i<n-1;++i){
+		val1 = max(val1,tmp[n-1] + tmp[i+1] - 2*tmp[i]);
 	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
+	for(int i=1;i<n-1;++i){
+		val2 = max(val2,2*tmp[i+1] - tmp[i] - tmp[0]);
 	}
-	cout << endl;
+	cout << max(val2,val1) << endl;
 }

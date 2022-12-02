@@ -42,24 +42,26 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
+	ll n,m; cin >> n >> m;
+	ll ans = 1;
+	while(n%10==0){
+		ans*=10;
+		n/=10;
 	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
+	while(n%5==0&&m>=2){
+		ans*=10;
+		n/=5;
+		m>>=1;
 	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
+	while(n%2==0&&m>=5){
+		ans*=10;
+		n/=2;
+		m/=5;
 	}
-	cout << endl;
+	while(m>=10){
+		ans*=10;
+		m/=10;
+	}
+	ans*=(n*m); //leftover n
+	cout << ans << endl;
 }

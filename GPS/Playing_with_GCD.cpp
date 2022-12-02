@@ -43,14 +43,19 @@ int main(){
 
 void solve(){
 	ll n; cin >> n;
-	vll ips(n+2,1);
-	for(int i=1;i<=n;++i) cin >> ips[i];
-	for(int i=1;i<=n+1;++i){
-		if(s.find(__lcm(ips[i],ips[i-1])!=s.end()){
-			cout << "NO" << endl;
-			return;
-		}
-	s.insert(__lcm(ips[i],ips[i-1]));
+	vll ips(n);
+	for(int i=0;i<n;++i){
+		cin >> ips[i];
 	}    
+	for(int i=1;i<n;++i){
+		if(ips[i]<=ips[i-1]){
+			continue;
+		}else{
+			if(ips[i-1]!=1&&ips[i]%(ips[i-1]*ips[i-1])==0){
+				cout << "NO" << endl;
+				return;
+			}
+		}
+	}
 	cout << "YES" << endl;
 }

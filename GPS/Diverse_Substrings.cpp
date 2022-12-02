@@ -43,23 +43,23 @@ int main(){
 
 void solve(){
 	ll n; cin >> n;
-	map<ll,ll> disp;
-	for(int i=1;i<=n;++i){
-		ll tmp; cin >> tmp;
-		disp[tmp] = (n + (i-tmp)%n)%n;
+	string st; cin >> st;
+	vll s(n);
+	ll nod = 0;
+	for(int i=0;i<n;++i){
+		s[i] = st[i]-'0';
+	}    
+	ll ans = 0;
+	for(int i=0;i<n;++i){
+		ll maxf = 0;
+		map<ll,ll> m;
+		ll distnt = 0;
+		for(int j=i;j<n && m[s[j]]<=10;++j){
+			m[s[j]]++;
+			maxf = max(maxf,m[s[j]]);
+			if(m[s[j]]==1) distnt++;
+			if(maxf<=distnt) ans++;
+		}
 	}
-	ll rot = 0;
-	vll ans(n+1);
-	//for(auto val : disp) cout << val.f << " " << val.s << endl;
-	//cout << endl;  
-	for(int i=n;i>0;--i){
-		ll val = (i + (disp[i]-rot)%i)%i;
-		cout << i << " " << val << endl;
-		rot+=val;
-		ans[i] = val;
-	}
-	for(int i=1;i<=n;++i){
-		cout << ans[i] << " ";
-	}
-	cout << endl;
+	cout << ans << endl;
 }
