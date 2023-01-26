@@ -2,17 +2,18 @@
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define ll long long
-# define pb push_back
 # define f first
 # define s second
 # define siz(x) (int)(x).size()
 # define vll vector<ll>
+# define pll pair<ll,ll>
 # define all(x) (x).begin(), (x).end()
 
 using namespace std;
 
-const ll MOD = 1e9 +7;
-const int N = 1e5 + 1;
+const ll MOD = 1e9 + 7;
+const ll INF = 1e18 + 9; 
+const int N = 2e5 + 1;
 
 void setIO(string name) {  
 #ifndef ONLINE_JUDGE
@@ -27,8 +28,7 @@ void solve();
 
 int main(){
 	ios_base::sync_with_stdio(false); 
-	cin.tie(NULL); 
-	cout.tie(NULL);
+	cin.tie(nullptr); 
     setIO("lightson");    //Does not work with Google     
     ll TC = 1;
     //cin >> TC;
@@ -40,67 +40,55 @@ int main(){
 }
 
 // Do something good 
-bool lit[101][101],visited[101][101];
-map<pair<ll,ll>,vector<pair<ll,ll>>> switches;
-ll ans,n,m;
-bool isValid(ll x,ll y){
-	return (x>0&&y>0&&x<=n&&y<=n);
-}
-vector<pair<ll,ll>> moves = {
-	{0,1},{0,-1},
-	{1,0},{-1,0}
+queue<pll> master;
+vector<vll> grid(101,vll(101)),vis(101,vll(101)),on(101,vll(101));
+vector<pll> switches[101][101];
+ll n,m,ans;
+vector<pll> moves = {
+	{-1,0},{1,0},
+	{0,1},{0,-1}
 };
-void turnOn(ll x,ll y);
-void floodfill(ll x,ll y);
 
+bool is_ok(ll x,ll y){
+	return (x>-1&&x<n&&y>-1&&y<n&&on[x][y]);
+}
+void ff(ll x,ll y){
+	if(!is_ok(x,y)) return;
+	if(vis[x][y]) return;
+	else vis[x][y] = 1;
+	for(auto sin : switches[x][y]){
+		if(!on[sin.f][sin.s]) ans++;
+		on[sin.f][sin.s] = 1;
+		for(pll drxn : moves){
+			ll nx = sin.f + drxn.f;
+			ll ny = sin.s + drxn.s;
+			if(is_ok(nx,ny)&&vis[nx][ny]){
+				master.push(sin);
+			}
+		}
+	}
+	for(pll drxn : moves){
+		ll nx = x + drxn.f;
+		ll ny = y + drxn.s;
+		ff(nx,ny);
+	}
+}
 void solve(){
 	cin >> n >> m;
-	lit[1][1] = true;
 	while(m--){
-		ll a,b,c,d; cin >> a >> b >> c >> d;
-		switches[make_pair(a,b)].pb(make_pair(c,d));
-	}	
-	floodfill(1,1);
-	for(int i=1;i<=n;++i){
-		for(int j=1;j<=n;++j){
-			if(lit[i][j]) ans++;
-		}
+		ll x,y,a,b; cin >> x >> y >> a >> b;
+		--x,--y,--a,--b;
+		switches[x][y].emplace_back(make_pair(a,b));
+	} 
+	on[0][0] = 1;
+	master.push(make_pair(0,0));
+	while(!master.empty()){
+		pll go = master.front();
+		// cout << go.f << " " << go.s << endl;
+		ll x = go.f;
+		ll y = go.s;
+		master.pop();
+		ff(x,y);
 	}
-	cout << ans << endl;    
-}
-void turnOn(ll x,ll y){
-	for(auto switchOn : switches[{x,y}]){ 
-		lit[switchOn.f][switchOn.s] = true;
-		bool ok = false;
-		for(auto move : moves){
-			ll cx = x+move.f,cy = y+move.s;
-			if(isValid(cx,cy)&&visited[cx][cy]){
-				ok = true;
-			}
-			if(ok) floodfill(x,y);
-		}
-	}
-}
-void floodfill(ll x,ll y){
-	if(visited[x][y]||!lit[x][y]||!isValid(x,y)) return;
-	else visited[x][y] = true;
-	
-	for(auto switchOn : switches[{x,y}]){ 
-		lit[switchOn.f][switchOn.s] = true;
-		for(auto move : moves){
-			ll nx = switchOn.f+move.f,ny = switchOn.s+move.s;
-			if(visited[nx][ny]){
-				floodfill(switchOn.f,switchOn.s);
-			}
-		}
-	}
-
-	for(auto move : moves){
-		ll cx = x+move.f,cy = y+move.s;
-		if(isValid(cx,cy)){
-			if(lit[cx][cy]){
-				floodfill(cx,cy);
-			}
-		}
-	}
+	cout << ans+1 << endl;
 }

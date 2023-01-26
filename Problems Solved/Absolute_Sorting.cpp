@@ -44,22 +44,52 @@ int main(){
 void solve(){
 	ll n; cin >> n;
 	vll v(n);
-	for(int i=0;i<n;++i) cin >> v[i];
+	for(int i=0;i<n;++i){
+		cin >> v[i];
+	}	    
+	// ll mx = 0,mn = 1e9;
+	// for(int i=0;i<n-1;++i){
+	// 	if(v[i]>v[i+1]){
+	// 		mx = max(mx,((v[i]+v[i+1]+1)/2));
+	// 	}else{
+	// 		mn = min(mn,((v[i]+v[i+1])/2));
+	// 	}
+	// }
+	// auto sch = [&](ll k)->bool{
+	// 	for(int i=0;i<n-1;++i){
+	// 		if(abs(v[i]-k)>abs(v[i+1]-k)){
+	// 			return false;
+	// 		}
+	// 	}
+	// 	return true;	
+	// };
+	// if(sch(mx)) cout << mx << endl;
+	// else if(sch(mn)) cout << mn << endl;
+	// else cout << -1 << endl;
 
-	auto ok = [v,n](ll k)->bool{
-		ll pc = -1;
-		vll t(n);
-
-		for(int i=0;i<n;++i){
-			t[i] = v[i];
-			if(abs(t[i]-k)<pc) return false;
-			t[i] = abs(t[i]-k);
-			pc = t[i];
+	auto sch = [&](ll k)->ll{
+		for(int i=0;i<n-1;++i){
+			if(abs(v[i]-k)>abs(v[i+1]-k)){
+				return i;
+			}
 		}
-		return true;
+		return n;	
 	};
-	if(ok(0)) cout << 0 << endl;
-	else if(ok(1000000000)) cout << 1000000000 << endl;
-	else if(ok((v[0]+v[1]+1)/2)) cout << (v[0]+v[1]+1)/2 << endl;
+	ll s=0,e=1e9,mid;
+	while(e-s>1){
+		mid = s + ((e-s)>>1);
+		ll bad = sch(mid);
+		if(bad==n){
+			cout << mid << endl;
+			return;
+		} 
+		if(v[bad]>v[bad+1]){
+			s = mid+1;
+		}else{
+			e = mid;
+		}
+	}
+	if(sch(s)==n) cout << s << endl;
+	else if(sch(e)==n) cout << e << endl;
 	else cout << -1 << endl;
 }

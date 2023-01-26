@@ -1,65 +1,63 @@
-//Coding_Duck <-> PM <-> REDACTED <-> Blood_Reaper
-
 # include <bits/stdc++.h>
-# define ll long long
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
+# define ll long long
+# define f first
+# define s second
+# define siz(x) (int)(x).size()
+# define vll vector<ll>
+# define pll pair<ll,ll>
+# define all(x) (x).begin(), (x).end()
 
-const ll MOD = 1e9 +7;
 using namespace std;
 
-int bexpo(int n,int p);
+const ll MOD = 1e9 + 7;
+const ll INF = 1e18 + 9; 
+const int N = 2e5 + 1;
 
-map<char,pair<int,int>> sem;
-int top;
-void solve(){
-	string s; cin >> s;
-	for(int i=1;i<=52;++i){
-		if(sem[s[i-1]].first == 0) sem[s[i-1]].first = i;
-		else if(sem[s[i-1]].second == 0) sem[s[i-1]].second = i;
-	}
-
-	int ans = 0;
-	for(auto &val : sem){
-		deb(val.first);
-		cout << val.second.first << " " << val.second.second << endl;
-		for(auto &tmp : sem){
-			if(val.second.first<tmp.second.first&&val.second.second>tmp.second.second) ans++;
-		}
-	}
-	cout << (ans>>1) << endl;
+void setIO(string name) {  
+#ifndef ONLINE_JUDGE
+    if((int)name.size() > 0){
+        freopen((name+".in").c_str(), "r", stdin);
+        freopen((name+".out").c_str(), "w", stdout);
+    }
+#endif
 }
 
+void solve();
+
 int main(){
-
-//for I/O----------------------------------
-
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin); 
-    freopen("output.txt", "w", stdout);
-#endif
-
-//I/O end ---------------------------------
-
-    int TC = 1;
+	ios_base::sync_with_stdio(false); 
+	cin.tie(nullptr); 
+    //setIO("sublime");    //Does not work with Google     
+    ll TC = 1;
     //cin >> TC;
-    while(TC--){
+    for(int i=0;i<TC;++i){
+        //cout << "Case #" << i+1 << ": ";
         solve();
     }
     return 0;
 }
 
+// Do something good 
 
-//Binary Exponention Iterative
-int bexpo(int n,int p){ 
-    int ans = 1,tmp = n;
-    while(p>0){
-        if(p&1) ans = (ans * 1LL * tmp)%MOD;
-        tmp = (tmp * 1LL * tmp)%MOD;
-        p>>=1;
-    }
-    return ans;
+void solve(){
+	ll n; cin >> n;
+	vll l(n+1),r(n+1);
+	vector<vll> dp(n+1,vll(n+1));
+	for(int i=0;i<n;++i){
+		cin >> l[i];
+	}
+	for(int i=0;i<n;++i){
+		cin >> r[i];
+	}
+	for(int i=0;i<n+1;++i){
+		for(int j=0;j<n+1;++j){
+			if(i<n) dp[i+1][j] = max(dp[i+1][j],dp[i][j]);
+			if(j<n) dp[i][j+1] = max(dp[i][j+1],dp[i][j]);
+			if(i<n&&j<n) dp[i+1][j+1] = max(dp[i+1][j+1],dp[i][j] + (abs(l[i]-r[j])<5));
+		}
+	}
+	cout << dp[n][n] << endl;
+
 }

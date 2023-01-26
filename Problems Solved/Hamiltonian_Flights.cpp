@@ -43,22 +43,24 @@ int main(){
 
 void solve(){
 	ll n,m; cin >> n >> m;
-	vector<vll> graph(n);
+	vector<vll> graph(n+1);
 	vector<vll> dp((1<<n),vll(n+1));
 	while(m--){
 		ll a,b; cin >> a >> b;
-		graph[b-1].emplace_back(a-1);
+		graph[b].emplace_back(a);
 	}
 	dp[1][1] = 1;
 	for(int k=2;k<(1<<n);++k){
-		if((k&(1<<(n-1)))&&(k!=(1<<n)-1)) continue;
-		for(int c = 1;c<n;++c){
-			for(auto from : graph[c]){
-				if(k&(1<<from)){
-					(dp[k][c] += dp[k^(1<<c)][from])%=MOD;
+		if((k&(1<<(n-1)))&&(k!=((1<<n)-1))) continue;
+		for(int c=1;c<n+1;++c){
+			if(!(k&(1<<(c-1)))) continue;	//if the city is not even in the subset then wtf are you counting
+			for(auto val : graph[c]){
+				if(k&(1<<(val-1))){		//if this prv node is in the subset then only we can reach this subset state k
+											//as both the source bit and the destination bit should be set
+					(dp[k][c] += dp[k^(1<<(c-1))][val])%=MOD;
 				}
 			}
 		}
 	}
-	cout << dp[(1<<n)-1][n-1] << endl;
+	cout << dp[(1<<n)-1][n] << endl;
 }

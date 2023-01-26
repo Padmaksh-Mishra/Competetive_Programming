@@ -24,6 +24,10 @@ void setIO(string name) {
 #endif
 }
 
+struct anstype{
+	ll a,b,c;
+};
+
 void solve();
 
 int main(){
@@ -43,5 +47,51 @@ int main(){
 
 void solve(){
 	ll n,m; cin >> n >> m;
-		    
+	vector<vll> v(n,vll(m+1));
+	ll totalOnes = 0;
+	for(int i=0;i<n;++i){
+		ll o=0;
+		for(int j=0;j<m;++j){
+			cin >> v[i][j];
+			o+=(v[i][j]==1);
+			// cout << v[i][j] << " ";
+		}
+		v[i][m] = o;
+		totalOnes+=o;
+		// cout << v[i][m] << endl;
+	}	    
+	if(totalOnes%n){
+		cout << -1 << endl;
+		return;
+	}
+	ll need = totalOnes/n;
+	ll e=0,d=0;
+	vector<anstype> answer;
+	for(;e<n&&d<n;){
+		for(int i=0;i<m;++i){
+			if(v[d][m]-need >= 0){
+				d++;
+				break;
+			}
+			if(v[e][m]-need <= 0){
+				e++;
+				break;
+			}
+			if(v[d][i]==0&&v[e][i]==1){
+				// cout << "HI" << endl;
+				v[d][i]=1;
+				v[e][i]=0;
+				v[d][m]++;
+				v[e][m]--;
+				anstype tmp = {e+1,d+1,i+1};
+				answer.emplace_back(tmp);
+			}
+		}
+		// deb(e);
+		// deb(d);
+	}
+	cout << siz(answer) << endl;
+	for(auto ans : answer){
+		cout << ans.a << " " << ans.b << " " << ans.c << endl;
+	}
 }
