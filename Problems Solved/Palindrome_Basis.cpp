@@ -25,6 +25,9 @@ void setIO(string name) {
 }
 
 void solve();
+ll maxval;
+vll vals;
+vector<vll> dp(40001,vll(600,0));
 
 int main(){
 	ios_base::sync_with_stdio(false); 
@@ -32,6 +35,38 @@ int main(){
     //setIO("sublime");    //Does not work with Google     
     ll TC = 1;
     cin >> TC;
+
+    for(int i=1;i<10;++i){
+    	vals.emplace_back(1*i);
+    	vals.emplace_back(11*i);    	
+    }
+    for(int i=1;i<10;++i){
+    	for(int j=0;j<10;++j){
+    		vals.emplace_back(101*i+10*j);
+	    	vals.emplace_back(1001*i+110*j);
+    	}
+    }
+    for(int i=1;i<5;++i){
+    	for(int j=0;j<10;++j){
+    		for(int k=0;k<10;++k){
+    			vals.emplace_back(10001*i+1010*j+100*k);
+    		}
+    	}
+    }
+    maxval = siz(vals);
+    // deb(maxval);
+    ll maxs = 40000;
+    sort(all(vals));
+   
+    dp[0][0]=1;
+    for(int v=0;v<maxval+1;++v){
+    	for(int s=0;s<maxs+1;++s){
+    		if(v<maxval) dp[s][v+1]=(dp[s][v+1]+dp[s][v])%MOD;
+    		if(v>0&&s+vals[v-1]<maxs+1) dp[s+vals[v-1]][v]=(dp[s+vals[v-1]][v]+dp[s][v])%MOD;
+    	}
+    }
+
+
     for(int i=0;i<TC;++i){
         //cout << "Case #" << i+1 << ": ";
         solve();
@@ -42,29 +77,6 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n,h; cin >> n >> h;
-	vll a(n);
-	for(int i=0;i<n;++i){
-		cin >> a[i];
-	}	    
-	sort(all(a));
-	auto points = [&](string seq)->ll{
-		ll score = 0;
-		ll pow = h;
-		ll t=0;
-		for(int i=0;i<n;++i){
-			if(pow<=a[i]){
-				if(t<3) pow = pow*((2*(seq[t]=='G'))+(3*(seq[t]=='B')));
-				else return score;
-				i--;
-				t++;
-			}else{
-				score++;
-				pow+=(a[i]>>1);
-			}
-		}
-		return score;
-	};
-	ll ans = max({points("BGG"),points("GGB"),points("GBG")});
-	cout << ans << endl;
+	ll n; cin >> n;
+	cout << dp[n][maxval]%MOD << endl;	    
 }

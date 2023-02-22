@@ -1,4 +1,8 @@
 # include <bits/stdc++.h>
+# include <ext/pb_ds/assoc_container.hpp>
+# include <ext/pb_ds/tree_policy.hpp>
+
+// shortcuts
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define ll long long
@@ -9,12 +13,24 @@
 # define pll pair<ll,ll>
 # define all(x) (x).begin(), (x).end()
 
+//namespaces
+using namespace __gnu_pbds;
 using namespace std;
 
+//templates
+template<typename T>
+using ordered_set= tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
+template<typename T>
+using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag, tree_order_statistics_node_update>; //less_equal=ms can have duplicates
+//order_of_key (K): Number of items strictly smaller than K.
+//find_by_order(k): Kth element in a Set (counting from zero).
+
+//Usefull constants
 const ll MOD = 1e9 + 7;
 const ll INF = 1e18 + 9; 
 const int N = 2e5 + 1;
 
+//for fileIO judges
 void setIO(string name) {  
 #ifndef ONLINE_JUDGE
     if((int)name.size() > 0){
@@ -42,29 +58,17 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n,h; cin >> n >> h;
-	vll a(n);
+	ll n; cin >> n;
+	vll v(n);
 	for(int i=0;i<n;++i){
-		cin >> a[i];
-	}	    
-	sort(all(a));
-	auto points = [&](string seq)->ll{
-		ll score = 0;
-		ll pow = h;
-		ll t=0;
-		for(int i=0;i<n;++i){
-			if(pow<=a[i]){
-				if(t<3) pow = pow*((2*(seq[t]=='G'))+(3*(seq[t]=='B')));
-				else return score;
-				i--;
-				t++;
-			}else{
-				score++;
-				pow+=(a[i]>>1);
-			}
-		}
-		return score;
-	};
-	ll ans = max({points("BGG"),points("GGB"),points("GBG")});
-	cout << ans << endl;
+		cin >> v[i];
+	}
+	ll crossings = 0;
+	ordered_multiset<ll> ms;
+	for(int i=0;i<n;++i){
+
+		crossings+=ms.size()-ms.order_of_key(v[i]);
+		ms.insert(v[i]);
+	}	
+	cout << crossings << endl;
 }

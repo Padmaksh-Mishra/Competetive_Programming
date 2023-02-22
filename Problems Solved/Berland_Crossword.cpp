@@ -43,25 +43,31 @@ int main(){
 
 void solve(){
 	ll n; cin >> n;
-	ll u,r,d,l; cin >> u >> r >> d >> l;
-	if(u>n||r>n||d>n||l>n){
-		cout << "NO" << endl;
-		return;
-	}
-	if(n==2){
-		if((l==2||r==2)&&(u<1||d<1)){
-			cout << "NO" << endl;
+	ll mu,mr,md,ml; cin >> mu >> mr >> md >> ml;
+	
+	for(int i=0;i<16;++i){
+		ll u = mu,d=md,l=ml,r=mr;
+		if(i&1){
+			u--;
+			l--;
+		}
+		if(i&2){
+			d--;
+			l--;
+		}
+		if(i&4){
+			d--;
+			r--;
+		}
+		if(i&8){
+			u--;
+			r--;
+		}
+		if(min({u,r,l,d})>=0&&max({u,r,l,d})<=n-2){
+			cout << "YES" << endl;
 			return;
 		}
-	}	    
-	if(l+r<(u+d-2*n+4)){
-		cout << "NO" << endl;
-		return;
-	}
-	if(u+d<(l+r-2*n+4)){
-		cout << "NO" << endl;
-		return;
 	}
 
-	cout << "YES" << endl;
+	cout << "NO" << endl;
 }

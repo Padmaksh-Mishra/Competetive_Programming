@@ -42,29 +42,17 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n,h; cin >> n >> h;
-	vll a(n);
+	ll n; cin >> n;
+	string s; cin >> s;
+	ll o=0;
 	for(int i=0;i<n;++i){
-		cin >> a[i];
-	}	    
-	sort(all(a));
-	auto points = [&](string seq)->ll{
-		ll score = 0;
-		ll pow = h;
-		ll t=0;
-		for(int i=0;i<n;++i){
-			if(pow<=a[i]){
-				if(t<3) pow = pow*((2*(seq[t]=='G'))+(3*(seq[t]=='B')));
-				else return score;
-				i--;
-				t++;
-			}else{
-				score++;
-				pow+=(a[i]>>1);
-			}
-		}
-		return score;
-	};
-	ll ans = max({points("BGG"),points("GGB"),points("GBG")});
-	cout << ans << endl;
+		o+=(s[i]=='1');
+	}	   
+	if(o==2||o==3){
+		cout << "YES" << endl;
+	}else if(o==1&&n>2){
+		if(s[n-1]==s[n-2]&&s[n-2]=='0'){
+			cout << "YES" << endl;
+		}else cout << "NO" << endl;
+	}else cout << "NO" << endl;
 }

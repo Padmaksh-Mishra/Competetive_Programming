@@ -11,7 +11,7 @@
 
 using namespace std;
 
-const ll MOD = 1e9 + 7;
+const ll MOD = 998244353;
 const ll INF = 1e18 + 9; 
 const int N = 2e5 + 1;
 
@@ -42,29 +42,26 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n,h; cin >> n >> h;
-	vll a(n);
-	for(int i=0;i<n;++i){
-		cin >> a[i];
-	}	    
-	sort(all(a));
-	auto points = [&](string seq)->ll{
-		ll score = 0;
-		ll pow = h;
-		ll t=0;
-		for(int i=0;i<n;++i){
-			if(pow<=a[i]){
-				if(t<3) pow = pow*((2*(seq[t]=='G'))+(3*(seq[t]=='B')));
-				else return score;
-				i--;
-				t++;
-			}else{
-				score++;
-				pow+=(a[i]>>1);
+	ll n; cin >> n;
+	ll h = (n>>1);
+	vector<vector<vll>> dp(h+1,vector<vll> (h+1,vll(3,0)));
+	dp[0][0][0] = 1;
+	for(int a=0;a<h+1;++a){
+		for(int b=0;b<h+1;++b){
+			for(int c=0;c<3;++c){
+				if(c==0){
+					ll turn = (a+b)%4;
+					ll chance;
+					if(turn==1||turn==2) chance = 1;
+					else if(turn==3||turn==0) chance = 2;
+					if(a<h) dp[a+1][b][1*(chance!=1)]+=dp[a][b][0];
+					if(b<h) dp[a][b+1][2*(chance!=2)]+=dp[a][b][0];
+				}else{
+					if(a<h) dp[a+1][b][c]+=dp[a][b][c];
+					if(b<h) dp[a][b+1][c]+=dp[a][b][c];
+				}
 			}
 		}
-		return score;
-	};
-	ll ans = max({points("BGG"),points("GGB"),points("GBG")});
-	cout << ans << endl;
+	}	    
+	cout << dp[h][h][1]%MOD << " " << dp[h][h][2]%MOD << " " << dp[h][h][0] << endl;
 }

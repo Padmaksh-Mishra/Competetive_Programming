@@ -31,7 +31,7 @@ int main(){
 	cin.tie(nullptr); 
     //setIO("sublime");    //Does not work with Google     
     ll TC = 1;
-    cin >> TC;
+    //cin >> TC;
     for(int i=0;i<TC;++i){
         //cout << "Case #" << i+1 << ": ";
         solve();
@@ -42,29 +42,52 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n,h; cin >> n >> h;
-	vll a(n);
-	for(int i=0;i<n;++i){
-		cin >> a[i];
+	ll n,m; cin >> n >> m;
+	vll graph[n];
+	while(m--){
+		ll a,b; cin >> a >> b;
+		a--,b--;
+		graph[a].emplace_back(b);
+		graph[b].emplace_back(a);
 	}	    
-	sort(all(a));
-	auto points = [&](string seq)->ll{
-		ll score = 0;
-		ll pow = h;
-		ll t=0;
-		for(int i=0;i<n;++i){
-			if(pow<=a[i]){
-				if(t<3) pow = pow*((2*(seq[t]=='G'))+(3*(seq[t]=='B')));
-				else return score;
-				i--;
-				t++;
-			}else{
-				score++;
-				pow+=(a[i]>>1);
+	bool cycle = false;
+	vll par(n);
+	vll vis(n);
+	auto bfs = [&](ll v){
+		queue<ll> q;
+		q.push(v);
+		while(!q.empty()){
+			ll node = q.front();
+			q.pop();
+			for(auto child : graph[node]){
+				deb(child);
+				if(vis[child]){
+					cycle = true;
+					vll ans;
+					while(child!=-1){
+						ans.push_back(child);
+						child = par[child];
+					}
+					deb(siz(ans));
+					reverse(all(ans));
+					for(auto val : ans){
+						cout << val << " ";
+					}
+					cout << endl;
+					return;
+				}
+				vis[child] = 1;
+				par[child] = node;
+				q.push(child);
 			}
 		}
-		return score;
 	};
-	ll ans = max({points("BGG"),points("GGB"),points("GBG")});
-	cout << ans << endl;
+	for(int i=0;i<n;++i){
+		if(cycle) return;
+		fill(all(vis),0);
+		fill(all(par),-1);
+		vis[i] = 1;
+		bfs(i);
+	}
+	cout << "IMPOSSIBLE" << endl;
 }

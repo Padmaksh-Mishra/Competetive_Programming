@@ -42,29 +42,27 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n,h; cin >> n >> h;
-	vll a(n);
+	ll n; cin >> n;
+	vector<vll> v(n,vll(n));
 	for(int i=0;i<n;++i){
-		cin >> a[i];
-	}	    
-	sort(all(a));
-	auto points = [&](string seq)->ll{
-		ll score = 0;
-		ll pow = h;
-		ll t=0;
-		for(int i=0;i<n;++i){
-			if(pow<=a[i]){
-				if(t<3) pow = pow*((2*(seq[t]=='G'))+(3*(seq[t]=='B')));
-				else return score;
-				i--;
-				t++;
-			}else{
-				score++;
-				pow+=(a[i]>>1);
-			}
+		for(int j=0;j<n-1;++j){
+			ll tmp; cin >> tmp;
+			tmp--;
+			v[j][tmp]++;
 		}
-		return score;
-	};
-	ll ans = max({points("BGG"),points("GGB"),points("GBG")});
-	cout << ans << endl;
+	}	    
+	vll ans(n);
+	vector<pll> val(n);
+	for(int i=0;i<n;++i){
+		ll tmp = 0;
+		for(int j=0;j<n;++j){
+			tmp+=v[j][i]*j;
+			val[i] = make_pair(tmp,i);
+		}
+	}
+	sort(all(val));
+	for(int i=0;i<n;++i){
+		cout << val[i].s+1 << " " ;
+	}
+	cout << endl; 
 }

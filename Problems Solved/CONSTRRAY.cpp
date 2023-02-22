@@ -59,35 +59,19 @@ int main(){
 
 void solve(){
 	ll n; cin >> n;
-	vll a(n),b(n);
-	for(int i=0;i<n;++i){
-		cin >> a[i];
-	}	    
-	for(int i=0;i<n;++i){
-		cin >> b[i];
+	if(n%2==1){
+		cout << -1 << endl;
+	}else{
+		vll ans(n);
+		ll h = (n/2);
+		for(int i=0;i<h;++i){
+			ans[i] = i+1;
+			ans[n-i-1] = -(i+1);
+			if(i%2) swap(ans[i],ans[n-i-1]);
+		}
+		for(auto val : ans){
+			cout << val << " ";
+		}
+		cout << endl;
 	}
-	ll bfa1,bfan,bfb1,bfbn;
-	bfbn=bfb1=bfan=bfa1=INF;
-	for(int j=1;j<n-1;++j){
-		bfa1 = min(abs(a[0]-b[j]),bfa1);
-	}
-	for(int j=1;j<n-1;++j){
-		bfan = min(abs(a[n-1]-b[j]),bfan);
-	}
-	for(int j=1;j<n-1;++j){
-		bfb1 = min(abs(a[j]-b[0]),bfb1);
-	}
-	for(int j=1;j<n-1;++j){
-		bfbn = min(abs(a[j]-b[n-1]),bfbn);
-	}
-
-	ll ans = min({abs(a[0]-b[0])+abs(a[n-1]-b[n-1]),
-					abs(a[0]-b[n-1])+abs(a[n-1]-b[0]),
-					abs(a[0]-b[0])+bfan+bfbn,
-					abs(a[n-1]-b[n-1])+bfa1+bfb1,
-					abs(a[0]-b[n-1])+bfan+bfb1,
-					abs(a[n-1]-b[0])+bfa1+bfbn,
-					bfa1+bfan+bfb1+bfbn});
-
-	cout << ans << endl;
 }

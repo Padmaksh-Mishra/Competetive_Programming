@@ -58,36 +58,26 @@ int main(){
 // Doing something good 
 
 void solve(){
-	ll n; cin >> n;
-	vll a(n),b(n);
-	for(int i=0;i<n;++i){
-		cin >> a[i];
-	}	    
-	for(int i=0;i<n;++i){
-		cin >> b[i];
+	ll n,k; cin >> n >> k;
+	vll ans(n);
+	for(ll i=0;i<(n>>1ll);++i){
+		ans[i] = n-i-1;
 	}
-	ll bfa1,bfan,bfb1,bfbn;
-	bfbn=bfb1=bfan=bfa1=INF;
-	for(int j=1;j<n-1;++j){
-		bfa1 = min(abs(a[0]-b[j]),bfa1);
+	if(k==3&&n==4){
+		cout << -1 << endl;
+	}else if(k==n-1){
+		cout << n-1 << " " << n-2 << endl;
+		cout << n-3 << " " << 1 << endl;
+		ans[0] = 2;
+		for(int i=0;i<(n>>1);++i){
+			if(i!=1&&i!=2) cout << i << " " << ans[i] << endl;
+		}
 	}
-	for(int j=1;j<n-1;++j){
-		bfan = min(abs(a[n-1]-b[j]),bfan);
+	else{
+		cout << n-1 << " " << k << endl;
+		ans[0] = n-k-1;
+		for(int i=0;i<(n>>1);++i){
+			if(i!=min(k,n-k-1)) cout << i << " " << ans[i] << endl;
+		}
 	}
-	for(int j=1;j<n-1;++j){
-		bfb1 = min(abs(a[j]-b[0]),bfb1);
-	}
-	for(int j=1;j<n-1;++j){
-		bfbn = min(abs(a[j]-b[n-1]),bfbn);
-	}
-
-	ll ans = min({abs(a[0]-b[0])+abs(a[n-1]-b[n-1]),
-					abs(a[0]-b[n-1])+abs(a[n-1]-b[0]),
-					abs(a[0]-b[0])+bfan+bfbn,
-					abs(a[n-1]-b[n-1])+bfa1+bfb1,
-					abs(a[0]-b[n-1])+bfan+bfb1,
-					abs(a[n-1]-b[0])+bfa1+bfbn,
-					bfa1+bfan+bfb1+bfbn});
-
-	cout << ans << endl;
 }

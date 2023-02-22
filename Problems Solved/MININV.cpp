@@ -43,22 +43,19 @@ int main(){
 
 void solve(){
 	ll n; cin >> n;
-	multiset<ll,greater<ll>> s;
-	vll peop(n);
+	vll v(n),p(n+2),s(n+2);
 	for(int i=0;i<n;++i){
 		ll tmp; cin >> tmp;
-		auto it = s.lower_bound(tmp);
-		auto it2 = s.lower_bound(tmp+1);
-		ll noeletm = distance(it2,it);
-		if(noeletm==0) s.insert(tmp);
-		peop[i] = noeletm;
+		v[i] = tmp;
+		s[tmp]++;
 	}	    
-	ll msum = 0,sum = 0;
-	for(auto val : peop){
-		if(val>0){
-			sum+=val;
-		}else msum = max(msum,sum);
+	ll invdiff = 0,ans=0;
+	for(int i=0;i<n;++i){
+		invdiff-=(p[v[i]+1]);
+		p[v[i]]++;
+		invdiff+=(s[v[i]-1]);
+		s[v[i]]--;
+		ans = max(ans,invdiff);
 	}
-	msum = max(sum,msum);
-	cout << msum << endl;
+	cout << ans << endl;
 }

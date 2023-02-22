@@ -31,7 +31,7 @@ int main(){
 	cin.tie(nullptr); 
     //setIO("sublime");    //Does not work with Google     
     ll TC = 1;
-    cin >> TC;
+    //cin >> TC;
     for(int i=0;i<TC;++i){
         //cout << "Case #" << i+1 << ": ";
         solve();
@@ -42,29 +42,39 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n,h; cin >> n >> h;
-	vll a(n);
-	for(int i=0;i<n;++i){
-		cin >> a[i];
+	string s,t; cin >> s >> t;
+	cin >> s >> t;
+	ll n = siz(s);
+	ll m = siz(t);
+	string sp = s.substr(0,m);
+	string ss = s.substr(n-m);
+	vll p(m),sx(m);
+	for(int i=0;i<m;++i){
+		p[i] = (t[i]==sp[i]||t[i]=='?'||sp[i]=='?');
+		sx[i] = (t[i]==ss[i]||t[i]=='?'||ss[i]=='?');
 	}	    
-	sort(all(a));
-	auto points = [&](string seq)->ll{
-		ll score = 0;
-		ll pow = h;
-		ll t=0;
-		for(int i=0;i<n;++i){
-			if(pow<=a[i]){
-				if(t<3) pow = pow*((2*(seq[t]=='G'))+(3*(seq[t]=='B')));
-				else return score;
-				i--;
-				t++;
-			}else{
-				score++;
-				pow+=(a[i]>>1);
-			}
-		}
-		return score;
-	};
-	ll ans = max({points("BGG"),points("GGB"),points("GBG")});
-	cout << ans << endl;
+	vll prfp(m+1),sufs(m+1);
+	prfp[0]=0;
+	for(int i=1;i<m+1;++i){
+		prfp[i] = prfp[i-1] + p[i-1];
+	}
+	sufs[m] = 0;
+	for(int i=m-1;i>-1;--i){
+		sufs[i] = sufs[i+1] + sx[i];
+	}
+	// deb(sp);
+	// for(auto val : prfp){
+	// 	cout << val << " ";
+	// }
+	// cout << endl;
+	// deb(ss);
+	// for(auto val : sufs){
+	// 	cout << val << " ";
+	// }
+	// cout << endl;
+	for(int i=0;i<m+1;++i){
+		if(prfp[i]+sufs[i]==m){
+			cout << "Yes" << endl;
+		}else cout << "No" << endl;
+	}
 }

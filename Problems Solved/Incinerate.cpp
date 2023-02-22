@@ -42,29 +42,47 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n,h; cin >> n >> h;
-	vll a(n);
+	ll n,k; cin >> n >> k;
+	vll v(n);
 	for(int i=0;i<n;++i){
-		cin >> a[i];
+		cin >> v[i];
+	}
+	vector<pll> p(n);
+	for(int i=0;i<n;++i){
+		ll pwr; cin >> pwr;
+		p[i] = make_pair(v[i],pwr);
 	}	    
-	sort(all(a));
-	auto points = [&](string seq)->ll{
-		ll score = 0;
-		ll pow = h;
-		ll t=0;
-		for(int i=0;i<n;++i){
-			if(pow<=a[i]){
-				if(t<3) pow = pow*((2*(seq[t]=='G'))+(3*(seq[t]=='B')));
-				else return score;
-				i--;
-				t++;
-			}else{
-				score++;
-				pow+=(a[i]>>1);
-			}
+	ll d = k;
+	ll dmgyet = k;
+	sort(all(p),[](pll a,pll b)->bool{
+		if(a.s>b.s){
+			return true;
+		}else if(a.f==b.f){
+			return(a.f<b.f);
 		}
-		return score;
-	};
-	ll ans = max({points("BGG"),points("GGB"),points("GBG")});
-	cout << ans << endl;
+		return false;
+	});
+	while(siz(p)){
+		ll helth = p.back().f;
+		ll pwr = p.back().s;
+		// deb(val);
+		while(helth-dmgyet<1){
+			p.pop_back();
+			if(siz(p)==0){
+				cout << "YES" << endl;
+				return;
+			}
+			helth = p.back().f;
+			pwr = p.back().s;
+		}
+		d-=pwr;
+		dmgyet+=d;
+
+		if(siz(p)&&d<=0){
+			// deb(d);
+			cout << "NO" << endl;
+			return;
+		}
+	}
+	cout << "YES" << endl;
 }

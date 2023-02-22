@@ -42,29 +42,21 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n,h; cin >> n >> h;
-	vll a(n);
+	ll n; cin >> n;
+	vll m(n);
 	for(int i=0;i<n;++i){
-		cin >> a[i];
+		cin >> m[i];
 	}	    
-	sort(all(a));
-	auto points = [&](string seq)->ll{
-		ll score = 0;
-		ll pow = h;
-		ll t=0;
-		for(int i=0;i<n;++i){
-			if(pow<=a[i]){
-				if(t<3) pow = pow*((2*(seq[t]=='G'))+(3*(seq[t]=='B')));
-				else return score;
-				i--;
-				t++;
-			}else{
-				score++;
-				pow+=(a[i]>>1);
-			}
+	sort(all(m));
+	multiset<ll> ms;
+	for(int i=0;i<n;++i){
+		auto it = ms.find(m[i]-1);
+		if(it==ms.end()){
+			ms.insert(m[i]);
+		}else{
+			ms.erase(it);
+			ms.insert(m[i]);
 		}
-		return score;
-	};
-	ll ans = max({points("BGG"),points("GGB"),points("GBG")});
-	cout << ans << endl;
+	}
+	cout << siz(ms) << endl;
 }

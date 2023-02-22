@@ -59,35 +59,39 @@ int main(){
 
 void solve(){
 	ll n; cin >> n;
-	vll a(n),b(n);
+	map<pll,ll> m;
+	ll lol = INF,llv = INF,hr = -INF,hrv = INF;
+	ll lenc = INF,len = -INF;
 	for(int i=0;i<n;++i){
-		cin >> a[i];
+		ll l,r,c; cin >> l >> r >> c;
+		if(l<lol){
+			lol = l;
+			llv = c;
+		}else if(l==lol){
+			llv = min(llv,c);
+		}
+		if(r>hr){
+			hr = r;
+			hrv = c;
+		}else if(r==hr){
+			hrv = min(hrv,c);
+		}
+		ll ans = llv+hrv;
+
+		// O(nlogn)
+		// if(lol==l&&hr==r) ans=min(ans,c);
+		// if(m[{lol,hr}]!=0) m[{lol,hr}] = min(m[{lol,hr}],ans);
+		// else m[{lol,hr}] = ans;
+		// cout << m[{lol,hr}] << endl;
+		
+		//OPTIMIZATION--> O(n)
+		if(len<(r-l+1)){
+			len = r-l+1;
+			lenc = c;	
+		}else if(len==r-l+1){
+			lenc = min(lenc,c);
+		}
+		if(len==hr-lol+1) ans = min(lenc,ans);
+		cout << ans << endl;
 	}	    
-	for(int i=0;i<n;++i){
-		cin >> b[i];
-	}
-	ll bfa1,bfan,bfb1,bfbn;
-	bfbn=bfb1=bfan=bfa1=INF;
-	for(int j=1;j<n-1;++j){
-		bfa1 = min(abs(a[0]-b[j]),bfa1);
-	}
-	for(int j=1;j<n-1;++j){
-		bfan = min(abs(a[n-1]-b[j]),bfan);
-	}
-	for(int j=1;j<n-1;++j){
-		bfb1 = min(abs(a[j]-b[0]),bfb1);
-	}
-	for(int j=1;j<n-1;++j){
-		bfbn = min(abs(a[j]-b[n-1]),bfbn);
-	}
-
-	ll ans = min({abs(a[0]-b[0])+abs(a[n-1]-b[n-1]),
-					abs(a[0]-b[n-1])+abs(a[n-1]-b[0]),
-					abs(a[0]-b[0])+bfan+bfbn,
-					abs(a[n-1]-b[n-1])+bfa1+bfb1,
-					abs(a[0]-b[n-1])+bfan+bfb1,
-					abs(a[n-1]-b[0])+bfa1+bfbn,
-					bfa1+bfan+bfb1+bfbn});
-
-	cout << ans << endl;
 }

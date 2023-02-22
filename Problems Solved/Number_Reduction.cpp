@@ -42,29 +42,46 @@ int main(){
 // Do something good 
 
 void solve(){
-	ll n,h; cin >> n >> h;
-	vll a(n);
+	string s; cin >> s;
+	ll n = siz(s);
+	vll hsh(n);
+	ll k; cin >> k;
+	vector<vll> v;
 	for(int i=0;i<n;++i){
-		cin >> a[i];
-	}	    
-	sort(all(a));
-	auto points = [&](string seq)->ll{
-		ll score = 0;
-		ll pow = h;
-		ll t=0;
-		for(int i=0;i<n;++i){
-			if(pow<=a[i]){
-				if(t<3) pow = pow*((2*(seq[t]=='G'))+(3*(seq[t]=='B')));
-				else return score;
-				i--;
-				t++;
-			}else{
-				score++;
-				pow+=(a[i]>>1);
+		ll w = 0;
+		ll m = s[i]-'0';
+		ll j = i;
+		deb(m);
+		while(s[i+1]=='0'&&i<n-1){
+			w++;
+			i++;
+		}
+		//i--;
+		vll tmp = {m,w,j};
+		v.emplace_back(tmp);
+	}
+	sort(all(v),[](vll a,vll b)->bool{
+		if(a[0]==b[0]){
+			return b[1]>a[1];
+		}
+		return a[0]>b[0];
+	});
+	for(auto val : v){
+		cout << val[0] << " " << val[1] << " " << val[2] << endl;
+		ll w = val[1];
+		ll m = val[0];
+		ll j = val[2];
+		if(k>w){
+			for(int i=j;i<j+w+1;++i){
+				hsh[i]=1;
+				k--;
 			}
 		}
-		return score;
-	};
-	ll ans = max({points("BGG"),points("GGB"),points("GBG")});
-	cout << ans << endl;
+	}
+	for(int i=0;i<n;++i){
+		if(hsh[i]==0){
+			cout << s[i];
+		}
+	}
+	cout << endl;
 }

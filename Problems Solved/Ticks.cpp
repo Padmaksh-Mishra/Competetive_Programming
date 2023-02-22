@@ -28,7 +28,7 @@ using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag, tree_order_
 //Constants
 const ll MOD = 1e9 + 7;
 const ll INF = 1e18 + 9; 
-const int N = 2e5 + 1;  //it's better than me <FORNOW> :) 
+const int N = 2e5 + 1;   
 
 //For fileIO
 void setIO(string name) {  
@@ -38,6 +38,19 @@ void setIO(string name) {
         freopen((name+".out").c_str(), "w", stdout);
     }
 #endif
+}
+
+//bexpo
+ll binpow(ll a, ll b, ll m) {
+    a %= m;
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1)
+            res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
 }
 
 void solve();
@@ -58,36 +71,55 @@ int main(){
 // Doing something good 
 
 void solve(){
-	ll n; cin >> n;
-	vll a(n),b(n);
+	ll n,m,k; cin >> n >> m >> k;
+	vector<string> v(n);
+	vector<vll> vis(n,vll(m,0));
 	for(int i=0;i<n;++i){
-		cin >> a[i];
+		cin >> v[i];
 	}	    
 	for(int i=0;i<n;++i){
-		cin >> b[i];
+		for(int j=0;j<m;++j){
+			if(v[i][j]=='*'){
+				//ls
+				ll ls = 0;
+				while(true){
+					if(v[i-ls][j-ls]=='*'){
+						ls++;
+					}else break;
+					if(i-ls<0||j-ls<0){
+						break;
+					}
+				}
+				//rs
+				ll rs = 0;
+				while(true){
+					if(v[i-rs][j+rs]=='*'){
+						rs++;
+					}else break;
+					if(i-rs<0||j+rs>m-1){
+						break;
+					}
+				}
+				// cout << ls << " " << rs << endl;
+				ll dist = min(ls,rs);
+				if(dist>k){
+					while(dist>0){
+						vis[i-dist+1][j-dist+1]++;
+						if(dist) vis[i-dist+1][j+dist-1]++;
+						dist--;
+					}
+				}
+			}
+		}
 	}
-	ll bfa1,bfan,bfb1,bfbn;
-	bfbn=bfb1=bfan=bfa1=INF;
-	for(int j=1;j<n-1;++j){
-		bfa1 = min(abs(a[0]-b[j]),bfa1);
+	for(int i=0;i<n;++i){
+		for(int j=0;j<m;++j){
+			if(v[i][j]=='*'&&vis[i][j]<1){
+				cout << "NO" << endl;
+				return;
+			}
+		}
 	}
-	for(int j=1;j<n-1;++j){
-		bfan = min(abs(a[n-1]-b[j]),bfan);
-	}
-	for(int j=1;j<n-1;++j){
-		bfb1 = min(abs(a[j]-b[0]),bfb1);
-	}
-	for(int j=1;j<n-1;++j){
-		bfbn = min(abs(a[j]-b[n-1]),bfbn);
-	}
-
-	ll ans = min({abs(a[0]-b[0])+abs(a[n-1]-b[n-1]),
-					abs(a[0]-b[n-1])+abs(a[n-1]-b[0]),
-					abs(a[0]-b[0])+bfan+bfbn,
-					abs(a[n-1]-b[n-1])+bfa1+bfb1,
-					abs(a[0]-b[n-1])+bfan+bfb1,
-					abs(a[n-1]-b[0])+bfa1+bfbn,
-					bfa1+bfan+bfb1+bfbn});
-
-	cout << ans << endl;
+	cout << "YES" << endl;
+	return;
 }

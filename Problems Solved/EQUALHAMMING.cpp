@@ -40,31 +40,36 @@ int main(){
 }
 
 // Do something good 
+long long C(int n, int r) {
+    if(r > n - r) r = n - r; // because C(n, r) == C(n, n - r)
+    long long ans = 1;
+    int i;
 
+    for(i = 1; i <= r; i++) {
+        ans = (ans*(n - r + i))%MOD;
+        ans /= i;
+    }
+
+    return ans;
+}
 void solve(){
-	ll n,h; cin >> n >> h;
-	vll a(n);
+	ll n; cin >> n;
+	string a,b; cin >> a;
+	cin >> b;
+	ll mul=1,diff=0;
+
 	for(int i=0;i<n;++i){
-		cin >> a[i];
-	}	    
-	sort(all(a));
-	auto points = [&](string seq)->ll{
-		ll score = 0;
-		ll pow = h;
-		ll t=0;
-		for(int i=0;i<n;++i){
-			if(pow<=a[i]){
-				if(t<3) pow = pow*((2*(seq[t]=='G'))+(3*(seq[t]=='B')));
-				else return score;
-				i--;
-				t++;
-			}else{
-				score++;
-				pow+=(a[i]>>1);
-			}
+		if(a[i]==b[i]){
+			mul=(mul*2)%MOD;
+		}else{
+			diff++;
 		}
-		return score;
-	};
-	ll ans = max({points("BGG"),points("GGB"),points("GBG")});
+	}	    
+	// deb(difmul);
+	if(diff%2){
+		cout << 0 << endl;
+		return;
+	}
+	ll ans = mul*(mul!=1) + C(diff,diff>>1)*(diff!=0);
 	cout << ans << endl;
 }
