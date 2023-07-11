@@ -1,19 +1,37 @@
 # include <bits/stdc++.h>
+# include <ext/pb_ds/assoc_container.hpp>
+# include <ext/pb_ds/tree_policy.hpp>
+
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define ll long long
-# define pb push_back
 # define f first
 # define s second
-# define siz(x) (int)(x).size()
+# define siz(x) (ll)(x).size()
 # define vll vector<ll>
+# define pll pair<ll,ll>
 # define all(x) (x).begin(), (x).end()
+# define YES cout<<"Yes"<<endl
+# define NO cout<<"No"<<endl
 
+//Namespaces
+using namespace __gnu_pbds;
 using namespace std;
 
-const ll MOD = 1e9 +7;
-const int N = 1e5 + 1;
+//Templates
+template<typename T>
+using ordered_set= tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
+template<typename T>
+using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag, tree_order_statistics_node_update>; //less_equal=ms can have duplicates
+//order_of_key (K): Number of items strictly smaller than K.
+//find_by_order(K): Kth element in a Set (counting from zero).
 
+//Constants
+const ll MOD = 1e9 + 7;
+const ll INF = 1e18 + 9; 
+const ll N = 2e5 + 1;   
+
+//For fileIO
 void setIO(string name) {  
 #ifndef ONLINE_JUDGE
     if((int)name.size() > 0){
@@ -23,13 +41,25 @@ void setIO(string name) {
 #endif
 }
 
+//bexpo
+ll binpow(ll a, ll b, ll m) {
+    a %= m;
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1)
+            res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
+}
+
 void solve();
 
 int main(){
-	ios_base::sync_with_stdio(false); 
-	cin.tie(NULL); 
-	cout.tie(NULL);
-    setIO("sublime");    //Does not work with Google     
+    ios_base::sync_with_stdio(false); 
+    cin.tie(nullptr); 
+    //setIO("sublime");        
     ll TC = 1;
     //cin >> TC;
     for(int i=0;i<TC;++i){
@@ -39,27 +69,20 @@ int main(){
     return 0;
 }
 
-// Do something good 
-ll dp[1001][2001];
-
 void solve(){
-	ll n,k,p; cin >> n >> k >> p;
-	vll people(n),keys(k);
-	for(int i=0;i<n;++i) cin >> people[i];
-	for(int i=0;i<k;++i) cin >> keys[i];    
-	for(int i=0;i<=n;++i){
-		for(int j=0;j<=k;++j){
-			dp[i][j] = 1e17+9;
-		}
-	}	
-	sort(all(people));
-	sort(all(keys));
-	dp[0][0] = 0;
-	for(int i=0;i<k;++i){
-		for(int j=0;j<=n;++j){
-			dp[i+1][j] = min(dp[i][j],dp[i+1][j]);
-			if(j<n) dp[i+1][j+1] = min(dp[i+1][j+1],max(dp[i][j],abs(p-keys[i])+abs(keys[i]-people[j])));						
-		}
-	}
-	cout << dp[k][n] << endl;
+    ll n,k,o; cin >> n >> k >> o;
+    vector<ll> p(n),y(k);
+    for(int i=0;i<n;++i) cin >> p[i];
+    for(int i=0;i<k;++i) cin >> y[i];
+    sort(all(p));
+	sort(all(y));
+    vector<vector<ll>> dp(n+1,vector<ll>(k+1,INF));
+    dp[0][0] = 0;
+    for(int i=0;i<n+1;++i){
+    	for(int j=0;j<k+1;++j){
+    		if(j<k) dp[i][j+1] = min(dp[i][j+1],dp[i][j]);
+    		if(i<n&&j<k) dp[i+1][j+1] = min(dp[i+1][j+1],max(dp[i][j],abs(y[j]-p[i])+abs(o-y[j])));
+    	}
+    }
+    cout << dp[n][k] << endl;
 }

@@ -1,20 +1,37 @@
 # include <bits/stdc++.h>
+# include <ext/pb_ds/assoc_container.hpp>
+# include <ext/pb_ds/tree_policy.hpp>
+
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define ll long long
 # define f first
 # define s second
-# define siz(x) (int)(x).size()
+# define siz(x) (ll)(x).size()
 # define vll vector<ll>
 # define pll pair<ll,ll>
 # define all(x) (x).begin(), (x).end()
+# define YES cout<<"Yes"<<endl
+# define NO cout<<"No"<<endl
 
+//Namespaces
+using namespace __gnu_pbds;
 using namespace std;
 
+//Templates
+template<typename T>
+using ordered_set= tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
+template<typename T>
+using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag, tree_order_statistics_node_update>; //less_equal=ms can have duplicates
+//order_of_key (K): Number of items strictly smaller than K.
+//find_by_order(K): Kth element in a Set (counting from zero).
+
+//Constants
 const ll MOD = 1e9 + 7;
 const ll INF = 1e18 + 9; 
-const int N = 2e5 + 1;
+const ll N = 2e5 + 1;   
 
+//For fileIO
 void setIO(string name) {  
 #ifndef ONLINE_JUDGE
     if((int)name.size() > 0){
@@ -24,12 +41,25 @@ void setIO(string name) {
 #endif
 }
 
+//bexpo
+ll binpow(ll a, ll b, ll m) {
+    a %= m;
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1)
+            res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
+}
+
 void solve();
 
 int main(){
-	ios_base::sync_with_stdio(false); 
-	cin.tie(nullptr); 
-    //setIO("sublime");    //Does not work with Google     
+    ios_base::sync_with_stdio(false); 
+    cin.tie(nullptr); 
+    //setIO("sublime");        
     ll TC = 1;
     //cin >> TC;
     for(int i=0;i<TC;++i){
@@ -39,55 +69,49 @@ int main(){
     return 0;
 }
 
-// Do something good 
-
 void solve(){
-	ll n,m; cin >> n >> m;
-	vll graph[n];
-	while(m--){
-		ll a,b; cin >> a >> b;
-		a--,b--;
-		graph[a].emplace_back(b);
-		graph[b].emplace_back(a);
-	}	    
-	bool cycle = false;
-	vll par(n);
-	vll vis(n);
-	auto bfs = [&](ll v){
-		queue<ll> q;
-		q.push(v);
-		while(!q.empty()){
-			ll node = q.front();
-			q.pop();
-			for(auto child : graph[node]){
-				deb(child);
-				if(vis[child]){
-					cycle = true;
-					vll ans;
-					while(child!=-1){
-						ans.push_back(child);
-						child = par[child];
-					}
-					deb(siz(ans));
-					reverse(all(ans));
-					for(auto val : ans){
-						cout << val << " ";
-					}
-					cout << endl;
-					return;
-				}
-				vis[child] = 1;
-				par[child] = node;
-				q.push(child);
-			}
-		}
-	};
-	for(int i=0;i<n;++i){
-		if(cycle) return;
-		fill(all(vis),0);
-		fill(all(par),-1);
-		vis[i] = 1;
-		bfs(i);
-	}
-	cout << "IMPOSSIBLE" << endl;
+    ll n,m; cin >> n >> m;
+    vector<vector<int>> graph(n,vector<int>());
+    while(m--){
+    	int a,b; cin >> a >> b;
+    	a--,b--;
+    	graph[a].emplace_back(b);
+    }
+    vector<int> par(n);
+    par[0] = -1;
+    vector<int> vis(n);
+    vector<int> ans;
+    vector<vector<int>> cycs;
+    function<void(int)> dfs = [&](int v){
+    	// if(cycle) return;
+    	if(vis[v]==2) return;
+    	vis[v] = 1;
+    	for(auto c : graph[v]){
+    		if(c==par[v]) continue;
+    		par[c] = v;
+    		if(vis[c]==1){
+    			// deb(c);
+    			vector<int> fans;
+    			for(auto val : ans){
+    				deb(val);
+    				fans.emplace_back(val+1);
+    			}
+    			cycs.emplace_back(fans);
+    			// fans.emplace_back(fans.front());
+    		}else ans.emplace_back(c),dfs(c);
+    	}
+    	vis[v]=2;
+    	ans.pop_back();
+    };
+    ans.emplace_back(0);
+    dfs(0);
+    if(siz(cycs)==0){
+    	cout << "IMPOSSIBLE" << endl;
+    	return;
+    }
+    cout << cycs[0].size() << endl;
+    for(auto val : cycs[0]) cout << val << " ";
+    cout << endl;
+	// for(auto val : ans) cout << val << " ";
+	// cout << endl;
 }

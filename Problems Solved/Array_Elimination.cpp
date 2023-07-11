@@ -1,20 +1,37 @@
 # include <bits/stdc++.h>
+# include <ext/pb_ds/assoc_container.hpp>
+# include <ext/pb_ds/tree_policy.hpp>
+
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define ll long long
 # define f first
 # define s second
-# define siz(x) (int)(x).size()
+# define siz(x) (ll)(x).size()
 # define vll vector<ll>
 # define pll pair<ll,ll>
 # define all(x) (x).begin(), (x).end()
+# define YES cout<<"Yes"<<endl
+# define NO cout<<"No"<<endl
 
+//Namespaces
+using namespace __gnu_pbds;
 using namespace std;
 
+//Templates
+template<typename T>
+using ordered_set= tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
+template<typename T>
+using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag, tree_order_statistics_node_update>; //less_equal=ms can have duplicates
+//order_of_key (K): Number of items strictly smaller than K.
+//find_by_order(K): Kth element in a Set (counting from zero).
+
+//Constants
 const ll MOD = 1e9 + 7;
 const ll INF = 1e18 + 9; 
-const int N = 2e5 + 1;
+const ll N = 2e5 + 1;   
 
+//For fileIO
 void setIO(string name) {  
 #ifndef ONLINE_JUDGE
     if((int)name.size() > 0){
@@ -24,12 +41,25 @@ void setIO(string name) {
 #endif
 }
 
+//bexpo
+ll binpow(ll a, ll b, ll m) {
+    a %= m;
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1)
+            res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
+}
+
 void solve();
 
 int main(){
-	ios_base::sync_with_stdio(false); 
-	cin.tie(nullptr); 
-    //setIO("sublime");    //Does not work with Google     
+    ios_base::sync_with_stdio(false); 
+    cin.tie(nullptr); 
+    //setIO("sublime");        
     ll TC = 1;
     cin >> TC;
     for(int i=0;i<TC;++i){
@@ -39,39 +69,28 @@ int main(){
     return 0;
 }
 
-// Do something good 
-
 void solve(){
-	ll n;cin >> n;
-	vll a(n);
+    ll n; cin >> n;
+    vll hsh(31);
 	for(int i=0;i<n;++i){
-		cin >> a[i];
-	}		    
-	vll bits(32);
-	ll finddivof = 0;
-	for(int i=0;i<32;++i){
-		for(auto val : a){
-			ll tmp = (1<<i);
-			bits[i]+=(val>>i)&1;
+		ll tmp; cin >> tmp;
+		for(int j=0;j<31;++j){
+			hsh[j]+=((tmp>>j)&1);
 		}
-		// deb(bits[i]);
-		finddivof = __gcd(finddivof,bits[i]);
+	}   
+	sort(all(hsh));
+	ll val = hsh[30]; 
+	for(int i=29;i>-1;--i){
+		if(hsh[i]==0) break;
+		val = __gcd(val,hsh[i]);
 	}
-	set<ll> ans;
-	for(int i=1;i*i<finddivof+1;++i){
-		if(finddivof%i==0){
-			ans.insert(i);
-			ans.insert(finddivof/i);
-		}
+	vll ans;
+	for(int i=1;i<val+1;++i){
+		if(val%i==0) ans.emplace_back(i);
 	}
 	if(siz(ans)==0){
-		for(int i=1;i<n+1;++i){
-			cout << i << " ";
-		}
-		return;
+		for(int i=1;i<n+1;++i) ans.emplace_back(i);
 	}
-	for(auto val : ans){
-		cout << val << " ";
-	}
+	for(auto val : ans) cout << val << " ";
 	cout << endl;
 }

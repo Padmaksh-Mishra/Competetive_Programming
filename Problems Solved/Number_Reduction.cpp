@@ -1,20 +1,35 @@
 # include <bits/stdc++.h>
+# include <ext/pb_ds/assoc_container.hpp>
+# include <ext/pb_ds/tree_policy.hpp>
+
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define ll long long
 # define f first
 # define s second
-# define siz(x) (int)(x).size()
+# define siz(x) (ll)(x).size()
 # define vll vector<ll>
 # define pll pair<ll,ll>
 # define all(x) (x).begin(), (x).end()
 
+//Namespaces
+using namespace __gnu_pbds;
 using namespace std;
 
+//Templates
+template<typename T>
+using ordered_set= tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
+template<typename T>
+using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag, tree_order_statistics_node_update>; //less_equal=ms can have duplicates
+//order_of_key (K): Number of items strictly smaller than K.
+//find_by_order(K): Kth element in a Set (counting from zero).
+
+//Constants
 const ll MOD = 1e9 + 7;
 const ll INF = 1e18 + 9; 
-const int N = 2e5 + 1;
+const ll N = 2e5 + 1;   
 
+//For fileIO
 void setIO(string name) {  
 #ifndef ONLINE_JUDGE
     if((int)name.size() > 0){
@@ -24,12 +39,25 @@ void setIO(string name) {
 #endif
 }
 
+//bexpo
+ll binpow(ll a, ll b, ll m) {
+    a %= m;
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1)
+            res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
+}
+
 void solve();
 
 int main(){
-	ios_base::sync_with_stdio(false); 
-	cin.tie(nullptr); 
-    //setIO("sublime");    //Does not work with Google     
+    ios_base::sync_with_stdio(false); 
+    cin.tie(nullptr); 
+    //setIO("sublime");        
     ll TC = 1;
     cin >> TC;
     for(int i=0;i<TC;++i){
@@ -39,48 +67,49 @@ int main(){
     return 0;
 }
 
-// Do something good 
-
 void solve(){
-	string s; cin >> s;
-	ll n = siz(s);
-	vll hsh(n);
-	ll k; cin >> k;
-	vector<vll> v;
-	for(int i=0;i<n;++i){
-		ll w = 0;
-		ll m = s[i]-'0';
-		ll j = i;
-		deb(m);
-		while(s[i+1]=='0'&&i<n-1){
-			w++;
-			i++;
-		}
-		//i--;
-		vll tmp = {m,w,j};
-		v.emplace_back(tmp);
-	}
-	sort(all(v),[](vll a,vll b)->bool{
-		if(a[0]==b[0]){
-			return b[1]>a[1];
-		}
-		return a[0]>b[0];
-	});
-	for(auto val : v){
-		cout << val[0] << " " << val[1] << " " << val[2] << endl;
-		ll w = val[1];
-		ll m = val[0];
-		ll j = val[2];
-		if(k>w){
-			for(int i=j;i<j+w+1;++i){
-				hsh[i]=1;
+    string s; cin >> s;
+    ll n = siz(s);
+    ll k; cin >> k;
+    ll sc = n;
+    ll tmp = INF;
+    for(int i=0;i<n;++i){
+    	if(s[i]=='0'){
+    		break;
+    	}
+    	if(tmp>s[i]-'0') tmp = s[i]-'0',sc = i;
+    }
+    deb(sc);
+    if(sc<k){
+    	s = s.substr(sc);
+    }
+    vll idx[10];
+    for(int i=0;i<n;++i){
+    	idx[s[i]-'0'].emplace_back(i);
+    }
+    tmp = 9;
+	while(true){
+		for(auto val : idx[tmp]){
+			// deb(val);
+			if(val==sc){
+				for(auto val : idx[0]){
+					s[val] = 'x';
+					k--;
+					if(k==0) break;
+				}
+				if(k==0) break;
+			}else{
+				s[val] = 'x';
 				k--;
+				if(k==0) break;
 			}
 		}
+		if(k==0) break;
+		tmp--;
 	}
-	for(int i=0;i<n;++i){
-		if(hsh[i]==0){
-			cout << s[i];
+	for(char c : s){
+		if(c!='x'){
+			cout << c;
 		}
 	}
 	cout << endl;

@@ -7,11 +7,12 @@
 # define ll long long
 # define f first
 # define s second
-# define siz(x) (int)(x).size()
+# define siz(x) (ll)(x).size()
 # define vll vector<ll>
 # define pll pair<ll,ll>
-# define vpll vector<pll>
 # define all(x) (x).begin(), (x).end()
+# define YES cout<<"Yes"<<endl
+# define NO cout<<"No"<<endl
 
 //Namespaces
 using namespace __gnu_pbds;
@@ -28,7 +29,7 @@ using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag, tree_order_
 //Constants
 const ll MOD = 1e9 + 7;
 const ll INF = 1e18 + 9; 
-const int N = 2e5 + 1;   
+const ll N = 2e5 + 1;   
 
 //For fileIO
 void setIO(string name) {  
@@ -68,27 +69,31 @@ int main(){
     return 0;
 }
 
-// Doing something good 
-
 void solve(){
-    ll n,m; cin >> n >> m;
-    vll sets(m,0);
-    for(int i=0;i<m;++i){
-        ll c; cin >> c;
-        for(int j=0;j<c;++j){
-            ll tmp; cin >> tmp;
-            tmp--;
-            sets[i]|=(1ll<<tmp);
-        }
+    ll n,k; cin >> n >> k;
+    map<ll,ll> ps;
+    vector<pll> aa(n);
+    vll bb(n);
+    for(int i=0;i<n;++i){
+        ll a,b; cin >> a >> b;
+        a--;
+        aa[i].f = a,aa[i].s = b;
     }
-    ll final_val = (1ll<<(n))-1;
-    vector<vll> dp(final_val+1,vll(m+1));
-    dp[0][0]=1;
-    for(int i=0;i<final_val+1;++i){
-        for(int j=0;j<m;++j){
-            dp[i][j+1] += dp[i][j];
-            dp[i|sets[j]][j+1] += dp[i][j];
-        }
+    sort(all(aa));
+
+    for(int i=0;i<n;++i){
+        ll a = aa[i].f,b = aa[i].s;
+        bb[i] = a;
+        ps[a+1]-=b;
+        ps[0]+=b;
     }
-    cout << dp[final_val][m] << endl;
+    for(int i=0;i<n;++i){
+        if(ps[bb[i]]<k+1){
+            cout << bb[i] << endl;
+            return;
+        }
+        deb(ps[bb[i]]);
+        ps[bb[i+1]]+=ps[bb[i]] + ps[bb[i]+1];
+    }
+    cout << bb[n-1] << endl;
 }

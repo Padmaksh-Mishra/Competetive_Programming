@@ -1,20 +1,37 @@
 # include <bits/stdc++.h>
+# include <ext/pb_ds/assoc_container.hpp>
+# include <ext/pb_ds/tree_policy.hpp>
+
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
 # define ll long long
 # define f first
 # define s second
-# define siz(x) (int)(x).size()
+# define siz(x) (ll)(x).size()
 # define vll vector<ll>
 # define pll pair<ll,ll>
 # define all(x) (x).begin(), (x).end()
+# define YES cout<<"Yes"<<endl
+# define NO cout<<"No"<<endl
 
+//Namespaces
+using namespace __gnu_pbds;
 using namespace std;
 
+//Templates
+template<typename T>
+using ordered_set= tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
+template<typename T>
+using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag, tree_order_statistics_node_update>; //less_equal=ms can have duplicates
+//order_of_key (K): Number of items strictly smaller than K.
+//find_by_order(K): Kth element in a Set (counting from zero).
+
+//Constants
 const ll MOD = 1e9 + 7;
 const ll INF = 1e18 + 9; 
-const int N = 2e5 + 1;
+const ll N = 2e5 + 1;   
 
+//For fileIO
 void setIO(string name) {  
 #ifndef ONLINE_JUDGE
     if((int)name.size() > 0){
@@ -24,12 +41,25 @@ void setIO(string name) {
 #endif
 }
 
+//bexpo
+ll binpow(ll a, ll b, ll m) {
+    a %= m;
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1)
+            res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
+}
+
 void solve();
 
 int main(){
-	ios_base::sync_with_stdio(false); 
-	cin.tie(nullptr); 
-    //setIO("sublime");    //Does not work with Google     
+    ios_base::sync_with_stdio(false); 
+    cin.tie(nullptr); 
+    //setIO("sublime");        
     ll TC = 1;
     cin >> TC;
     for(int i=0;i<TC;++i){
@@ -39,36 +69,22 @@ int main(){
     return 0;
 }
 
-// Do something good 
-
 void solve(){
-	string s; cin >> s;
-	s+='2';
-	ll n = siz(s)-1;
-	ll ans = 0;
-	ll j=0;
-	for(int i=0;i<n;++i){
-		j++;
-		if(s[i]==s[i+1]&&s[i]!='?'){
-			ans+=(j+1)*j/2;
-			j=0;
-		}
-	}
-	ans+=(j+1)*j/2;
-	for(int i=0;i<n;++i){
-		j = i+1;
-		ll qmc = 0;
-		while(s[j]=='?'&&j<n){
-			qmc++;
-		}
-		if(s[i]=='?') qmc++;
-		if(j==n){
-			
-		}
-		if(qmc%2){
-			if(s[i]==s[j])
-		}
-
-	}
-	deb(ans);	    
+    ll n;
+    string s; cin >> s;
+    n = siz(s);
+    vector<vll> dp(n+1,vll(2));
+    dp[0][0]=dp[0][1]=0;
+    ll ans = 0;
+    for(int i=0;i<n;++i){
+    	if(s[i]=='0') dp[i+1][0] = dp[i][1]+1;
+    	if(s[i]=='1') dp[i+1][1] = dp[i][0]+1;
+    	if(s[i]=='?'){
+    		dp[i+1][0] = dp[i][1]+1;
+    		dp[i+1][1] = dp[i][0]+1;
+    		ans+=max(dp[i+1][0],dp[i+1][1]);
+    	}else ans+=dp[i+1][s[i]=='1'];
+    	// deb(ans);
+    }
+    cout << ans << endl;
 }

@@ -1,81 +1,90 @@
-//Coding_Duck <-> PM <-> REDACTED <-> Blood_Reaper
-
 # include <bits/stdc++.h>
-# define ll long long
+# include <ext/pb_ds/assoc_container.hpp>
+# include <ext/pb_ds/tree_policy.hpp>
+
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
+# define ll long long
+# define f first
+# define s second
+# define siz(x) (ll)(x).size()
+# define vll vector<ll>
+# define pll pair<ll,ll>
+# define all(x) (x).begin(), (x).end()
+# define YES cout<<"Yes"<<endl
+# define NO cout<<"No"<<endl
 
-const ll MOD = 1e9 +7;
+//Namespaces
+using namespace __gnu_pbds;
 using namespace std;
 
-int bexpo(int n,int p);
+//Templates
+template<typename T>
+using ordered_set= tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
+template<typename T>
+using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag, tree_order_statistics_node_update>; //less_equal=ms can have duplicates
+//order_of_key (K): Number of items strictly smaller than K.
+//find_by_order(K): Kth element in a Set (counting from zero).
 
-void solve(){
-	int n,q; cin >> n >> q;
-	// deb(q);
-	vector<pair<int,int>> a(n);
-	int val[n];
-	for(int i=0;i<n;++i){
-		cin >> val[i];
-		a[i].second = i;
-		a[i].first = val[i];
-	}
-	sort(a.begin(), a.end());
-	vector<int> has(n,0);
-	for(int i =0;i<n;++i){
-		deb(a[i].first);
-		if(a[i].first<=q) has[a[i].second] = 1;
-		deb(a[i].second);
-		deb(has[i]);
-	}
-	for(int i=0;i<n;++i){
-		// deb(has[i]);
-		if(q<=0){
-			cout << 0;
-			continue;
-		}
-		if(has[i]==1){
-			if(val[i]>q){
-				q--;
-				cout << 1;
-			}else cout << 1;
-		}else  cout << 0;
-	}
+//Constants
+const ll MOD = 1e9 + 7;
+const ll INF = 1e18 + 9; 
+const ll N = 2e5 + 1;   
 
-	cout << endl;
-
+//For fileIO
+void setIO(string name) {  
+#ifndef ONLINE_JUDGE
+    if((int)name.size() > 0){
+        freopen((name+".in").c_str(), "r", stdin);
+        freopen((name+".out").c_str(), "w", stdout);
+    }
+#endif
 }
 
+//bexpo
+ll binpow(ll a, ll b, ll m) {
+    a %= m;
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1)
+            res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
+}
+
+void solve();
+
 int main(){
-
-//for I/O----------------------------------
-
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin); 
-    freopen("output.txt", "w", stdout);
-#endif
-
-//I/O end ---------------------------------
-
-    int TC = 1;
+    ios_base::sync_with_stdio(false); 
+    cin.tie(nullptr); 
+    //setIO("sublime");        
+    ll TC = 1;
     cin >> TC;
-    while(TC--){
+    for(int i=0;i<TC;++i){
+        //cout << "Case #" << i+1 << ": ";
         solve();
     }
     return 0;
 }
 
-
-//Binary Exponention Iterative
-int bexpo(int n,int p){ 
-    int ans = 1,tmp = n;
-    while(p>0){
-        if(p&1) ans = (ans * 1LL * tmp)%MOD;
-        tmp = (tmp * 1LL * tmp)%MOD;
-        p>>=1;
-    }
-    return ans;
+void solve(){
+    ll n,q; cin >> n >> q;
+    vll dp(n+1,-1);
+    vll r(n);
+    dp[0] = q;
+    for(int i=0;i<n;++i) cin >> r[i];
+    ll Q = 0;
+	vll bs(n);
+	for(int i=n-1;i>-1;--i){
+		if(Q<r[i]){
+			if(Q<q){
+				Q++;
+				bs[i]=1;
+			}else bs[i]=0;
+		}else bs[i]=1;
+	}
+	for(auto val : bs) cout << val;
+	cout << endl;
 }

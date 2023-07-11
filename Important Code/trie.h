@@ -1,9 +1,11 @@
+//Trie implementation 
+
 const int ALPHABET_SIZE = 26;
 
 // trie node
 struct TrieNode {
     TrieNode *children[ALPHABET_SIZE];
-    int count;
+    int count;  //number of strings that have this node
     bool isEndOfWord;
 
     TrieNode() {
@@ -47,7 +49,9 @@ public:
         }
         return (pCrawl != nullptr && pCrawl->isEndOfWord);
     }
-    ll lcs(string word) {
+    
+    // gives length of longest common subsequences -- atcoder
+    int lcs(string word) {
         TrieNode *pCrawl = root;
         ll ans = 0;
         for (int i = 0; i < word.length(); i++) {
@@ -55,7 +59,7 @@ public:
             if (!pCrawl->children[index])
                 return ans;
             pCrawl = pCrawl->children[index];
-            if(pCrawl->count<2){
+            if(pCrawl->count<2){    //There is only one string satasfying till here and that is word itself
             	return ans;
             }else ans++;
         }

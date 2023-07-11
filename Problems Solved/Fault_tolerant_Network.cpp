@@ -68,16 +68,16 @@ void solve(){
 	}
 	ll bfa1,bfan,bfb1,bfbn;
 	bfbn=bfb1=bfan=bfa1=INF;
-	for(int j=1;j<n-1;++j){
+	for(int j=0;j<n;++j){
 		bfa1 = min(abs(a[0]-b[j]),bfa1);
 	}
-	for(int j=1;j<n-1;++j){
+	for(int j=0;j<n;++j){
 		bfan = min(abs(a[n-1]-b[j]),bfan);
 	}
-	for(int j=1;j<n-1;++j){
+	for(int j=0;j<n;++j){
 		bfb1 = min(abs(a[j]-b[0]),bfb1);
 	}
-	for(int j=1;j<n-1;++j){
+	for(int j=0;j<n;++j){
 		bfbn = min(abs(a[j]-b[n-1]),bfbn);
 	}
 

@@ -1,92 +1,104 @@
 # include <bits/stdc++.h>
-# define JAI ios_base::sync_with_stdio(false); 
-# define SHREE cin.tie(NULL); 
-# define RAM cout.tie(NULL);
-# define ll long long
+# include <ext/pb_ds/assoc_container.hpp>
+# include <ext/pb_ds/tree_policy.hpp>
+
 # define endl '\n'
 # define deb(x) cout << #x << " = " << x << endl
-# define pb push_back
+# define ll long long
 # define f first
 # define s second
-# define NO cout << "NO" << endl
-# define YES cout << "YES" << endl
-# define sor(x) sort(begin(x), end(x))
 # define siz(x) (ll)(x).size()
-# define vi vector<int>
 # define vll vector<ll>
+# define pll pair<ll,ll>
+# define all(x) (x).begin(), (x).end()
+# define YES cout<<"Yes"<<endl
+# define NO cout<<"No"<<endl
 
+//Namespaces
+using namespace __gnu_pbds;
 using namespace std;
-const ll MOD = 1e9 +7;
-void setIO(string name = "sublime");
 
-vi tree[100001];
-vi visited(100001);
-vi cat(100001);
-ll cats,res,m;
-vll store(100001);
-void dfs(int node){	
-	cout << node << " " << store[node] << endl;
-	if(visited[node]||store[node]>m) return;
-	
-	visited[node]=1;
+//Templates
+template<typename T>
+using ordered_set= tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
+template<typename T>
+using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag, tree_order_statistics_node_update>; //less_equal=ms can have duplicates
+//order_of_key (K): Number of items strictly smaller than K.
+//find_by_order(K): Kth element in a Set (counting from zero).
 
-	if(siz(tree[node])==1&&visited[tree[node][0]]) {
-		res++;
-		deb(node);
-	}
-	for(auto child : tree[node]){
-		if(cat[child]==0) cats = 0;
-		cats+=cat[child];
-		store[child] = max(cats,store[node]);
-		dfs(child);
-		cats-=cat[child];
-	}
+//Constants
+const ll MOD = 1e9 + 7;
+const ll INF = 1e18 + 9; 
+const ll N = 2e5 + 1;   
+
+//For fileIO
+void setIO(string name) {  
+#ifndef ONLINE_JUDGE
+    if((int)name.size() > 0){
+        freopen((name+".in").c_str(), "r", stdin);
+        freopen((name+".out").c_str(), "w", stdout);
+    }
+#endif
 }
 
-
-void solve(){
-	int n; cin >> n >> m;
-
-	for(int i=0;i<n;++i) cin >> cat[i];
-	for(int i=1;i<n;++i){
-		int a,b; cin >> a >> b;
-		a--;b--;
-		tree[a].pb(b);
-		tree[b].pb(a);
-	}
-	cats+=cat[0];
-	store[0]+=cats;
-	dfs(0);
-	cout << res << endl;
+//bexpo
+ll binpow(ll a, ll b, ll m) {
+    a %= m;
+    ll res = 1;
+    while (b > 0) {
+        if (b & 1)
+            res = res * a % m;
+        a = a * a % m;
+        b >>= 1;
+    }
+    return res;
 }
+
+void solve();
 
 int main(){
-
-    JAI SHREE RAM
-
-    setIO();	//Google and other non judges
-    int TC = 1;
+    ios_base::sync_with_stdio(false); 
+    cin.tie(nullptr); 
+    //setIO("sublime");        
+    ll TC = 1;
     //cin >> TC;
     for(int i=0;i<TC;++i){
-    	//cout << "Case #" << i+1 << ": ";
-    	solve();
+        //cout << "Case #" << i+1 << ": ";
+        solve();
     }
     return 0;
 }
 
-void setIO(string name) {  
-#ifndef ONLINE_JUDGE
-	if((ll)name.size() > 0){
-		freopen((name+".in").c_str(), "r", stdin);
-		freopen((name+".out").c_str(), "w", stdout);
-	}
-#endif
+void solve(){
+    ll n,m; cin >> n >> m;
+    ll tmp = n-1;
+    vll catp(n,0);
+    for(int i=0;i<n;++i) cin >> catp[i];
+    vll cc(n);
+	vll fc(n);
+	ll ans = 0;
+    vector<vll> tree(n,vll());
+    while(tmp--){
+    	ll a,b; cin >> a >> b;
+    	a--,b--;
+    	tree[a].emplace_back(b);
+    	tree[b].emplace_back(a);
+    }
+    function<void(ll,ll)> dfs = [&](ll v,ll p){
+		for(auto c : tree[v]){
+			if(c!=p){
+				if(catp[c]) cc[c]+=cc[v]+1;
+				fc[c] = max(cc[c],fc[v]);
+				dfs(c,v);
+			}
+		}
+    	if(tree[v].size()==1&&v!=0) ans+=(fc[v]<m+1);	    
+    };
+    cc[0] = catp[0];
+    fc[0] = catp[0];
+    dfs(0,-1);
+    // for(int i=0;i<n;++i){
+    // 	cout << i << " " << fc[i] << endl;
+    // }
+    cout << ans << endl;
 }
-
-//	########  ##     ## 
-//	##     ## ###   ### 
-//	##     ## #### #### 
-//	########  ## ### ## 
-//	##        ##     ## 
-//	##        ##     ## 
-//	##        ##     ## 
