@@ -61,7 +61,7 @@ int main(){
     cin.tie(nullptr); 
     //setIO("sublime");        
     ll TC = 1;
-    //cin >> TC;
+    cin >> TC;
     for(int i=0;i<TC;++i){
         //cout << "Case #" << i+1 << ": ";
         solve();
@@ -71,40 +71,21 @@ int main(){
 
 void solve(){
     ll n; cin >> n;
-    string s; cin >> s;
-    vector<vll> dp(n+1,vll(2,-1));
-    fill(all(dp[n]),0);
-    for(int i=0;i<n;++i){
-        vector<bool> tmp(n);
-        if(dp[i][0]==-1){
-            tmp[i] = (s[i]=='1');
-            for(int j=i+1;j<n;++j){
-                // if(dp[j][s[j]=='1']!=-1) break;
-                tmp[j] = !(tmp[j-1]&(s[j]=='1'));
-            }
-            if(dp[n-1][(s[n-1]=='1')]==-1) dp[n-1][(s[n-1]=='1')] = tmp[n-1];
-            for(int j=n-2;j>i-1;--j){
-                if(dp[j][(s[j]=='1')]!=-1) break;
-                dp[j][(s[j]=='1')] = dp[j+1][(s[j+1]=='1')] + tmp[j];
-            }
-        }
-        if(dp[i][1]==-1){
-            tmp[i] = (s[i]=='1');
-            for(int j=i+1;j<n;++j){
-                tmp[j] = !(tmp[j-1]&(s[j]=='1'));
-            }
-            dp[n-1][(s[n-1]=='1')] = tmp[n-1];
-            for(int j=n-2;j>i-1;--j){
-                dp[j][(s[j]=='1')] = dp[j+1][(s[j+1]=='1')] + tmp[j];
-            }
-        }
+    vector<int> xx;
+    for(int i=1;i*i<n+1;++i){
+    	if(n%i==0) xx.emplace_back(i);
     }
-    // for(int i=0;i<n;++i){
-    //     cout << dp[i][0] <<  " " << dp[i][1] << endl;
-    // }
-    ll ans = 0;
-    for(int i=0;i<n;++i){
-        ans+=dp[i][(s[i]=='1')];
+    vector<char> v(n,'?');
+    v[0] = 'a';
+    int x = 0;
+    int pv = 0;
+    for(auto val : xx){
+    	for(int j=pv+1;j<val;++j) v[j] = 'a'+j-pv+1;
+    	pv = val;
+    	v[val] = 'a'+x+1;
+    	x++;
     }
-    cout << ans << endl;
+    for(int j=pv+1;j<n;++j) v[j] = 'a'+j-pv+1;
+    for(int i=0;i<n;++i) cout << v[i];
+    cout << endl;
 }

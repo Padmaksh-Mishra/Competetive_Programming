@@ -62,17 +62,12 @@ int main(){
     cin.tie(nullptr); 
     //setIO("sublime");   
     int n = 1e6;
-    ll cnt = 0;
-    for(int i=1;i<2023;++i){
-    	for(int j=0;j<i+1;++j){
-    		graph[j+1+cnt].emplace_back(cnt);
-    		cout << j+1+cnt << " ";
+    for(int i=0;i<2023+1;++i){
+    	ll tmp = ((i+1)*(i+2))/2;
+    	for(int j=0;j<i;++i){
+    		graph[tmp+j].emplace_back(j);
+    		graph[tmp+j+1].emplace_back(j);
     	}
-    	cout << endl;
-    	deb(cnt);
-    	cnt+=i+1;
-    	// graph[i+1].emplace_back(i);
-    	// graph[i+2].emplace_back(i);
     }
 
     ll TC = 1;
