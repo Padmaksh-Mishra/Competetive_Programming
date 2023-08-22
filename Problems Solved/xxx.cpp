@@ -23,8 +23,7 @@ template<typename T>
 using ordered_set= tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
 template<typename T>
 using ordered_multiset = tree<T,null_type,less_equal<T>,rb_tree_tag, tree_order_statistics_node_update>; //less_equal=ms can have duplicates
-//order_of_key (K): Number of items strictly smaller than K.
-//find_by_order(K): Kth element in a Set (counting from zero).
+
 
 //Constants
 const ll MOD = 1e9 + 7;
