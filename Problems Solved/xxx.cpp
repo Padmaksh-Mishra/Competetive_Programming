@@ -30,15 +30,6 @@ const ll MOD = 1e9 + 7;
 const ll INF = 1e18 + 9; 
 const ll N = 2e5 + 1;   
 
-//For fileIO
-void setIO(string name) {  
-#ifndef ONLINE_JUDGE
-    if((int)name.size() > 0){
-        freopen((name+".in").c_str(), "r", stdin);
-        freopen((name+".out").c_str(), "w", stdout);
-    }
-#endif
-}
 
 //bexpo
 ll binpow(ll a, ll b, ll m) {
@@ -69,22 +60,26 @@ int main(){
 }
 
 void solve(){
-    ll n; cin >> n;
-    
-    for(int k=2;k<1001;++k){
-        ll sm = 1;
-        ll tmp = 1;
-        tmp*=k;
-        sm+=tmp;
-        while(1){
-            tmp*=k;
-            if(sm+tmp==n){
-                YES;
-                return;
-            }
-            if(sm+tmp>n) break;
-            sm+=tmp;
+   int n; cin >> n;
+   vll v(n);
+   for(int i=0;i<n;++i) cin >> v[i];
+    sort(all(v));
+    vll ans(n);
+    int j=0;
+    for(int i=0;i<n;i+=2){
+        ans[i] = v[j++];
+    }   
+    for(int i=1;i<n;i+=2){
+        ans[i] = v[j++];
+    }
+    for(int i=1;i<n-1;++i){
+        if((ans[i-1]<ans[i]&&ans[i]>ans[i+1])||(ans[i-1]>ans[i]&&ans[i]<ans[i+1])){
+            //fine
+        }else{
+            cout << -1 << endl;
+            return;
         }
     }
-    NO;
+    for(auto x : ans) cout << x << " ";
+    cout << endl;
 }
